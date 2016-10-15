@@ -121,6 +121,7 @@ namespace uns {
 	* Description: Возвращает вопрос
 	*/
 	const char*	ucTestMaker::GetQuestion() {
+		static char str[SIZE];
 		for ( int i = 0; i < SIZE; i++ ) {
 			if ( data[index].string[i] == '-' && data[index].string[i - 1] == ' ' && data[index].string[i + 1] == ' ' ) {
 				str[i - 1] = '\0';
@@ -136,6 +137,7 @@ namespace uns {
 	* Description: Возвращает ответ
 	*/
 	const char*	ucTestMaker::GetAnswer() {
+		static char str[SIZE];
 		int i = 0;
 		while ( !( data[index].string[i] == '-' && data[index].string[i - 1] == ' ' && data[index].string[i + 1] == ' ' ) ) {
 			i++;

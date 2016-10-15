@@ -21,7 +21,6 @@ namespace uns {
 		QVector< usData_t >	data;		// Вектор данных
 		int					counter;	// Количество выведеных строк
 		int					index;		// Номер текущей строки
-		char				str[SIZE];	// Возвращаемая строка
 		QFile				file;		// Подключаемый файл
 
 	public:
