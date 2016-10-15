@@ -119,6 +119,7 @@ void ucUiTestMaker::SlotQueAns() {
 	case STATE_FIRST_STEP:
 		if ( testInterface.NewWord() ) {
 			SlotMenu();
+			return;
 		}
 		tmpStringForOutput.sprintf( "%d/%d", testInterface.GetCounter(), testInterface.GetLength() );
 		labelCounter->setText( tmpStringForOutput );
@@ -146,6 +147,7 @@ void ucUiTestMaker::SlotAnsQue() {
 	case STATE_FIRST_STEP:
 		if ( testInterface.NewWord() ) {
 			SlotMenu();
+			return;
 		}
 		tmpStringForOutput.sprintf( "%d/%d", testInterface.GetCounter(), testInterface.GetLength() );
 		labelCounter->setText( tmpStringForOutput );
@@ -163,7 +165,49 @@ void ucUiTestMaker::SlotAnsQue() {
 }
 
 void ucUiTestMaker::SlotMix() {
-	stackedWidget->setCurrentIndex( 1 );
+	QString tmpStringForOutput;
+	switch ( currentState ) {
+	case STATE_INIT:
+		stackedWidget->setCurrentIndex( 1 );
+		testInterface.Init();
+		currentState = STATE_FIRST_STEP;
+		currenteTest = TEST_MIX;
+	case STATE_FIRST_STEP:
+		if ( testInterface.MixNewWord() ) {
+			SlotMenu();
+			return;
+		}
+		tmpStringForOutput.sprintf( "%d/%d", testInterface.GetCounter(), testInterface.GetLength() * 2 );
+		labelCounter->setText( tmpStringForOutput );
+		switch( testInterface.GetFlag() ) {
+		case 1:
+		case 4:
+			labelTextQueAns->setText( testInterface.GetAnswer() );
+			break;
+		case 2:
+		case 3:
+			labelTextQueAns->setText( testInterface.GetQuestion() );
+			break;
+		}
+		currentState = STATE_SECOND_STEP;
+		break;
+	case STATE_SECOND_STEP:
+		switch( testInterface.GetFlag() ) {
+		case 1:
+		case 4:
+			tmpStringForOutput.sprintf( "%s - %s", testInterface.GetAnswer(), testInterface.GetQuestion() );
+			break;
+		case 2:
+		case 3:
+			tmpStringForOutput.sprintf( "%s - %s", testInterface.GetQuestion(), testInterface.GetAnswer() );
+			break;
+		}
+		labelTextQueAns->setText( tmpStringForOutput );
+		currentState = STATE_FIRST_STEP;
+		break;
+	default:
+		break;
+	}
 }
 
 void ucUiTestMaker::SlotTypeQueAns() {
