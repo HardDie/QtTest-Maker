@@ -146,8 +146,7 @@ namespace uns {
 		for ( int j = 0; j < SIZE; j++ ) {
 			i++;
 			if ( data[index].string[i] == '\0' || data[index].string[i] == '\n' ) {
-				str[ j - 1 ] = '\0';
-				//str[j] = '\0';
+				str[j] = '\0';
 				break;
 			}
 			str[j] = data[index].string[i];
