@@ -41,6 +41,7 @@ private:
 	QLineEdit		*	lineText;
 
 	QLabel			*	labelFreeLine;
+	QLabel			*	labelFreeLine2;
 	QLabel			*	outCounter;
 	QTextEdit		*	outTextQueAns;
 

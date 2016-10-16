@@ -6,6 +6,7 @@ ucUiTestMaker::ucUiTestMaker( QWidget* parent ) : QDialog( parent ) {
 
 		// Инициализация строк
 	labelFreeLine	=	new QLabel( "" );
+	labelFreeLine2	=	new QLabel( "" );
 	outCounter		=	new QLabel;
 	outTextQueAns	=	new QTextEdit;
 	outTextQueAns->setDisabled( true );
@@ -72,15 +73,19 @@ void ucUiTestMaker::InitAllObjects() {
 		layoutMainMenu->addWidget( labelFreeLine );
 	layoutMainMenu->addWidget( buttonNewFile );
 	layoutMainMenu->addWidget( buttonExit );
+		layoutMainMenu->addWidget( labelFreeLine );
 	widgetMainMenu->setLayout( layoutMainMenu );
 
 		// Инициализация слоя для теста по типу следующее слово
 	QWidget* widgetNextWord = new QWidget;
 	QVBoxLayout* layoutNextWord = new QVBoxLayout;
 	layoutNextWord->addWidget( outCounter );
+		layoutNextWord->addWidget( labelFreeLine2 );
 	layoutNextWord->addWidget( outTextQueAns );
+		layoutNextWord->addWidget( labelFreeLine2 );
 	layoutNextWord->addWidget( buttonNext );
 	layoutNextWord->addWidget( buttonMainMenu );
+		layoutNextWord->addWidget( labelFreeLine2 );
 	widgetNextWord->setLayout( layoutNextWord );
 
 		// Подключаем сигналы
