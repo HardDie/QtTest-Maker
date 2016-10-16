@@ -8,6 +8,7 @@ ucUiTestMaker::ucUiTestMaker( QWidget* parent ) : QDialog( parent ) {
 	labelFreeLine	=	new QLabel( "" );
 	outCounter		=	new QLabel;
 	outTextQueAns	=	new QTextEdit;
+	outTextQueAns->setDisabled( true );
 
 	if ( testInterface.OpenFile( "/mnt/sdcard/gg.txt" ) ) {
 	//if ( testInterface.OpenFile( "gg.txt" ) ) {
