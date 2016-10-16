@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 	QApplication a(argc, argv);
 
 	ucUiTestMaker* w = new ucUiTestMaker();
-	w->show();
+	w->showFullScreen();
 
 	return a.exec();
 }
