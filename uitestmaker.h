@@ -7,9 +7,9 @@
 #include <QLineEdit>
 #include <QLabel>
 #include <QVBoxLayout>
-//#include <QMessageBox>
-//#include <QThread>
+#include <QMessageBox>
 #include <QStackedWidget>
+#include <QTextEdit>
 #include "testmaker.h"
 
 enum test_t{
@@ -41,8 +41,8 @@ private:
 	QLineEdit		*	lineText;
 
 	QLabel			*	labelFreeLine;
-	QLabel			*	labelCounter;
-	QLabel			*	labelTextQueAns;
+	QLabel			*	outCounter;
+	QTextEdit		*	outTextQueAns;
 
 	QStackedWidget	*	stackedWidget;
 

@@ -6,10 +6,11 @@ ucUiTestMaker::ucUiTestMaker( QWidget* parent ) : QDialog( parent ) {
 
 		// Инициализация строк
 	labelFreeLine	=	new QLabel( "" );
-	labelCounter	=	new QLabel;
-	labelTextQueAns	=	new QLabel;
+	outCounter		=	new QLabel;
+	outTextQueAns	=	new QTextEdit;
 
-	if ( testInterface.OpenFile( "gg.txt" ) ) {
+	if ( testInterface.OpenFile( "/mnt/sdcard/gg.txt" ) ) {
+	//if ( testInterface.OpenFile( "gg.txt" ) ) {
 		QMessageBox msgError;
 		msgError.setText( "Incorrect file name or the file is not available!" );
 		msgError.exec();
@@ -75,8 +76,8 @@ void ucUiTestMaker::InitAllObjects() {
 		// Инициализация слоя для теста по типу следующее слово
 	QWidget* widgetNextWord = new QWidget;
 	QVBoxLayout* layoutNextWord = new QVBoxLayout;
-	layoutNextWord->addWidget( labelCounter );
-	layoutNextWord->addWidget( labelTextQueAns );
+	layoutNextWord->addWidget( outCounter );
+	layoutNextWord->addWidget( outTextQueAns );
 	layoutNextWord->addWidget( buttonNext );
 	layoutNextWord->addWidget( buttonMainMenu );
 	widgetNextWord->setLayout( layoutNextWord );
@@ -122,13 +123,13 @@ void ucUiTestMaker::SlotQueAns() {
 			return;
 		}
 		tmpStringForOutput.sprintf( "%d/%d", testInterface.GetCounter(), testInterface.GetLength() );
-		labelCounter->setText( tmpStringForOutput );
-		labelTextQueAns->setText( testInterface.GetQuestion() );
+		outCounter->setText( tmpStringForOutput );
+		outTextQueAns->setText( testInterface.GetQuestion() );
 		currentState = STATE_SECOND_STEP;
 		break;
 	case STATE_SECOND_STEP:
 		tmpStringForOutput.sprintf( "%s - %s", testInterface.GetQuestion(), testInterface.GetAnswer() );
-		labelTextQueAns->setText( tmpStringForOutput );
+		outTextQueAns->setText( tmpStringForOutput );
 		currentState = STATE_FIRST_STEP;
 		break;
 	default:
@@ -150,13 +151,13 @@ void ucUiTestMaker::SlotAnsQue() {
 			return;
 		}
 		tmpStringForOutput.sprintf( "%d/%d", testInterface.GetCounter(), testInterface.GetLength() );
-		labelCounter->setText( tmpStringForOutput );
-		labelTextQueAns->setText( testInterface.GetAnswer() );
+		outCounter->setText( tmpStringForOutput );
+		outTextQueAns->setText( testInterface.GetAnswer() );
 		currentState = STATE_SECOND_STEP;
 		break;
 	case STATE_SECOND_STEP:
 		tmpStringForOutput.sprintf( "%s - %s", testInterface.GetAnswer(), testInterface.GetQuestion() );
-		labelTextQueAns->setText( tmpStringForOutput );
+		outTextQueAns->setText( tmpStringForOutput );
 		currentState = STATE_FIRST_STEP;
 		break;
 	default:
@@ -178,15 +179,15 @@ void ucUiTestMaker::SlotMix() {
 			return;
 		}
 		tmpStringForOutput.sprintf( "%d/%d", testInterface.GetCounter(), testInterface.GetLength() * 2 );
-		labelCounter->setText( tmpStringForOutput );
+		outCounter->setText( tmpStringForOutput );
 		switch( testInterface.GetFlag() ) {
 		case 1:
 		case 4:
-			labelTextQueAns->setText( testInterface.GetAnswer() );
+			outTextQueAns->setText( testInterface.GetAnswer() );
 			break;
 		case 2:
 		case 3:
-			labelTextQueAns->setText( testInterface.GetQuestion() );
+			outTextQueAns->setText( testInterface.GetQuestion() );
 			break;
 		}
 		currentState = STATE_SECOND_STEP;
@@ -202,7 +203,7 @@ void ucUiTestMaker::SlotMix() {
 			tmpStringForOutput.sprintf( "%s - %s", testInterface.GetQuestion(), testInterface.GetAnswer() );
 			break;
 		}
-		labelTextQueAns->setText( tmpStringForOutput );
+		outTextQueAns->setText( tmpStringForOutput );
 		currentState = STATE_FIRST_STEP;
 		break;
 	default:
