@@ -142,7 +142,7 @@ namespace uns {
 		while ( !( data[index].string[i] == '-' && data[index].string[i - 1] == ' ' && data[index].string[i + 1] == ' ' ) ) {
 			i++;
 		}
-		i++;
+        i += 2;
         for ( int j = 0; j < SIZE; j++, i++ ) {
             if ( data[index].string[i] == '\0' || data[index].string[i] == '\n' || data[index].string[i] == '\r' ) {
 				str[j] = '\0';
