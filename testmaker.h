@@ -33,12 +33,12 @@ namespace uns {
 		void					Init();
 		int						NewWord();
 		int						MixNewWord();
-		const	char	*		GetQuestion();
-		const	char	*		GetAnswer();
-		int						GetCounter() { return counter; }
-		int						GetLength() { return data.size(); }
-		char					GetFlag() { return data[index].flag; }
-        bool                    FileIsOpen() { return fileIsOpen; }
+        const	char	*		GetQuestion();
+        const	char	*		GetAnswer();
+        int						GetCounter() const { return counter; }
+        int						GetLength() const { return data.size(); }
+        char					GetFlag() const { return data[index].flag; }
+        bool                    FileIsOpen() const { return fileIsOpen; }
 								~ucTestMaker();
 	};
 
