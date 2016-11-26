@@ -22,13 +22,14 @@ namespace uns {
 		int					counter;	// Количество выведеных строк
 		int					index;		// Номер текущей строки
 		QFile				file;		// Подключаемый файл
+        bool                fileIsOpen; // Флаг открытого файла
 
 	public:
 								ucTestMaker();
 		void					ClearTest();
 		int						OpenFile( const char filename[] );
-		void					ReadFile();
-		void					AddQuestion();
+        bool					ReadFile();
+        bool					AddQuestion();
 		void					Init();
 		int						NewWord();
 		int						MixNewWord();
@@ -37,6 +38,7 @@ namespace uns {
 		int						GetCounter() { return counter; }
 		int						GetLength() { return data.size(); }
 		char					GetFlag() { return data[index].flag; }
+        bool                    FileIsOpen() { return fileIsOpen; }
 								~ucTestMaker();
 	};
 

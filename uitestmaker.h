@@ -12,6 +12,10 @@
 #include <QTextEdit>
 #include "testmaker.h"
 
+#include <QFileDialog>
+#include <QDir>
+#include <QSysInfo>
+
 enum test_t{
 	TEST_QA,
 	TEST_AQ,
@@ -61,6 +65,7 @@ private slots:
 	void SlotTypeAnsQue();
 	void SlotTypeMix();
 	void SlotNext();
+    void SlotNewFile();
 };
 
 #endif // TESTMAKER_H

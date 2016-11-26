@@ -1,5 +1,7 @@
 #include "uitestmaker.h"
 
+//QString path = QFileDialog::getOpenFileName(0,QObject::tr("Укажите файл базы данных"),QDir::homePath(), QObject::tr("Файл SQLite (*.db);;Все файлы (*.*)"));
+
 ucUiTestMaker::ucUiTestMaker( QWidget* parent ) : QDialog( parent ) {
 	setWindowTitle( "TestMaker" );
 	//mainWindow = this;
@@ -10,16 +12,8 @@ ucUiTestMaker::ucUiTestMaker( QWidget* parent ) : QDialog( parent ) {
 	outCounter		=	new QLabel;
 	outTextQueAns	=	new QTextEdit;
 	outTextQueAns->setDisabled( true );
-
-	if ( testInterface.OpenFile( "/mnt/sdcard/gg.txt" ) ) {
-	//if ( testInterface.OpenFile( "gg.txt" ) ) {
-		QMessageBox msgError;
-		msgError.setText( "Incorrect file name or the file is not available!" );
-		msgError.exec();
-		exit( -1 );
-	}
-	testInterface.ClearTest();
-	testInterface.ReadFile();
+    //outTextQueAns->setFontWeight( 20 );
+    SlotNewFile();
 
 	InitAllObjects();
 	currentState = STATE_INIT;
@@ -97,6 +91,7 @@ void ucUiTestMaker::InitAllObjects() {
 	connect( buttonTypeMix,		SIGNAL( clicked( bool ) ), this, SLOT( SlotTypeMix() ) );
 	connect( buttonNext,		SIGNAL( clicked( bool ) ), this, SLOT( SlotNext() ) );
 	connect( buttonMainMenu,	SIGNAL( clicked( bool ) ), this, SLOT( SlotMenu() ) );
+    connect( buttonNewFile,		SIGNAL( clicked( bool ) ), this, SLOT( SlotNewFile() ) );
 	connect( buttonExit,		SIGNAL( clicked( bool ) ), this, SLOT( close() ) );
 
 		// Инициализируем стэк виджетов
@@ -117,6 +112,10 @@ void ucUiTestMaker::SlotMenu() {
 
 void ucUiTestMaker::SlotQueAns() {
 	QString tmpStringForOutput;
+    if ( testInterface.FileIsOpen() == false ) {
+        QMessageBox::critical( this, "Error", "Test not open!" );
+        SlotMenu();
+    }
 	switch ( currentState ) {
 	case STATE_INIT:
 		stackedWidget->setCurrentIndex( 1 );
@@ -145,6 +144,10 @@ void ucUiTestMaker::SlotQueAns() {
 
 void ucUiTestMaker::SlotAnsQue() {
 	QString tmpStringForOutput;
+    if ( testInterface.FileIsOpen() == false ) {
+        QMessageBox::critical( this, "Error", "Test not open!" );
+        SlotMenu();
+    }
 	switch ( currentState ) {
 	case STATE_INIT:
 		stackedWidget->setCurrentIndex( 1 );
@@ -173,6 +176,10 @@ void ucUiTestMaker::SlotAnsQue() {
 
 void ucUiTestMaker::SlotMix() {
 	QString tmpStringForOutput;
+    if ( testInterface.FileIsOpen() == false ) {
+        QMessageBox::critical( this, "Error", "Test not open!" );
+        SlotMenu();
+    }
 	switch ( currentState ) {
 	case STATE_INIT:
 		stackedWidget->setCurrentIndex( 1 );
@@ -218,15 +225,24 @@ void ucUiTestMaker::SlotMix() {
 }
 
 void ucUiTestMaker::SlotTypeQueAns() {
-
+    if ( testInterface.FileIsOpen() == false ) {
+        QMessageBox::critical( this, "Error", "Test not open!" );
+        SlotMenu();
+    }
 }
 
 void ucUiTestMaker::SlotTypeAnsQue() {
-
+    if ( testInterface.FileIsOpen() == false ) {
+        QMessageBox::critical( this, "Error", "Test not open!" );
+        SlotMenu();
+    }
 }
 
 void ucUiTestMaker::SlotTypeMix() {
-
+    if ( testInterface.FileIsOpen() == false ) {
+        QMessageBox::critical( this, "Error", "Test not open!" );
+        SlotMenu();
+    }
 }
 
 void ucUiTestMaker::SlotNext() {
@@ -243,4 +259,29 @@ void ucUiTestMaker::SlotNext() {
 	default:
 		break;
 	}
+}
+
+void ucUiTestMaker::SlotNewFile() {
+#ifdef Q_OS_WIN
+    while ( true ) {
+        QString path = QFileDialog::getOpenFileName(0,QObject::tr("Choose file with words"),QDir::homePath(), QObject::tr("Text file (*.txt);;All (*.*)"), 0, QFileDialog::DontUseNativeDialog | QFileDialog::DontUseSheet | QFileDialog::DontUseCustomDirectoryIcons | QFileDialog::ReadOnly );
+        if ( testInterface.OpenFile( path.toStdString().c_str() ) == -1 ) {
+            QMessageBox::critical( this, "Error", "File is not available!" );
+            break;
+        }
+        testInterface.ClearTest();
+        if ( testInterface.ReadFile() == false ) {
+            QMessageBox::critical( this, "Error", "File wrong!" );
+            break;
+        }
+        break;
+    }
+#else
+   if ( testInterface.OpenFile( "/mnt/sdcard/gg.txt" ) ) {
+           QMessageBox::critical( this, "Error", "Incorrect file name or the file is not available!" );
+           exit( -1 );
+   }
+   testInterface.ClearTest();
+   testInterface.ReadFile();
+#endif
 }
