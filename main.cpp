@@ -5,6 +5,8 @@
 #include "testfunctions.h"
 #include "testchartranslate.h"
 
+#include <stdio.h>
+
 #include <QSysInfo>
 
 int main(int argc, char *argv[])
@@ -13,10 +15,10 @@ int main(int argc, char *argv[])
 
 	ucUiTestMaker* w = new ucUiTestMaker();
 
-#ifdef Q_OS_WIN
-    w->show();
+#if (defined Q_OS_WIN) || (defined Q_OS_LINUX)
+	w->show();
 #else
-    w->showFullScreen();
+	w->showFullScreen();
 #endif
 
 	return a.exec();

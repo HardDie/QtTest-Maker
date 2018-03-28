@@ -39,22 +39,21 @@ public:
 	ucUiTestMaker( QWidget* parent = 0 );
 	~ucUiTestMaker();
 private:
-	uns::ucTestMaker	testInterface;
-	//ucUiTestMaker	*	mainWindow;
+	uns::ucTestMaker    testInterface;
 
-	QLineEdit		*	lineText;
+	QLineEdit       *   lineText;
 
-	QLabel			*	labelFreeLine;
-	QLabel			*	labelFreeLine2;
-	QLabel			*	outCounter;
-	QTextEdit		*	outTextQueAns;
+	QLabel          *   labelFreeLine;
+	QLabel          *   labelFreeLine2;
+	QLabel          *   outCounter;
+	QTextEdit       *   outTextQueAns;
 
-	QStackedWidget	*	stackedWidget;
+	QStackedWidget  *   stackedWidget;
 
-	void				InitAllObjects();
+	void                InitAllObjects();
 
-	state_t				currentState;
-	test_t				currenteTest;
+	state_t             currentState;
+	test_t              currenteTest;
 
 private slots:
 	void SlotMenu();
@@ -65,7 +64,7 @@ private slots:
 	void SlotTypeAnsQue();
 	void SlotTypeMix();
 	void SlotNext();
-    void SlotNewFile();
+	void SlotNewFile();
 };
 
 #endif // TESTMAKER_H

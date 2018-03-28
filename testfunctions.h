@@ -9,11 +9,4 @@
 
 using namespace std;
 
-char	TestQuestionAnswer();
-char	TestAnswerQuestion();
-char	TestMixing();
-char	TestTypingQuestion();
-char	TestTypingAnswer();
-char	TestTypingMix();
-
 #endif

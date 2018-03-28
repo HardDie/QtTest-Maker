@@ -8,7 +8,7 @@ namespace uns {
 	ucTestMaker::ucTestMaker() {
 		counter = 0;
 		index = -1;
-        fileIsOpen = false;
+		fileIsOpen = false;
 	}
 
 	/*
@@ -22,7 +22,7 @@ namespace uns {
 		data.clear();
 		counter = 0;
 		index = -1;
-        fileIsOpen = false;
+		fileIsOpen = false;
 	}
 
 	/*
@@ -39,42 +39,42 @@ namespace uns {
 
 	/*
 	* Name: ReadFile
-    * Description: Считывает все строки из файла, в случае если из файла считалась хотя бы одно строка, возвращается true
+	* Description: Считывает все строки из файла, в случае если из файла считалась хотя бы одно строка, возвращается true
 	*/
-    bool ucTestMaker::ReadFile() {
+	bool ucTestMaker::ReadFile() {
 		while ( !file.atEnd() ) {
-            if ( AddQuestion() ) {
-                fileIsOpen = true;
-            }
+			if ( AddQuestion() ) {
+				fileIsOpen = true;
+			}
 		}
 		file.close();
-        return fileIsOpen;
+		return fileIsOpen;
 	}
 
 	/*
-    * Name: AddQuestion
-    * Description: Считывает новую строку в конец массива, и сообщает о том была ли принята строка, в случае если строка верная
-    * возвращает true
+	 * Name: AddQuestion
+	 * Description: Считывает новую строку в конец массива, и сообщает о том была ли принята строка, в случае если строка верная
+	 * возвращает true
 	*/
-    bool ucTestMaker::AddQuestion() {
+	bool ucTestMaker::AddQuestion() {
 		usData_t tmpData;
 		tmpData.string = new char[SIZE];
 		memset( tmpData.string, 0, SIZE );
 		char *comentPointer = NULL;
-        file.readLine( tmpData.string, SIZE );	// Считываем новую строку
-        if ( ( comentPointer = strstr( tmpData.string, "#" ) ) != NULL ) {	// Убираем закомментированное
+		file.readLine( tmpData.string, SIZE );	// Считываем новую строку
+		if ( ( comentPointer = strstr( tmpData.string, "#" ) ) != NULL ) {	// Убираем закомментированное
 			comentPointer[0] = '\0';
-        }
-        if ( strstr( tmpData.string, " - " ) == NULL ) {	// Проверяем на верность строки
+		}
+		if ( strstr( tmpData.string, " - " ) == NULL ) {	// Проверяем на верность строки
 			delete[] tmpData.string;
-            return false;
-        }
-        if ( tmpData.string[strlen( tmpData.string ) - 1] == 13 ) {	// Ставим символ окончания строки во все строки кроме последней
+			return false;
+		}
+		if ( tmpData.string[strlen( tmpData.string ) - 1] == 13 ) {	// Ставим символ окончания строки во все строки кроме последней
 			tmpData.string[strlen( tmpData.string ) - 1] = '\0';
 		}
 
 		data.push_back( tmpData );
-        return true;
+		return true;
 	}
 
 	/*
@@ -111,7 +111,7 @@ namespace uns {
 		if ( counter == ( 2 * data.size() ) ) {
 			return 1;
 		}
-        while ( data[index = rand() % data.size()].flag == 3 || data[index].flag == 4 );
+		while ( data[index = rand() % data.size()].flag == 3 || data[index].flag == 4 );
 		if ( data[index].flag == 0 ) {
 			data[index].flag = rand() % 2 + 1;
 		} else if ( data[index].flag == 1 ) {
@@ -130,7 +130,7 @@ namespace uns {
 	const char*	ucTestMaker::GetQuestion() {
 		static char str[SIZE];
 		for ( int i = 0; i < SIZE; i++ ) {
-            if ( data[index].string[i] == '-' && data[index].string[i - 1] == ' ' && data[index].string[i + 1] == ' ' ) {
+			if ( data[index].string[i] == '-' && data[index].string[i - 1] == ' ' && data[index].string[i + 1] == ' ' ) {
 				str[i - 1] = '\0';
 				break;
 			}
@@ -149,9 +149,9 @@ namespace uns {
 		while ( !( data[index].string[i] == '-' && data[index].string[i - 1] == ' ' && data[index].string[i + 1] == ' ' ) ) {
 			i++;
 		}
-        i += 2;
-        for ( int j = 0; j < SIZE; j++, i++ ) {
-            if ( data[index].string[i] == '\0' || data[index].string[i] == '\n' || data[index].string[i] == '\r' ) {
+		i += 2;
+		for ( int j = 0; j < SIZE; j++, i++ ) {
+			if ( data[index].string[i] == '\0' || data[index].string[i] == '\n' || data[index].string[i] == '\r' ) {
 				str[j] = '\0';
 				break;
 			}
