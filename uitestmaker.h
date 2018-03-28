@@ -64,6 +64,8 @@ private slots:
 	void SlotTypeAnsQue();
 	void SlotTypeMix();
 	void SlotNext();
+	void SlotDecreaseFont();
+	void SlotIncreaseFont();
 	void SlotNewFile();
 };
 

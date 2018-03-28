@@ -10,7 +10,7 @@ ucUiTestMaker::ucUiTestMaker( QWidget* parent ) : QDialog( parent ) {
 	outCounter		=	new QLabel;
 	outTextQueAns	=	new QTextEdit;
 	outTextQueAns->setDisabled( true );
-	//outTextQueAns->setFontWeight( 20 );
+	outTextQueAns->setFontPointSize( 15 );
 	SlotNewFile();
 
 	InitAllObjects();
@@ -25,32 +25,36 @@ ucUiTestMaker::~ucUiTestMaker() {
 ====================
 InitAllObjects
 
-	Инициализация всех обьуектов, создание виджетов, привязка сигналов к слотам
+	Инициализация всех обьектов, создание виджетов, привязка сигналов к слотам
 ====================
 */
 void ucUiTestMaker::InitAllObjects() {
-	QPushButton		*	buttonQueAns;
-	QPushButton		*	buttonAnsQue;
-	QPushButton		*	buttonMix;
-	QPushButton		*	buttonTypeQueAns;
-	QPushButton		*	buttonTypeAnsQue;
-	QPushButton		*	buttonTypeMix;
-	QPushButton		*	buttonNewFile;
-	QPushButton		*	buttonExit;
-	QPushButton		*	buttonNext;
-	QPushButton		*	buttonMainMenu;
+	QPushButton  *  buttonQueAns;
+	QPushButton  *  buttonAnsQue;
+	QPushButton  *  buttonMix;
+	QPushButton  *  buttonTypeQueAns;
+	QPushButton  *  buttonTypeAnsQue;
+	QPushButton  *  buttonTypeMix;
+	QPushButton  *  buttonNewFile;
+	QPushButton  *  buttonExit;
+	QPushButton  *  buttonNext;
+	QPushButton  *  buttonMainMenu;
+	QPushButton  *  buttonFontIncrease;
+	QPushButton  *  buttonFontDecrease;
 
 		// Инициализация кнопок
-	buttonQueAns	=	new QPushButton( "Question -> Answer" );
-	buttonAnsQue	=	new QPushButton( "Answer -> Question" );
-	buttonMix		=	new QPushButton( "Mix" );
-	buttonTypeQueAns=	new QPushButton( "Type Question -> Answer" );
-	buttonTypeAnsQue=	new QPushButton( "Type Answer -> Question" );
-	buttonTypeMix	=	new QPushButton( "Type mix" );
-	buttonNewFile	=	new QPushButton( "Open new file" );
-	buttonExit		=	new QPushButton( "Exit" );
-	buttonNext		=	new QPushButton( "Next" );
-	buttonMainMenu	=	new QPushButton( "Main menu" );
+	buttonQueAns       = new QPushButton( "Question -> Answer" );
+	buttonAnsQue       = new QPushButton( "Answer -> Question" );
+	buttonMix          = new QPushButton( "Mix" );
+	buttonTypeQueAns   = new QPushButton( "Type Question -> Answer" );
+	buttonTypeAnsQue   = new QPushButton( "Type Answer -> Question" );
+	buttonTypeMix      = new QPushButton( "Type mix" );
+	buttonNewFile      = new QPushButton( "Open new file" );
+	buttonExit         = new QPushButton( "Exit" );
+	buttonNext         = new QPushButton( "Next" );
+	buttonMainMenu     = new QPushButton( "Main menu" );
+	buttonFontDecrease = new QPushButton( "-" );
+	buttonFontIncrease = new QPushButton( "+" );
 
 		// Инициализация слоя главного меню
 	QWidget* widgetMainMenu = new QWidget;
@@ -77,20 +81,26 @@ void ucUiTestMaker::InitAllObjects() {
 		layoutNextWord->addWidget( labelFreeLine2 );
 	layoutNextWord->addWidget( buttonNext );
 	layoutNextWord->addWidget( buttonMainMenu );
+	QHBoxLayout* layoutFontSize = new QHBoxLayout;
+	layoutFontSize->addWidget( buttonFontDecrease );
+	layoutFontSize->addWidget( buttonFontIncrease );
+	layoutNextWord->addLayout( layoutFontSize );
 		layoutNextWord->addWidget( labelFreeLine2 );
 	widgetNextWord->setLayout( layoutNextWord );
 
 		// Подключаем сигналы
-	connect( buttonQueAns,		SIGNAL( clicked( bool ) ), this, SLOT( SlotQueAns() ) );
-	connect( buttonAnsQue,		SIGNAL( clicked( bool ) ), this, SLOT( SlotAnsQue() ) );
-	connect( buttonMix,			SIGNAL( clicked( bool ) ), this, SLOT( SlotMix() ) );
-	connect( buttonTypeQueAns,	SIGNAL( clicked( bool ) ), this, SLOT( SlotTypeQueAns() ) );
-	connect( buttonTypeAnsQue,	SIGNAL( clicked( bool ) ), this, SLOT( SlotTypeAnsQue() ) );
-	connect( buttonTypeMix,		SIGNAL( clicked( bool ) ), this, SLOT( SlotTypeMix() ) );
-	connect( buttonNext,		SIGNAL( clicked( bool ) ), this, SLOT( SlotNext() ) );
-	connect( buttonMainMenu,	SIGNAL( clicked( bool ) ), this, SLOT( SlotMenu() ) );
-	connect( buttonNewFile,		SIGNAL( clicked( bool ) ), this, SLOT( SlotNewFile() ) );
-	connect( buttonExit,		SIGNAL( clicked( bool ) ), this, SLOT( close() ) );
+	connect( buttonQueAns,      SIGNAL( clicked( bool ) ), this, SLOT( SlotQueAns() ) );
+	connect( buttonAnsQue,      SIGNAL( clicked( bool ) ), this, SLOT( SlotAnsQue() ) );
+	connect( buttonMix,         SIGNAL( clicked( bool ) ), this, SLOT( SlotMix() ) );
+	connect( buttonTypeQueAns,  SIGNAL( clicked( bool ) ), this, SLOT( SlotTypeQueAns() ) );
+	connect( buttonTypeAnsQue,  SIGNAL( clicked( bool ) ), this, SLOT( SlotTypeAnsQue() ) );
+	connect( buttonTypeMix,     SIGNAL( clicked( bool ) ), this, SLOT( SlotTypeMix() ) );
+	connect( buttonNext,        SIGNAL( clicked( bool ) ), this, SLOT( SlotNext() ) );
+	connect( buttonFontIncrease,SIGNAL( clicked( bool ) ), this, SLOT( SlotIncreaseFont() ) );
+	connect( buttonFontDecrease,SIGNAL( clicked( bool ) ), this, SLOT( SlotDecreaseFont() ) );
+	connect( buttonMainMenu,    SIGNAL( clicked( bool ) ), this, SLOT( SlotMenu() ) );
+	connect( buttonNewFile,     SIGNAL( clicked( bool ) ), this, SLOT( SlotNewFile() ) );
+	connect( buttonExit,        SIGNAL( clicked( bool ) ), this, SLOT( close() ) );
 
 		// Инициализируем стэк виджетов
 	stackedWidget = new QStackedWidget;
@@ -101,6 +111,30 @@ void ucUiTestMaker::InitAllObjects() {
 	QVBoxLayout* layoutMain = new QVBoxLayout;
 	layoutMain->addWidget( stackedWidget );
 	setLayout( layoutMain );
+}
+
+void ucUiTestMaker::SlotDecreaseFont() {
+	qreal size = outTextQueAns->fontPointSize();
+	if ( size >= 10 ) {
+		size -= 5;
+	}
+	if ( size <= 10 ) size = 10;
+	outTextQueAns->setFontPointSize( size );
+	// Сделано, для обновления текста в окне после изменения шрифта
+	QString tmp = outTextQueAns->toPlainText();
+	outTextQueAns->setText( tmp );
+}
+
+void ucUiTestMaker::SlotIncreaseFont() {
+	qreal size = outTextQueAns->fontPointSize();
+	if ( size <= 50 ) {
+		size += 5;
+	}
+	if ( size > 50 ) size = 50;
+	outTextQueAns->setFontPointSize( size );
+	// Сделано, для обновления текста в окне после изменения шрифта
+	QString tmp = outTextQueAns->toPlainText();
+	outTextQueAns->setText( tmp );
 }
 
 void ucUiTestMaker::SlotMenu() {
