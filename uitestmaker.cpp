@@ -9,7 +9,7 @@ ucUiTestMaker::ucUiTestMaker( QWidget* parent ) : QDialog( parent ) {
 	labelFreeLine2	=	new QLabel( "" );
 	outCounter		=	new QLabel;
 	outTextQueAns	=	new QTextEdit;
-	outTextQueAns->setDisabled( true );
+	outTextQueAns->setReadOnly( true );
 	outTextQueAns->setFontPointSize( 15 );
 	SlotNewFile();
 
