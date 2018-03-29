@@ -41,12 +41,14 @@ public:
 private:
 	uns::ucTestMaker    testInterface;
 
-	QLineEdit       *   lineText;
-
-	QLabel          *   labelFreeLine;
-	QLabel          *   labelFreeLine2;
-	QLabel          *   outCounter;
+	QLabel          *   labelFreeLine[3];
+	QLabel          *   outCounter[2];
 	QTextEdit       *   outTextQueAns;
+	QTextEdit       *   outTextType;
+	QLineEdit       *   inTextType;
+
+	// Делаем кнопку глобальной, чтобы можно было сделать ее активной по умолчанию
+	QPushButton     *   buttonCheck;
 
 	QStackedWidget  *   stackedWidget;
 
@@ -66,6 +68,7 @@ private slots:
 	void SlotNext();
 	void SlotDecreaseFont();
 	void SlotIncreaseFont();
+	void SlotSkipWord();
 	void SlotNewFile();
 };
 

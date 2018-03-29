@@ -2,17 +2,27 @@
 
 ucUiTestMaker::ucUiTestMaker( QWidget* parent ) : QDialog( parent ) {
 	setWindowTitle( "TestMaker" );
-	//mainWindow = this;
 
-		// Инициализация строк
-	labelFreeLine	=	new QLabel( "" );
-	labelFreeLine2	=	new QLabel( "" );
-	outCounter		=	new QLabel;
-	outTextQueAns	=	new QTextEdit;
+	// Инициализация пустых строк
+	labelFreeLine[0] =  new QLabel( "" );
+	labelFreeLine[1] =  new QLabel( "" );
+	labelFreeLine[2] =  new QLabel( "" );
+	// Инициализация сторки номера вопроса
+	outCounter[0]    =  new QLabel;
+	outCounter[1]    =  new QLabel;
+	// Инициализация окон вывода вопроса
+	outTextQueAns    =  new QTextEdit;
+	outTextType      =  new QTextEdit;
+	// Инициализация линии ввода ответа
+	inTextType       =  new QLineEdit;
+	// Окно для слоя Que->Ans
 	outTextQueAns->setReadOnly( true );
 	outTextQueAns->setFontPointSize( 15 );
-	SlotNewFile();
+	// Окно для слоя Type Ans
+	outTextType->setReadOnly( true );
+	outTextType->setFontPointSize( 15 );
 
+	SlotNewFile();
 	InitAllObjects();
 	currentState = STATE_INIT;
 }
@@ -38,11 +48,12 @@ void ucUiTestMaker::InitAllObjects() {
 	QPushButton  *  buttonNewFile;
 	QPushButton  *  buttonExit;
 	QPushButton  *  buttonNext;
-	QPushButton  *  buttonMainMenu;
-	QPushButton  *  buttonFontIncrease;
-	QPushButton  *  buttonFontDecrease;
+	QPushButton  *  buttonMainMenu[2];
+	QPushButton  *  buttonFontIncrease[2];
+	QPushButton  *  buttonFontDecrease[2];
+	QPushButton  *  buttonSkip;
 
-		// Инициализация кнопок
+	// Инициализация кнопок
 	buttonQueAns       = new QPushButton( "Question -> Answer" );
 	buttonAnsQue       = new QPushButton( "Answer -> Question" );
 	buttonMix          = new QPushButton( "Mix" );
@@ -52,89 +63,121 @@ void ucUiTestMaker::InitAllObjects() {
 	buttonNewFile      = new QPushButton( "Open new file" );
 	buttonExit         = new QPushButton( "Exit" );
 	buttonNext         = new QPushButton( "Next" );
-	buttonMainMenu     = new QPushButton( "Main menu" );
-	buttonFontDecrease = new QPushButton( "-" );
-	buttonFontIncrease = new QPushButton( "+" );
+	buttonMainMenu[0]  = new QPushButton( "Main menu" );
+	buttonFontDecrease[0] = new QPushButton( "-" );
+	buttonFontIncrease[0] = new QPushButton( "+" );
+	buttonMainMenu[1]  = new QPushButton( "Main menu" );
+	buttonFontDecrease[1] = new QPushButton( "-" );
+	buttonFontIncrease[1] = new QPushButton( "+" );
+	buttonCheck        = new QPushButton( "Check" );
+	buttonSkip         = new QPushButton( "Skip" );
 
-		// Инициализация слоя главного меню
+	// Инициализация слоя главного меню
 	QWidget* widgetMainMenu = new QWidget;
 	QVBoxLayout* layoutMainMenu = new QVBoxLayout;
 	layoutMainMenu->addWidget( buttonQueAns );
 	layoutMainMenu->addWidget( buttonAnsQue );
 	layoutMainMenu->addWidget( buttonMix );
-		layoutMainMenu->addWidget( labelFreeLine );
+		layoutMainMenu->addWidget( labelFreeLine[0] );
 	layoutMainMenu->addWidget( buttonTypeQueAns );
 	layoutMainMenu->addWidget( buttonTypeAnsQue );
 	layoutMainMenu->addWidget( buttonTypeMix );
-		layoutMainMenu->addWidget( labelFreeLine );
+		layoutMainMenu->addWidget( labelFreeLine[0] );
 	layoutMainMenu->addWidget( buttonNewFile );
 	layoutMainMenu->addWidget( buttonExit );
-		layoutMainMenu->addWidget( labelFreeLine );
+		layoutMainMenu->addWidget( labelFreeLine[0] );
 	widgetMainMenu->setLayout( layoutMainMenu );
 
-		// Инициализация слоя для теста по типу следующее слово
+	// Инициализация слоя для теста по типу следующее слово
 	QWidget* widgetNextWord = new QWidget;
 	QVBoxLayout* layoutNextWord = new QVBoxLayout;
-	layoutNextWord->addWidget( outCounter );
-		layoutNextWord->addWidget( labelFreeLine2 );
+	layoutNextWord->addWidget( outCounter[0] );
+		layoutNextWord->addWidget( labelFreeLine[1] );
 	layoutNextWord->addWidget( outTextQueAns );
-		layoutNextWord->addWidget( labelFreeLine2 );
+		layoutNextWord->addWidget( labelFreeLine[1] );
 	layoutNextWord->addWidget( buttonNext );
-	layoutNextWord->addWidget( buttonMainMenu );
-	QHBoxLayout* layoutFontSize = new QHBoxLayout;
-	layoutFontSize->addWidget( buttonFontDecrease );
-	layoutFontSize->addWidget( buttonFontIncrease );
-	layoutNextWord->addLayout( layoutFontSize );
-		layoutNextWord->addWidget( labelFreeLine2 );
+	layoutNextWord->addWidget( buttonMainMenu[0] );
+	QHBoxLayout* layoutFontSize[2];
+	layoutFontSize[0] = new QHBoxLayout;
+	layoutFontSize[0]->addWidget( buttonFontDecrease[0] );
+	layoutFontSize[0]->addWidget( buttonFontIncrease[0] );
+	layoutNextWord->addLayout( layoutFontSize[0] );
+		layoutNextWord->addWidget( labelFreeLine[1] );
 	widgetNextWord->setLayout( layoutNextWord );
 
-		// Подключаем сигналы
-	connect( buttonQueAns,      SIGNAL( clicked( bool ) ), this, SLOT( SlotQueAns() ) );
-	connect( buttonAnsQue,      SIGNAL( clicked( bool ) ), this, SLOT( SlotAnsQue() ) );
-	connect( buttonMix,         SIGNAL( clicked( bool ) ), this, SLOT( SlotMix() ) );
-	connect( buttonTypeQueAns,  SIGNAL( clicked( bool ) ), this, SLOT( SlotTypeQueAns() ) );
-	connect( buttonTypeAnsQue,  SIGNAL( clicked( bool ) ), this, SLOT( SlotTypeAnsQue() ) );
-	connect( buttonTypeMix,     SIGNAL( clicked( bool ) ), this, SLOT( SlotTypeMix() ) );
-	connect( buttonNext,        SIGNAL( clicked( bool ) ), this, SLOT( SlotNext() ) );
-	connect( buttonFontIncrease,SIGNAL( clicked( bool ) ), this, SLOT( SlotIncreaseFont() ) );
-	connect( buttonFontDecrease,SIGNAL( clicked( bool ) ), this, SLOT( SlotDecreaseFont() ) );
-	connect( buttonMainMenu,    SIGNAL( clicked( bool ) ), this, SLOT( SlotMenu() ) );
-	connect( buttonNewFile,     SIGNAL( clicked( bool ) ), this, SLOT( SlotNewFile() ) );
-	connect( buttonExit,        SIGNAL( clicked( bool ) ), this, SLOT( close() ) );
+	// Инциализация слоя для теста по типу ввод ответа на вопрос
+	QWidget* widgetTypeAnswer = new QWidget;
+	QVBoxLayout* layoutTypeAnswer = new QVBoxLayout;
+	layoutTypeAnswer->addWidget( outCounter[1] );
+		layoutTypeAnswer->addWidget( labelFreeLine[2] );
+	layoutTypeAnswer->addWidget( outTextType );
+		layoutTypeAnswer->addWidget( labelFreeLine[2] );
+	layoutTypeAnswer->addWidget( inTextType );
+		layoutTypeAnswer->addWidget( labelFreeLine[2] );
+	layoutTypeAnswer->addWidget( buttonCheck );
+	layoutTypeAnswer->addWidget( buttonSkip );
+	layoutTypeAnswer->addWidget( buttonMainMenu[1] );
+	layoutFontSize[1] = new QHBoxLayout;
+	layoutFontSize[1]->addWidget( buttonFontDecrease[1] );
+	layoutFontSize[1]->addWidget( buttonFontIncrease[1] );
+	layoutTypeAnswer->addLayout( layoutFontSize[1] );
+		layoutTypeAnswer->addWidget( labelFreeLine[2] );
+	widgetTypeAnswer->setLayout( layoutTypeAnswer );
 
-		// Инициализируем стэк виджетов
+	// Подключаем сигналы
+	connect( buttonQueAns,          SIGNAL( clicked( bool ) ), this, SLOT( SlotQueAns() ) );
+	connect( buttonAnsQue,          SIGNAL( clicked( bool ) ), this, SLOT( SlotAnsQue() ) );
+	connect( buttonMix,             SIGNAL( clicked( bool ) ), this, SLOT( SlotMix() ) );
+	connect( buttonTypeQueAns,      SIGNAL( clicked( bool ) ), this, SLOT( SlotTypeQueAns() ) );
+	connect( buttonTypeAnsQue,      SIGNAL( clicked( bool ) ), this, SLOT( SlotTypeAnsQue() ) );
+	connect( buttonTypeMix,         SIGNAL( clicked( bool ) ), this, SLOT( SlotTypeMix() ) );
+	connect( buttonNext,            SIGNAL( clicked( bool ) ), this, SLOT( SlotNext() ) );
+	connect( buttonCheck,           SIGNAL( clicked( bool ) ), this, SLOT( SlotNext() ) );
+	connect( buttonFontIncrease[0], SIGNAL( clicked( bool ) ), this, SLOT( SlotIncreaseFont() ) );
+	connect( buttonFontDecrease[0], SIGNAL( clicked( bool ) ), this, SLOT( SlotDecreaseFont() ) );
+	connect( buttonMainMenu[0],     SIGNAL( clicked( bool ) ), this, SLOT( SlotMenu() ) );
+	connect( buttonFontIncrease[1], SIGNAL( clicked( bool ) ), this, SLOT( SlotIncreaseFont() ) );
+	connect( buttonFontDecrease[1], SIGNAL( clicked( bool ) ), this, SLOT( SlotDecreaseFont() ) );
+	connect( buttonSkip,            SIGNAL( clicked( bool ) ), this, SLOT( SlotSkipWord() ) );
+	connect( buttonMainMenu[1],     SIGNAL( clicked( bool ) ), this, SLOT( SlotMenu() ) );
+	connect( buttonNewFile,         SIGNAL( clicked( bool ) ), this, SLOT( SlotNewFile() ) );
+	connect( buttonExit,            SIGNAL( clicked( bool ) ), this, SLOT( close() ) );
+
+	// Инициализируем стэк виджетов
 	stackedWidget = new QStackedWidget;
 	stackedWidget->addWidget( widgetMainMenu );
 	stackedWidget->addWidget( widgetNextWord );
-
+	stackedWidget->addWidget( widgetTypeAnswer );
 
 	QVBoxLayout* layoutMain = new QVBoxLayout;
 	layoutMain->addWidget( stackedWidget );
 	setLayout( layoutMain );
 }
 
-void ucUiTestMaker::SlotDecreaseFont() {
-	qreal size = outTextQueAns->fontPointSize();
-	if ( size >= 10 ) {
-		size -= 5;
-	}
+static void ChangeFontSize(QTextEdit *textEdit, int diff) {
+	qreal size = textEdit->fontPointSize();
+	size += diff;
 	if ( size <= 10 ) size = 10;
-	outTextQueAns->setFontPointSize( size );
+	if ( size > 50 ) size = 50;
+	textEdit->setFontPointSize( size );
 	// Сделано, для обновления текста в окне после изменения шрифта
-	QString tmp = outTextQueAns->toPlainText();
-	outTextQueAns->setText( tmp );
+	QString tmp = textEdit->toPlainText();
+	textEdit->setText( tmp );
+}
+
+void ucUiTestMaker::SlotDecreaseFont() {
+	ChangeFontSize(outTextQueAns, -5);
+	ChangeFontSize(outTextType, -5);
 }
 
 void ucUiTestMaker::SlotIncreaseFont() {
-	qreal size = outTextQueAns->fontPointSize();
-	if ( size <= 50 ) {
-		size += 5;
-	}
-	if ( size > 50 ) size = 50;
-	outTextQueAns->setFontPointSize( size );
-	// Сделано, для обновления текста в окне после изменения шрифта
-	QString tmp = outTextQueAns->toPlainText();
-	outTextQueAns->setText( tmp );
+	ChangeFontSize(outTextQueAns, 5);
+	ChangeFontSize(outTextType, 5);
+}
+
+void ucUiTestMaker::SlotSkipWord() {
+	currentState = STATE_FIRST_STEP;
+	SlotNext();
 }
 
 void ucUiTestMaker::SlotMenu() {
@@ -160,7 +203,7 @@ void ucUiTestMaker::SlotQueAns() {
 			return;
 		}
 		tmpStringForOutput.sprintf( "%d/%d", testInterface.GetCounter(), testInterface.GetLength() );
-		outCounter->setText( tmpStringForOutput );
+		( outCounter[0] )->setText( tmpStringForOutput );
 		outTextQueAns->setText( testInterface.GetQuestion() );
 		currentState = STATE_SECOND_STEP;
 		break;
@@ -192,7 +235,7 @@ void ucUiTestMaker::SlotAnsQue() {
 			return;
 		}
 		tmpStringForOutput.sprintf( "%d/%d", testInterface.GetCounter(), testInterface.GetLength() );
-		outCounter->setText( tmpStringForOutput );
+		( outCounter[0] )->setText( tmpStringForOutput );
 		outTextQueAns->setText( testInterface.GetAnswer() );
 		currentState = STATE_SECOND_STEP;
 		break;
@@ -224,7 +267,7 @@ void ucUiTestMaker::SlotMix() {
 			return;
 		}
 		tmpStringForOutput.sprintf( "%d/%d", testInterface.GetCounter(), testInterface.GetLength() * 2 );
-		outCounter->setText( tmpStringForOutput );
+		( outCounter[0] )->setText( tmpStringForOutput );
 		switch( testInterface.GetFlag() ) {
 		case 1:
 		case 4:
@@ -257,23 +300,147 @@ void ucUiTestMaker::SlotMix() {
 }
 
 void ucUiTestMaker::SlotTypeQueAns() {
+	QString tmpStringForOutput;
 	if ( testInterface.FileIsOpen() == false ) {
 		QMessageBox::critical( this, "Error", "Test not open!" );
 		SlotMenu();
+	}
+	switch ( currentState ) {
+	case STATE_INIT:
+		stackedWidget->setCurrentIndex( 2 );
+		testInterface.Init();
+		currentState = STATE_FIRST_STEP;
+		currenteTest = TEST_TYPEQUESTION;
+		buttonCheck->setDefault(true);
+	case STATE_FIRST_STEP:
+		if ( testInterface.NewWord() ) {
+			SlotMenu();
+			return;
+		}
+		tmpStringForOutput.sprintf( "%d/%d", testInterface.GetCounter(), testInterface.GetLength() );
+		( outCounter[1] )->setText( tmpStringForOutput );
+		outTextType->setText( testInterface.GetQuestion() );
+		currentState = STATE_SECOND_STEP;
+		break;
+	case STATE_SECOND_STEP:
+		if (inTextType->text().toLower() ==
+		    QString(testInterface.GetAnswer()).toLower()) {
+			currentState = STATE_FIRST_STEP;
+			inTextType->setText("");
+			SlotTypeQueAns();
+		} else {
+			tmpStringForOutput.sprintf( "%s - %s", testInterface.GetQuestion(), testInterface.GetAnswer() );
+			outTextType->setText( tmpStringForOutput );
+			inTextType->setText("");
+		}
+		break;
+	default:
+		break;
 	}
 }
 
 void ucUiTestMaker::SlotTypeAnsQue() {
+	QString tmpStringForOutput;
 	if ( testInterface.FileIsOpen() == false ) {
 		QMessageBox::critical( this, "Error", "Test not open!" );
 		SlotMenu();
 	}
+	switch ( currentState ) {
+	case STATE_INIT:
+		stackedWidget->setCurrentIndex( 2 );
+		testInterface.Init();
+		currentState = STATE_FIRST_STEP;
+		currenteTest = TEST_TYPEANSWER;
+	case STATE_FIRST_STEP:
+		if ( testInterface.NewWord() ) {
+			SlotMenu();
+			return;
+		}
+		tmpStringForOutput.sprintf( "%d/%d", testInterface.GetCounter(), testInterface.GetLength() );
+		( outCounter[1] )->setText( tmpStringForOutput );
+		outTextType->setText( testInterface.GetAnswer() );
+		currentState = STATE_SECOND_STEP;
+		break;
+	case STATE_SECOND_STEP:
+		if (inTextType->text().toLower() ==
+		    QString(testInterface.GetQuestion()).toLower()) {
+			currentState = STATE_FIRST_STEP;
+			inTextType->setText("");
+			SlotTypeAnsQue();
+		} else {
+			tmpStringForOutput.sprintf( "%s - %s", testInterface.GetAnswer(), testInterface.GetQuestion() );
+			outTextType->setText( tmpStringForOutput );
+			inTextType->setText("");
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void ucUiTestMaker::SlotTypeMix() {
+	QString tmpStringForOutput;
 	if ( testInterface.FileIsOpen() == false ) {
 		QMessageBox::critical( this, "Error", "Test not open!" );
 		SlotMenu();
+	}
+	switch ( currentState ) {
+	case STATE_INIT:
+		stackedWidget->setCurrentIndex( 2 );
+		testInterface.Init();
+		currentState = STATE_FIRST_STEP;
+		currenteTest = TEST_TYPEMIX;
+	case STATE_FIRST_STEP:
+		if ( testInterface.MixNewWord() ) {
+			SlotMenu();
+			return;
+		}
+		tmpStringForOutput.sprintf( "%d/%d", testInterface.GetCounter(), testInterface.GetLength() * 2 );
+		( outCounter[1] )->setText( tmpStringForOutput );
+		switch( testInterface.GetFlag() ) {
+		case 1:
+		case 4:
+			outTextType->setText( testInterface.GetAnswer() );
+			break;
+		case 2:
+		case 3:
+			outTextType->setText( testInterface.GetQuestion() );
+			break;
+		}
+		currentState = STATE_SECOND_STEP;
+		break;
+	case STATE_SECOND_STEP:
+		switch( testInterface.GetFlag() ) {
+		case 1:
+		case 4:
+			if (inTextType->text().toLower() ==
+			    QString(testInterface.GetQuestion()).toLower()) {
+				currentState = STATE_FIRST_STEP;
+				inTextType->setText("");
+				SlotTypeMix();
+			} else {
+				tmpStringForOutput.sprintf( "%s - %s", testInterface.GetAnswer(), testInterface.GetQuestion() );
+				outTextType->setText( tmpStringForOutput );
+				inTextType->setText("");
+			}
+			break;
+		case 2:
+		case 3:
+			if (inTextType->text().toLower() ==
+			    QString(testInterface.GetAnswer()).toLower()) {
+				currentState = STATE_FIRST_STEP;
+				inTextType->setText("");
+				SlotTypeMix();
+			} else {
+				tmpStringForOutput.sprintf( "%s - %s", testInterface.GetQuestion(), testInterface.GetAnswer() );
+				outTextType->setText( tmpStringForOutput );
+				inTextType->setText("");
+			}
+			break;
+		}
+		break;
+	default:
+		break;
 	}
 }
 
@@ -287,6 +454,15 @@ void ucUiTestMaker::SlotNext() {
 		break;
 	case TEST_MIX:
 		SlotMix();
+		break;
+	case TEST_TYPEQUESTION:
+		SlotTypeQueAns();
+		break;
+	case TEST_TYPEANSWER:
+		SlotTypeAnsQue();
+		break;
+	case TEST_TYPEMIX:
+		SlotTypeMix();
 		break;
 	default:
 		break;
@@ -312,8 +488,8 @@ void ucUiTestMaker::SlotNewFile() {
 		break;
 	}
 #else
-	if ( testInterface.OpenFile( "/mnt/sdcard/gg.txt" ) ) {
-		QMessageBox::critical( this, "Error", "Incorrect file name or the file is not available!" );
+	if ( testInterface.OpenFile( "/mnt/sdcard/words.txt" ) ) {
+		QMessageBox::critical( this, "Error", "Put your file to /mnt/sdcard/words.txt" );
 		exit( -1 );
 	}
 	testInterface.ClearTest();
