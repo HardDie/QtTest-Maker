@@ -351,6 +351,7 @@ void ucUiTestMaker::SlotTypeAnsQue() {
 		testInterface.Init();
 		currentState = STATE_FIRST_STEP;
 		currenteTest = TEST_TYPEANSWER;
+		buttonCheck->setDefault(true);
 	case STATE_FIRST_STEP:
 		if ( testInterface.NewWord() ) {
 			SlotMenu();
@@ -390,6 +391,7 @@ void ucUiTestMaker::SlotTypeMix() {
 		testInterface.Init();
 		currentState = STATE_FIRST_STEP;
 		currenteTest = TEST_TYPEMIX;
+		buttonCheck->setDefault(true);
 	case STATE_FIRST_STEP:
 		if ( testInterface.MixNewWord() ) {
 			SlotMenu();
