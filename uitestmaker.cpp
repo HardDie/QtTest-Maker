@@ -64,13 +64,13 @@ void ucUiTestMaker::InitAllObjects() {
 	buttonExit         = new QPushButton( "Exit" );
 	buttonNext         = new QPushButton( "Next" );
 	buttonMainMenu[0]  = new QPushButton( "Main menu" );
-	buttonFontDecrease[0] = new QPushButton( "-" );
-	buttonFontIncrease[0] = new QPushButton( "+" );
 	buttonMainMenu[1]  = new QPushButton( "Main menu" );
-	buttonFontDecrease[1] = new QPushButton( "-" );
-	buttonFontIncrease[1] = new QPushButton( "+" );
 	buttonCheck        = new QPushButton( "Check" );
 	buttonSkip         = new QPushButton( "Skip" );
+	buttonFontDecrease[0] = new QPushButton( "-" );
+	buttonFontIncrease[0] = new QPushButton( "+" );
+	buttonFontDecrease[1] = new QPushButton( "-" );
+	buttonFontIncrease[1] = new QPushButton( "+" );
 
 	// Инициализация слоя главного меню
 	QWidget* widgetMainMenu = new QWidget;

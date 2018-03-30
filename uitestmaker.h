@@ -1,7 +1,6 @@
 #ifndef TESTMAKER_H
 #define TESTMAKER_H
 
-#include <QDialog>
 #include <QWidget>
 #include <QPushButton>
 #include <QLineEdit>
@@ -10,11 +9,8 @@
 #include <QMessageBox>
 #include <QStackedWidget>
 #include <QTextEdit>
-#include "testmaker.h"
-
 #include <QFileDialog>
-#include <QDir>
-#include <QSysInfo>
+#include "testmaker.h"
 
 enum test_t{
 	TEST_QA,

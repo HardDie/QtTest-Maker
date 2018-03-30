@@ -1,13 +1,5 @@
-#include "uitestmaker.h"
 #include <QApplication>
-#include "global.h"
-#include "testmaker.h"
-#include "testfunctions.h"
-#include "testchartranslate.h"
-
-#include <stdio.h>
-
-#include <QSysInfo>
+#include "uitestmaker.h"
 
 int main(int argc, char *argv[])
 {

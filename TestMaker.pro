@@ -13,16 +13,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    testchartranslate.cpp \
-    global.cpp \
-    testfunctions.cpp \
     uitestmaker.cpp \
     testmaker.cpp
 
 HEADERS  += \
-    global.h \
-    testchartranslate.h \
-    testfunctions.h \
     uitestmaker.h \
     testmaker.h
 

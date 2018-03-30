@@ -2,11 +2,7 @@
 #define _TEST_MAKER_H
 
 #include <QFile>
-#include <time.h>
-#include <string.h>
 #include <QVector>
-#include <QDebug>
-#include <QMessageBox>
 
 const int SIZE = 1024;
 namespace uns {
