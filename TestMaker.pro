@@ -14,7 +14,8 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     uitestmaker.cpp \
-    testmaker.cpp
+    testmaker.cpp \
+    initwidgets.cpp
 
 HEADERS  += \
     uitestmaker.h \

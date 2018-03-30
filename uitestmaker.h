@@ -55,6 +55,11 @@ private:
 	state_t             currentState;
 	test_t              currenteTest;
 
+	void InitMainMenu();
+	void InitNextWord();
+	void InitTypeAns();
+	void InitSetupDict();
+
 private slots:
 	void SlotMenu();
 	void SlotQueAns();
