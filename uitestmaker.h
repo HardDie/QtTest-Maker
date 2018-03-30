@@ -10,6 +10,7 @@
 #include <QStackedWidget>
 #include <QTextEdit>
 #include <QFileDialog>
+#include <QListWidget>
 #include "testmaker.h"
 
 enum test_t{
@@ -37,11 +38,12 @@ public:
 private:
 	uns::ucTestMaker    testInterface;
 
-	QLabel          *   labelFreeLine[3];
 	QLabel          *   outCounter[2];
 	QTextEdit       *   outTextQueAns;
 	QTextEdit       *   outTextType;
+	QListWidget     *   outTextDict;
 	QLineEdit       *   inTextType;
+	QLineEdit       *   inTextDict[2];
 
 	// Делаем кнопку глобальной, чтобы можно было сделать ее активной по умолчанию
 	QPushButton     *   buttonCheck;
@@ -66,6 +68,7 @@ private slots:
 	void SlotIncreaseFont();
 	void SlotSkipWord();
 	void SlotNewFile();
+	void SlotManageDict();
 };
 
 #endif // TESTMAKER_H

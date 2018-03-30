@@ -1,20 +1,20 @@
 #include "uitestmaker.h"
+#include <QDebug>
 
 ucUiTestMaker::ucUiTestMaker( QWidget* parent ) : QDialog( parent ) {
 	setWindowTitle( "TestMaker" );
 
-	// Инициализация пустых строк
-	labelFreeLine[0] =  new QLabel( "" );
-	labelFreeLine[1] =  new QLabel( "" );
-	labelFreeLine[2] =  new QLabel( "" );
 	// Инициализация сторки номера вопроса
 	outCounter[0]    =  new QLabel;
 	outCounter[1]    =  new QLabel;
 	// Инициализация окон вывода вопроса
 	outTextQueAns    =  new QTextEdit;
 	outTextType      =  new QTextEdit;
+	outTextDict      =  new QListWidget;
 	// Инициализация линии ввода ответа
 	inTextType       =  new QLineEdit;
+	inTextDict[0]    =  new QLineEdit;
+	inTextDict[1]    =  new QLineEdit;
 	// Окно для слоя Que->Ans
 	outTextQueAns->setReadOnly( true );
 	outTextQueAns->setFontPointSize( 15 );
@@ -48,10 +48,12 @@ void ucUiTestMaker::InitAllObjects() {
 	QPushButton  *  buttonNewFile;
 	QPushButton  *  buttonExit;
 	QPushButton  *  buttonNext;
-	QPushButton  *  buttonMainMenu[2];
+	QPushButton  *  buttonMainMenu[3];
 	QPushButton  *  buttonFontIncrease[2];
 	QPushButton  *  buttonFontDecrease[2];
 	QPushButton  *  buttonSkip;
+	QPushButton  *  buttonManageDict;
+	QLabel       *  labelFreeLine[4];
 
 	// Инициализация кнопок
 	buttonQueAns       = new QPushButton( "Question -> Answer" );
@@ -65,16 +67,19 @@ void ucUiTestMaker::InitAllObjects() {
 	buttonNext         = new QPushButton( "Next" );
 	buttonMainMenu[0]  = new QPushButton( "Main menu" );
 	buttonMainMenu[1]  = new QPushButton( "Main menu" );
+	buttonMainMenu[2]  = new QPushButton( "Main menu" );
 	buttonCheck        = new QPushButton( "Check" );
 	buttonSkip         = new QPushButton( "Skip" );
 	buttonFontDecrease[0] = new QPushButton( "-" );
 	buttonFontIncrease[0] = new QPushButton( "+" );
 	buttonFontDecrease[1] = new QPushButton( "-" );
 	buttonFontIncrease[1] = new QPushButton( "+" );
+	buttonManageDict   = new QPushButton( "Manage dictionary" );
 
 	// Инициализация слоя главного меню
 	QWidget* widgetMainMenu = new QWidget;
 	QVBoxLayout* layoutMainMenu = new QVBoxLayout;
+	labelFreeLine[0] = new QLabel( "" );
 	layoutMainMenu->addWidget( buttonQueAns );
 	layoutMainMenu->addWidget( buttonAnsQue );
 	layoutMainMenu->addWidget( buttonMix );
@@ -83,6 +88,7 @@ void ucUiTestMaker::InitAllObjects() {
 	layoutMainMenu->addWidget( buttonTypeAnsQue );
 	layoutMainMenu->addWidget( buttonTypeMix );
 		layoutMainMenu->addWidget( labelFreeLine[0] );
+	layoutMainMenu->addWidget( buttonManageDict );
 	layoutMainMenu->addWidget( buttonNewFile );
 	layoutMainMenu->addWidget( buttonExit );
 		layoutMainMenu->addWidget( labelFreeLine[0] );
@@ -91,6 +97,7 @@ void ucUiTestMaker::InitAllObjects() {
 	// Инициализация слоя для теста по типу следующее слово
 	QWidget* widgetNextWord = new QWidget;
 	QVBoxLayout* layoutNextWord = new QVBoxLayout;
+	labelFreeLine[1] = new QLabel( "" );
 	layoutNextWord->addWidget( outCounter[0] );
 		layoutNextWord->addWidget( labelFreeLine[1] );
 	layoutNextWord->addWidget( outTextQueAns );
@@ -108,6 +115,7 @@ void ucUiTestMaker::InitAllObjects() {
 	// Инциализация слоя для теста по типу ввод ответа на вопрос
 	QWidget* widgetTypeAnswer = new QWidget;
 	QVBoxLayout* layoutTypeAnswer = new QVBoxLayout;
+	labelFreeLine[2] = new QLabel( "" );
 	layoutTypeAnswer->addWidget( outCounter[1] );
 		layoutTypeAnswer->addWidget( labelFreeLine[2] );
 	layoutTypeAnswer->addWidget( outTextType );
@@ -123,6 +131,22 @@ void ucUiTestMaker::InitAllObjects() {
 	layoutTypeAnswer->addLayout( layoutFontSize[1] );
 		layoutTypeAnswer->addWidget( labelFreeLine[2] );
 	widgetTypeAnswer->setLayout( layoutTypeAnswer );
+
+	// Инциализация слоя для управления словарем
+	QWidget* widgetManageDict = new QWidget;
+	QVBoxLayout* layoutManageDict = new QVBoxLayout;
+	labelFreeLine[3] = new QLabel( "" );
+	layoutManageDict->addWidget( outTextDict );
+		layoutManageDict->addWidget( labelFreeLine[3] );
+	QLabel* lableAns = new QLabel( " - " );
+	QHBoxLayout* layoutQue = new QHBoxLayout;
+	layoutQue->addWidget( inTextDict[0] );
+	layoutQue->addWidget( lableAns );
+	layoutQue->addWidget( inTextDict[1] );
+	layoutManageDict->addLayout( layoutQue );
+		layoutManageDict->addWidget( labelFreeLine[3] );
+	layoutManageDict->addWidget( buttonMainMenu[2] );
+	widgetManageDict->setLayout( layoutManageDict );
 
 	// Подключаем сигналы
 	connect( buttonQueAns,          SIGNAL( clicked( bool ) ), this, SLOT( SlotQueAns() ) );
@@ -140,6 +164,8 @@ void ucUiTestMaker::InitAllObjects() {
 	connect( buttonFontDecrease[1], SIGNAL( clicked( bool ) ), this, SLOT( SlotDecreaseFont() ) );
 	connect( buttonSkip,            SIGNAL( clicked( bool ) ), this, SLOT( SlotSkipWord() ) );
 	connect( buttonMainMenu[1],     SIGNAL( clicked( bool ) ), this, SLOT( SlotMenu() ) );
+	connect( buttonMainMenu[2],     SIGNAL( clicked( bool ) ), this, SLOT( SlotMenu() ) );
+	connect( buttonManageDict,      SIGNAL( clicked( bool ) ), this, SLOT( SlotManageDict() ) );
 	connect( buttonNewFile,         SIGNAL( clicked( bool ) ), this, SLOT( SlotNewFile() ) );
 	connect( buttonExit,            SIGNAL( clicked( bool ) ), this, SLOT( close() ) );
 
@@ -148,6 +174,7 @@ void ucUiTestMaker::InitAllObjects() {
 	stackedWidget->addWidget( widgetMainMenu );
 	stackedWidget->addWidget( widgetNextWord );
 	stackedWidget->addWidget( widgetTypeAnswer );
+	stackedWidget->addWidget( widgetManageDict );
 
 	QVBoxLayout* layoutMain = new QVBoxLayout;
 	layoutMain->addWidget( stackedWidget );
@@ -509,4 +536,15 @@ void ucUiTestMaker::SlotNewFile() {
 	testInterface.ClearTest();
 	testInterface.ReadFile();
 #endif
+}
+
+void ucUiTestMaker::SlotManageDict() {
+	QString tmpStringForOutput;
+	stackedWidget->setCurrentIndex( 3 );
+	testInterface.Init();
+	// outTextDict->setText( "" );
+	while ( !testInterface.NewWord() ) {
+		tmpStringForOutput.sprintf( "%s - %s", testInterface.GetQuestion(), testInterface.GetAnswer() );
+		outTextDict->addItem( tmpStringForOutput );
+	}
 }
