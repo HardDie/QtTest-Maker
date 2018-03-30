@@ -107,8 +107,7 @@ void ucUiTestMaker::SlotQueAns() {
 		currentState = STATE_SECOND_STEP;
 		break;
 	case STATE_SECOND_STEP:
-		tmpStringForOutput.sprintf( "%s - %s", testInterface.GetQuestion(), testInterface.GetAnswer() );
-		outTextQueAns->setText( tmpStringForOutput );
+		outTextQueAns->setText( testInterface.GetQuestion() + " - " + testInterface.GetAnswer() );
 		currentState = STATE_FIRST_STEP;
 		break;
 	default:
@@ -141,8 +140,7 @@ void ucUiTestMaker::SlotAnsQue() {
 		currentState = STATE_SECOND_STEP;
 		break;
 	case STATE_SECOND_STEP:
-		tmpStringForOutput.sprintf( "%s - %s", testInterface.GetAnswer(), testInterface.GetQuestion() );
-		outTextQueAns->setText( tmpStringForOutput );
+		outTextQueAns->setText( testInterface.GetAnswer() + " - " + testInterface.GetQuestion() );
 		currentState = STATE_FIRST_STEP;
 		break;
 	default:
@@ -187,11 +185,13 @@ void ucUiTestMaker::SlotMix() {
 		switch( testInterface.GetFlag() ) {
 		case 1:
 		case 4:
-			tmpStringForOutput.sprintf( "%s - %s", testInterface.GetAnswer(), testInterface.GetQuestion() );
+			tmpStringForOutput = testInterface.GetAnswer() + " - " + testInterface.GetQuestion();
+			outTextQueAns->setText( tmpStringForOutput );
 			break;
 		case 2:
 		case 3:
-			tmpStringForOutput.sprintf( "%s - %s", testInterface.GetQuestion(), testInterface.GetAnswer() );
+			tmpStringForOutput = testInterface.GetQuestion() + " - " + testInterface.GetAnswer();
+			outTextQueAns->setText( tmpStringForOutput );
 			break;
 		}
 		outTextQueAns->setText( tmpStringForOutput );
@@ -234,8 +234,7 @@ void ucUiTestMaker::SlotTypeQueAns() {
 			inTextType->setText("");
 			SlotTypeQueAns();
 		} else {
-			tmpStringForOutput.sprintf( "%s - %s", testInterface.GetQuestion(), testInterface.GetAnswer() );
-			outTextType->setText( tmpStringForOutput );
+			outTextType->setText( testInterface.GetQuestion() + " - " + testInterface.GetAnswer() );
 			inTextType->setText("");
 		}
 		break;
@@ -276,8 +275,7 @@ void ucUiTestMaker::SlotTypeAnsQue() {
 			inTextType->setText("");
 			SlotTypeAnsQue();
 		} else {
-			tmpStringForOutput.sprintf( "%s - %s", testInterface.GetAnswer(), testInterface.GetQuestion() );
-			outTextType->setText( tmpStringForOutput );
+			outTextType->setText( testInterface.GetAnswer() + " - " + testInterface.GetQuestion() );
 			inTextType->setText("");
 		}
 		break;
@@ -330,7 +328,7 @@ void ucUiTestMaker::SlotTypeMix() {
 				inTextType->setText("");
 				SlotTypeMix();
 			} else {
-				tmpStringForOutput.sprintf( "%s - %s", testInterface.GetAnswer(), testInterface.GetQuestion() );
+				tmpStringForOutput = testInterface.GetAnswer() + " - " + testInterface.GetQuestion();
 				outTextType->setText( tmpStringForOutput );
 				inTextType->setText("");
 			}
@@ -343,7 +341,7 @@ void ucUiTestMaker::SlotTypeMix() {
 				inTextType->setText("");
 				SlotTypeMix();
 			} else {
-				tmpStringForOutput.sprintf( "%s - %s", testInterface.GetQuestion(), testInterface.GetAnswer() );
+				tmpStringForOutput = testInterface.GetQuestion() + " - " + testInterface.GetAnswer();
 				outTextType->setText( tmpStringForOutput );
 				inTextType->setText("");
 			}
@@ -384,7 +382,7 @@ void ucUiTestMaker::SlotNewFile() {
 #if (defined Q_OS_WIN) || (defined Q_OS_LINUX)
 	while ( true ) {
 		QString path = QFileDialog::getOpenFileName(0, QObject::tr("Choose file with words"),
-		                                            QDir::homePath(), QObject::tr("Text file (*.txt);;All (*.*)"), 0,
+		                                            QDir::homePath(), QObject::tr("Text file (*.json);;All (*.*)"), 0,
 		                                            QFileDialog::DontUseNativeDialog | QFileDialog::DontUseSheet |
 		                                            QFileDialog::DontUseCustomDirectoryIcons | QFileDialog::ReadOnly );
 		if ( testInterface.OpenFile( path.toStdString().c_str() ) == -1 ) {
@@ -411,10 +409,9 @@ void ucUiTestMaker::SlotNewFile() {
 void ucUiTestMaker::SlotManageDict() {
 	QString tmpStringForOutput;
 	stackedWidget->setCurrentIndex( 3 );
+	outTextDict->clear();
 	testInterface.Init();
-	// outTextDict->setText( "" );
 	while ( !testInterface.NewWord() ) {
-		tmpStringForOutput.sprintf( "%s - %s", testInterface.GetQuestion(), testInterface.GetAnswer() );
-		outTextDict->addItem( tmpStringForOutput );
+		outTextDict->addItem( testInterface.GetQuestion() + " - " + testInterface.GetAnswer() );
 	}
 }

@@ -6,9 +6,9 @@ namespace uns {
 	* Description: Конструктор
 	*/
 	ucTestMaker::ucTestMaker() {
-		counter = 0;
+		_counter = 0;
 		index = -1;
-		fileIsOpen = false;
+		_fileIsOpen = false;
 	}
 
 	/*
@@ -16,13 +16,10 @@ namespace uns {
 	* Description: Очищает тест
 	*/
 	void ucTestMaker::ClearTest() {
-		for ( int i = 0; i < data.size(); i++ ) {
-			delete[] data[i].string;
-		}
-		data.clear();
-		counter = 0;
+		_data.Clear();
+		_counter = 0;
 		index = -1;
-		fileIsOpen = false;
+		_fileIsOpen = false;
 	}
 
 	/*
@@ -32,8 +29,10 @@ namespace uns {
 	int ucTestMaker::OpenFile( const char filename[] ) {
 		file.setFileName( filename );
 		if ( !file.open( QIODevice::ReadOnly ) ) {
+			_filename = "";
 			return -1;
 		}
+		_filename = filename;
 		return 0;
 	}
 
@@ -42,39 +41,13 @@ namespace uns {
 	* Description: Считывает все строки из файла, в случае если из файла считалась хотя бы одно строка, возвращается true
 	*/
 	bool ucTestMaker::ReadFile() {
-		while ( !file.atEnd() ) {
-			if ( AddQuestion() ) {
-				fileIsOpen = true;
-			}
+		QString data = file.readAll();
+		_data.Init(data.toUtf8());
+		if (_data.GetLength()) {
+			_fileIsOpen = true;
 		}
 		file.close();
-		return fileIsOpen;
-	}
-
-	/*
-	 * Name: AddQuestion
-	 * Description: Считывает новую строку в конец массива, и сообщает о том была ли принята строка, в случае если строка верная
-	 * возвращает true
-	*/
-	bool ucTestMaker::AddQuestion() {
-		usData_t tmpData;
-		tmpData.string = new char[SIZE];
-		memset( tmpData.string, 0, SIZE );
-		char *comentPointer = NULL;
-		file.readLine( tmpData.string, SIZE );	// Считываем новую строку
-		if ( ( comentPointer = strstr( tmpData.string, "#" ) ) != NULL ) {	// Убираем закомментированное
-			comentPointer[0] = '\0';
-		}
-		if ( strstr( tmpData.string, " - " ) == NULL ) {	// Проверяем на верность строки
-			delete[] tmpData.string;
-			return false;
-		}
-		if ( tmpData.string[strlen( tmpData.string ) - 1] == 13 ) {	// Ставим символ окончания строки во все строки кроме последней
-			tmpData.string[strlen( tmpData.string ) - 1] = '\0';
-		}
-
-		data.push_back( tmpData );
-		return true;
+		return _fileIsOpen;
 	}
 
 	/*
@@ -83,10 +56,8 @@ namespace uns {
 	*/
 	void ucTestMaker::Init() {
 		srand( ( unsigned int ) time( NULL ) );
-		for ( int i = 0; i < data.size(); i++ ) {
-			data[i].flag = 0;
-		}
-		counter = 0;
+		_data.CleanFlags();
+		_counter = 0;
 	}
 
 	/*
@@ -94,12 +65,12 @@ namespace uns {
 	* Description: Выбирает новое слово для вопроса
 	*/
 	int ucTestMaker::NewWord() {
-		if ( counter == data.size() ) {
+		if ( _counter == _data.GetLength() ) {
 			return 1;
 		}
-		while ( data[index = rand() % data.size()].flag == 1 );
-		data[index].flag = 1;
-		counter++;
+		while ( _data.GetFlag(index = rand() % _data.GetLength()) == 1 );
+		_data.SetFlag(index, 1);
+		_counter++;
 		return 0;
 	}
 
@@ -108,63 +79,119 @@ namespace uns {
 	* Description: Выбирает новое слово для вопроса с учетом двух вопросов
 	*/
 	int ucTestMaker::MixNewWord() {
-		if ( counter == ( 2 * data.size() ) ) {
+		if ( _counter == ( 2 * _data.GetLength() ) ) {
 			return 1;
 		}
-		while ( data[index = rand() % data.size()].flag == 3 || data[index].flag == 4 );
-		if ( data[index].flag == 0 ) {
-			data[index].flag = rand() % 2 + 1;
-		} else if ( data[index].flag == 1 ) {
-			data[index].flag = 3;
-		} else if ( data[index].flag == 2 ) {
-			data[index].flag = 4;
+		while ( _data.GetFlag(index = rand() % _data.GetLength()) == 3 || _data.GetFlag(index) == 4 );
+		if ( _data.GetFlag(index) == 0 ) {
+			_data.SetFlag(index, rand() % 2 + 1);
+		} else if ( _data.GetFlag(index) == 1 ) {
+			_data.SetFlag(index, 3);
+		} else if ( _data.GetFlag(index) == 2 ) {
+			_data.SetFlag(index, 4);
 		}
-		counter++;
+		_counter++;
 		return 0;
 	}
 
-	/*
-	* Name: GetQuestion
-	* Description: Возвращает вопрос
-	*/
-	const char*	ucTestMaker::GetQuestion() {
-		static char str[SIZE];
-		for ( int i = 0; i < SIZE; i++ ) {
-			if ( data[index].string[i] == '-' && data[index].string[i - 1] == ' ' && data[index].string[i + 1] == ' ' ) {
-				str[i - 1] = '\0';
-				break;
-			}
-			str[i] = data[index].string[i];
-		}
-		return str;
-	}
-
-	/*
-	* Name: GetAnswer
-	* Description: Возвращает ответ
-	*/
-	const char*	ucTestMaker::GetAnswer() {
-		static char str[SIZE];
-		int i = 0;
-		while ( !( data[index].string[i] == '-' && data[index].string[i - 1] == ' ' && data[index].string[i + 1] == ' ' ) ) {
-			i++;
-		}
-		i += 2;
-		for ( int j = 0; j < SIZE; j++, i++ ) {
-			if ( data[index].string[i] == '\0' || data[index].string[i] == '\n' || data[index].string[i] == '\r' ) {
-				str[j] = '\0';
-				break;
-			}
-			str[j] = data[index].string[i];
-		}
-		return str;
-	}
-
 	ucTestMaker::~ucTestMaker() {
-		for ( int i = 0; i < data.size(); i++ ) {
-			delete[] data[i].string;
-		}
-		data.clear();
+		_data.Clear();
 	}
 
+	/*
+	* Name: ucQuestion
+	* Description: Конструктор для обьекта вопроса, на вход подается
+	* json обеьект
+	*/
+	ucQuestion::ucQuestion(QJsonObject json_obj) {
+		_que = json_obj.value("que").toString();
+		_ans = json_obj.value("ans").toString();
+	}
+
+	/*
+	* Name: ucQuestion
+	* Description: Конструктор для обьекта вопроса, на вход подается две строки
+	* вопрос и ответ
+	*/
+	ucQuestion::ucQuestion(QString que, QString ans) {
+		_que = que;
+		_ans = ans;
+	}
+
+	/*
+	* Name: ToJsonObject
+	* Description: Собирает обект в json обьект и возвращает
+	*/
+	QJsonObject ucQuestion::ToJsonObject() {
+		QJsonObject json_obj;
+		json_obj.insert("que", QJsonValue::fromVariant(_que));
+		json_obj.insert("ans", QJsonValue::fromVariant(_ans));
+		return json_obj;
+	}
+
+	/*
+	* Name: Init
+	* Description: Парсит считанный json файл в обекты вопросов,
+	* на вход подается бинарный считаный файл
+	*/
+	void ucDictionary::Init(QByteArray raw_file) {
+		QJsonObject json_obj = QJsonDocument::fromJson(raw_file).object();
+		QJsonObject json_file = QJsonDocument::fromJson(raw_file).object();
+		QJsonArray json_dict = json_file.value("dictionary").toArray();
+		foreach (QJsonValue json_val, json_dict) {
+			QJsonObject json_el = json_val.toObject();
+			_dict.append(ucQuestion(json_el));
+		}
+	}
+
+	/*
+	* Name: Clear
+	* Description: Очищает все обьекты
+	*/
+	void ucDictionary::Clear() {
+		_dict.clear();
+	}
+
+	/*
+	* Name: AddElement
+	* Description: Позволяет в базу добавить обьект,
+	* на вход подается две строки вопрос и ответ
+	*/
+	void ucDictionary::AddElement(QString que, QString ans) {
+		_dict.append(ucQuestion(que, ans));
+	}
+
+	/*
+	* Name: CleanFlags
+	* Description: Проходится по массиву обьектов и выставляет
+	* флаги в значение 0
+	*/
+	void ucDictionary::CleanFlags() {
+		for (int j = 0; j < _dict.size(); j++) {
+			_dict[j].SetFlag(0);
+		}
+	}
+
+	/*
+	* Name: ToJsonObject
+	* Description: Преобразует все обьекты в один json обьект
+	*/
+	QJsonObject ucDictionary::ToJsonObject() {
+		QJsonObject json_obj;
+		QJsonArray json_arr;
+		foreach (ucQuestion que_str, _dict) {
+			json_arr.append(que_str.ToJsonObject());
+		}
+		json_obj.insert("dictionary", json_arr);
+		return json_obj;
+	}
+
+	/*
+	* Name: ToByteArray
+	* Description: Дерево содержащееся в json обьекте преобразуется
+	* в бинарный файл, для последующей записи в файл
+	*/
+	QByteArray ucDictionary::ToByteArray() {
+		return QJsonDocument(ToJsonObject()).toJson();
+	}
 }
