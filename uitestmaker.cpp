@@ -197,6 +197,8 @@ void ucUiTestMaker::SlotQueAns() {
 		testInterface.Init();
 		currentState = STATE_FIRST_STEP;
 		currenteTest = TEST_QA;
+		SlotNext();
+		break;
 	case STATE_FIRST_STEP:
 		if ( testInterface.NewWord() ) {
 			SlotMenu();
@@ -229,6 +231,8 @@ void ucUiTestMaker::SlotAnsQue() {
 		testInterface.Init();
 		currentState = STATE_FIRST_STEP;
 		currenteTest = TEST_AQ;
+		SlotNext();
+		break;
 	case STATE_FIRST_STEP:
 		if ( testInterface.NewWord() ) {
 			SlotMenu();
@@ -261,6 +265,8 @@ void ucUiTestMaker::SlotMix() {
 		testInterface.Init();
 		currentState = STATE_FIRST_STEP;
 		currenteTest = TEST_MIX;
+		SlotNext();
+		break;
 	case STATE_FIRST_STEP:
 		if ( testInterface.MixNewWord() ) {
 			SlotMenu();
@@ -312,6 +318,8 @@ void ucUiTestMaker::SlotTypeQueAns() {
 		currentState = STATE_FIRST_STEP;
 		currenteTest = TEST_TYPEQUESTION;
 		buttonCheck->setDefault(true);
+		SlotNext();
+		break;
 	case STATE_FIRST_STEP:
 		if ( testInterface.NewWord() ) {
 			SlotMenu();
@@ -352,6 +360,8 @@ void ucUiTestMaker::SlotTypeAnsQue() {
 		currentState = STATE_FIRST_STEP;
 		currenteTest = TEST_TYPEANSWER;
 		buttonCheck->setDefault(true);
+		SlotNext();
+		break;
 	case STATE_FIRST_STEP:
 		if ( testInterface.NewWord() ) {
 			SlotMenu();
@@ -392,6 +402,8 @@ void ucUiTestMaker::SlotTypeMix() {
 		currentState = STATE_FIRST_STEP;
 		currenteTest = TEST_TYPEMIX;
 		buttonCheck->setDefault(true);
+		SlotNext();
+		break;
 	case STATE_FIRST_STEP:
 		if ( testInterface.MixNewWord() ) {
 			SlotMenu();
