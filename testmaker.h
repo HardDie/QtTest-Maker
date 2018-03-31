@@ -75,6 +75,7 @@ namespace uns {
 		char                    GetFlag() const { return _data.GetFlag( _index ); }
 		void                    DeleteQue( int index ) { _data.DeleteElement( index ); }
 		bool                    FileIsOpen() { return _fileIsOpen; }
+		void                    ForceSetFile( QString filename ) { _filename = filename; _fileIsOpen = true; };
 		                        ~ucTestMaker();
 	};
 

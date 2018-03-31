@@ -419,7 +419,7 @@ void ucUiTestMaker::SlotNewFile() {
 		ans = QMessageBox::question( this, "New save", "Can't find save file, do you want create new?" );
 		if ( ans == QMessageBox::Yes ) {
 			CreateFile( filename );
-			testInterface.CheckFile( filename );
+			testInterface.ForceSetFile( filename );
 			testInterface.SaveFile();
 		} else {
 			exit( -1 );
