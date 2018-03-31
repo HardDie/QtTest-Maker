@@ -9,6 +9,7 @@ namespace uns {
 		_counter = 0;
 		_index = -1;
 		_fileIsOpen = false;
+		_filename = "";
 	}
 
 	/*
@@ -19,20 +20,18 @@ namespace uns {
 		_data.Clear();
 		_counter = 0;
 		_index = -1;
-		_fileIsOpen = false;
 	}
 
 	/*
-	* Name: OpenFile
-	* Description: Открывает файл
+	* Name: CheckFile
+	* Description: Проверяет доступен ли файл
 	*/
-	int ucTestMaker::OpenFile( const char filename[] ) {
+	int ucTestMaker::CheckFile( QString filename ) {
 		file.setFileName( filename );
 		if ( !file.open( QIODevice::ReadOnly ) ) {
-			_filename = "";
 			return -1;
 		}
-		_filename = filename;
+		file.close();
 		return 0;
 	}
 
@@ -40,13 +39,17 @@ namespace uns {
 	* Name: ReadFile
 	* Description: Считывает все строки из файла, в случае если из файла считалась хотя бы одно строка, возвращается true
 	*/
-	bool ucTestMaker::ReadFile() {
+	bool ucTestMaker::ReadFile( QString filename ) {
+		file.setFileName( filename );
+		file.open( QIODevice::ReadOnly );
 		QString data = file.readAll();
-		_data.Init( data.toUtf8() );
-		if ( _data.GetLength() ) {
-			_fileIsOpen = true;
-		}
 		file.close();
+		if ( !_data.Init( data.toUtf8() ) ) {
+			_filename = "";
+			_fileIsOpen = false;
+		}
+		_filename = filename;
+		_fileIsOpen = true;
 		return _fileIsOpen;
 	}
 
@@ -153,14 +156,18 @@ namespace uns {
 	* Description: Парсит считанный json файл в обекты вопросов,
 	* на вход подается бинарный считаный файл
 	*/
-	void ucDictionary::Init(QByteArray raw_file) {
-		QJsonObject json_obj = QJsonDocument::fromJson(raw_file).object();
-		QJsonObject json_file = QJsonDocument::fromJson(raw_file).object();
+	bool ucDictionary::Init(QByteArray raw_file) {
+		QJsonDocument json_doc = QJsonDocument::fromJson(raw_file);
+		if (json_doc.isNull()) {
+			return false;
+		}
+		QJsonObject json_file = json_doc.object();
 		QJsonArray json_dict = json_file.value("dictionary").toArray();
 		foreach (QJsonValue json_val, json_dict) {
 			QJsonObject json_el = json_val.toObject();
 			_dict.append(ucQuestion(json_el));
 		}
+		return true;
 	}
 
 	/*

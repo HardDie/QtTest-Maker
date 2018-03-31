@@ -30,7 +30,7 @@ namespace uns {
 
 	class ucDictionary { // Класс хранящий словарь
 	public:
-		void Init( QByteArray raw_file );
+		bool Init( QByteArray raw_file );
 		void Clear();
 		void AddElement( QString que, QString ans );
 		void CleanFlags();
@@ -59,8 +59,8 @@ namespace uns {
 	public:
 		                        ucTestMaker();
 		void                    ClearTest();
-		int                     OpenFile( const char filename[] );
-		bool                    ReadFile();
+		int                     CheckFile( QString filename );
+		bool                    ReadFile( QString filename );
 		bool                    SaveFile();
 		void                    Init();
 		int                     NewWord();

@@ -1,5 +1,4 @@
 #include "uitestmaker.h"
-#include <QDebug>
 
 ucUiTestMaker::ucUiTestMaker( QWidget* parent ) : QDialog( parent ) {
 	setWindowTitle( "TestMaker" );
@@ -384,6 +383,17 @@ void ucUiTestMaker::SlotNext() {
 	}
 }
 
+static bool CreateFile( QString filename ) {
+	QFile file;
+	file.setFileName( filename );
+	if ( !file.open( QIODevice::WriteOnly ) ) {
+		QMessageBox::critical( NULL, "Error", "Can't create file" );
+		exit( -1 );
+	}
+	file.close();
+	return true;
+}
+
 void ucUiTestMaker::SlotNewFile() {
 #if (defined Q_OS_WIN) || (defined Q_OS_LINUX)
 	while ( true ) {
@@ -391,24 +401,33 @@ void ucUiTestMaker::SlotNewFile() {
 		                                            QDir::homePath(), QObject::tr("Text file (*.json);;All (*.*)"), 0,
 		                                            QFileDialog::DontUseNativeDialog | QFileDialog::DontUseSheet |
 		                                            QFileDialog::DontUseCustomDirectoryIcons | QFileDialog::ReadOnly );
-		if ( testInterface.OpenFile( path.toStdString().c_str() ) == -1 ) {
+		if ( testInterface.CheckFile( path.toStdString().c_str() ) == -1 ) {
 			QMessageBox::critical( this, "Error", "File is not available!" );
 			break;
 		}
 		testInterface.ClearTest();
-		if ( testInterface.ReadFile() == false ) {
+		if ( testInterface.ReadFile( path.toStdString().c_str() ) == false ) {
 			QMessageBox::critical( this, "Error", "File wrong!" );
 			break;
 		}
 		break;
 	}
 #else
-	if ( testInterface.OpenFile( "/mnt/sdcard/words.txt" ) ) {
-		QMessageBox::critical( this, "Error", "Put your file to /mnt/sdcard/words.txt" );
-		exit( -1 );
+	QString filename = "/mnt/sdcard/dictionary.json";
+	if ( testInterface.CheckFile( filename ) ) {
+		QMessageBox::StandardButton ans;
+		ans = QMessageBox::question( this, "New save", "Can't find save file, do you want create new?" );
+		if ( ans == QMessageBox::Yes ) {
+			CreateFile( filename );
+			testInterface.CheckFile( filename );
+			testInterface.SaveFile();
+		} else {
+			exit( -1 );
+		}
+	} else {
+		testInterface.ClearTest();
+		testInterface.ReadFile( filename );
 	}
-	testInterface.ClearTest();
-	testInterface.ReadFile();
 #endif
 }
 
