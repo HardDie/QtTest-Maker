@@ -51,7 +51,7 @@ void ucUiTestMaker::InitAllObjects() {
 	setLayout( layoutMain );
 }
 
-static void ChangeFontSize(QTextEdit *textEdit, int diff) {
+static void ChangeFontSize( QTextEdit *textEdit, int diff ) {
 	qreal size = textEdit->fontPointSize();
 	size += diff;
 	if ( size <= 10 ) size = 10;
@@ -87,6 +87,7 @@ void ucUiTestMaker::SlotQueAns() {
 	if ( testInterface.FileIsOpen() == false ) {
 		QMessageBox::critical( this, "Error", "Test not open!" );
 		SlotMenu();
+		return;
 	}
 	switch ( currentState ) {
 	case STATE_INIT:
@@ -120,6 +121,7 @@ void ucUiTestMaker::SlotAnsQue() {
 	if ( testInterface.FileIsOpen() == false ) {
 		QMessageBox::critical( this, "Error", "Test not open!" );
 		SlotMenu();
+		return;
 	}
 	switch ( currentState ) {
 	case STATE_INIT:
@@ -153,6 +155,7 @@ void ucUiTestMaker::SlotMix() {
 	if ( testInterface.FileIsOpen() == false ) {
 		QMessageBox::critical( this, "Error", "Test not open!" );
 		SlotMenu();
+		return;
 	}
 	switch ( currentState ) {
 	case STATE_INIT:
@@ -207,6 +210,7 @@ void ucUiTestMaker::SlotTypeQueAns() {
 	if ( testInterface.FileIsOpen() == false ) {
 		QMessageBox::critical( this, "Error", "Test not open!" );
 		SlotMenu();
+		return;
 	}
 	switch ( currentState ) {
 	case STATE_INIT:
@@ -248,6 +252,7 @@ void ucUiTestMaker::SlotTypeAnsQue() {
 	if ( testInterface.FileIsOpen() == false ) {
 		QMessageBox::critical( this, "Error", "Test not open!" );
 		SlotMenu();
+		return;
 	}
 	switch ( currentState ) {
 	case STATE_INIT:
@@ -289,6 +294,7 @@ void ucUiTestMaker::SlotTypeMix() {
 	if ( testInterface.FileIsOpen() == false ) {
 		QMessageBox::critical( this, "Error", "Test not open!" );
 		SlotMenu();
+		return;
 	}
 	switch ( currentState ) {
 	case STATE_INIT:
@@ -406,12 +412,57 @@ void ucUiTestMaker::SlotNewFile() {
 #endif
 }
 
+static void RedrawWordsList( uns::ucTestMaker* testInterface,
+                             QListWidget* outTextDict) {
+	outTextDict->clear();
+	for ( int i = 0; i < testInterface->GetLength(); i++ ) {
+		outTextDict->addItem( testInterface->GetQuestion( i ) + " - " +
+		                      testInterface->GetAnswer( i ) );
+	}
+}
+
 void ucUiTestMaker::SlotManageDict() {
 	QString tmpStringForOutput;
 	stackedWidget->setCurrentIndex( 3 );
-	outTextDict->clear();
-	testInterface.Init();
-	while ( !testInterface.NewWord() ) {
-		outTextDict->addItem( testInterface.GetQuestion() + " - " + testInterface.GetAnswer() );
+	RedrawWordsList( &testInterface, outTextDict );
+}
+
+void ucUiTestMaker::SlotAddNewQue() {
+	if ( inTextDict[0]->text() != "" &&
+	    inTextDict[1]->text() != "" ) {
+		testInterface.AddNewQue( inTextDict[0]->text(), inTextDict[1]->text() );
+		inTextDict[0]->setText( "" );
+		inTextDict[1]->setText( "" );
+		RedrawWordsList( &testInterface, outTextDict );
+	} else {
+		QMessageBox::warning( this, "Warning", "Input box is empty" );
+	}
+}
+
+void ucUiTestMaker::SlotDeleteQue() {
+	if ( outTextDict->currentRow() != -1 ) {
+		testInterface.DeleteQue( outTextDict->currentRow() );
+		RedrawWordsList( &testInterface, outTextDict );
+	} else {
+		QMessageBox::warning( this, "Warning", "Select line for delete" );
+	}
+}
+
+void ucUiTestMaker::SlotEditQue() {
+	if ( outTextDict->currentRow() != -1 ) {
+		inTextDict[0]->setText( testInterface.GetQuestion( outTextDict->currentRow() ) );
+		inTextDict[1]->setText( testInterface.GetAnswer( outTextDict->currentRow() ) );
+		testInterface.DeleteQue( outTextDict->currentRow() );
+		RedrawWordsList( &testInterface, outTextDict );
+	} else {
+		QMessageBox::warning( this, "Warning", "Select line for edit" );
+	}
+}
+
+void ucUiTestMaker::SlotSave() {
+	if ( testInterface.SaveFile() ) {
+		QMessageBox::information( this, "Succesfull", "Dictionary was saved" );
+	} else {
+		QMessageBox::critical( this, "Error", "File not set or corrupt" );
 	}
 }

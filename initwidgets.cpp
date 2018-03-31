@@ -132,9 +132,17 @@ void ucUiTestMaker::InitTypeAns() {
 }
 
 void ucUiTestMaker::InitSetupDict() {
+	QPushButton  *  buttonAddNewQue;
+	QPushButton  *  buttonEditQue;
+	QPushButton  *  buttonDeleteQue;
+	QPushButton  *  buttonSave;
 	QPushButton  *  buttonMainMenu;
 	QLabel       *  labelFreeLine;
 
+	buttonAddNewQue    = new QPushButton( "Add" );
+	buttonEditQue      = new QPushButton( "Edit" );
+	buttonDeleteQue    = new QPushButton( "Delete" );
+	buttonSave         = new QPushButton( "Save to file" );
 	buttonMainMenu     = new QPushButton( "Main menu" );
 	labelFreeLine      = new QLabel( "" );
 
@@ -149,10 +157,21 @@ void ucUiTestMaker::InitSetupDict() {
 	layoutQue->addWidget( inTextDict[1] );
 	layoutManageDict->addLayout( layoutQue );
 		layoutManageDict->addWidget( labelFreeLine );
+	layoutManageDict->addWidget( buttonAddNewQue );
+	QHBoxLayout* layoutDeleteEdit;
+	layoutDeleteEdit = new QHBoxLayout;
+	layoutDeleteEdit->addWidget( buttonEditQue );
+	layoutDeleteEdit->addWidget( buttonDeleteQue );
+	layoutManageDict->addLayout( layoutDeleteEdit );
+	layoutManageDict->addWidget( buttonSave );
 	layoutManageDict->addWidget( buttonMainMenu );
 	widgetManageDict->setLayout( layoutManageDict );
 
-	connect( buttonMainMenu, SIGNAL( clicked( bool ) ), this, SLOT( SlotMenu() ) );
+	connect( buttonAddNewQue, SIGNAL( clicked( bool ) ), this, SLOT( SlotAddNewQue() ) );
+	connect( buttonEditQue,   SIGNAL( clicked( bool ) ), this, SLOT( SlotEditQue() ) );
+	connect( buttonDeleteQue, SIGNAL( clicked( bool ) ), this, SLOT( SlotDeleteQue() ) );
+	connect( buttonSave,      SIGNAL( clicked( bool ) ), this, SLOT( SlotSave() ) );
+	connect( buttonMainMenu,  SIGNAL( clicked( bool ) ), this, SLOT( SlotMenu() ) );
 
 	stackedWidget->addWidget( widgetManageDict );
 }

@@ -7,7 +7,7 @@ namespace uns {
 	*/
 	ucTestMaker::ucTestMaker() {
 		_counter = 0;
-		index = -1;
+		_index = -1;
 		_fileIsOpen = false;
 	}
 
@@ -18,7 +18,7 @@ namespace uns {
 	void ucTestMaker::ClearTest() {
 		_data.Clear();
 		_counter = 0;
-		index = -1;
+		_index = -1;
 		_fileIsOpen = false;
 	}
 
@@ -42,12 +42,31 @@ namespace uns {
 	*/
 	bool ucTestMaker::ReadFile() {
 		QString data = file.readAll();
-		_data.Init(data.toUtf8());
-		if (_data.GetLength()) {
+		_data.Init( data.toUtf8() );
+		if ( _data.GetLength() ) {
 			_fileIsOpen = true;
 		}
 		file.close();
 		return _fileIsOpen;
+	}
+
+	/*
+	* Name: SaveFile
+	* Description: Все тесты сохраняются в файл, в случае удачной записи вернется true
+	*/
+	bool ucTestMaker::SaveFile() {
+		if ( _fileIsOpen && _filename != "" ) {
+			file.setFileName( _filename );
+			if ( !file.open( QIODevice::WriteOnly ) ) {
+				_filename = "";
+				return false;
+			}
+			file.write( _data.ToByteArray() );
+			file.close();
+		} else {
+			return false;
+		}
+		return true;
 	}
 
 	/*
@@ -68,8 +87,8 @@ namespace uns {
 		if ( _counter == _data.GetLength() ) {
 			return 1;
 		}
-		while ( _data.GetFlag(index = rand() % _data.GetLength()) == 1 );
-		_data.SetFlag(index, 1);
+		while ( _data.GetFlag( _index = rand() % _data.GetLength() ) == 1 );
+		_data.SetFlag( _index, 1 );
 		_counter++;
 		return 0;
 	}
@@ -82,13 +101,13 @@ namespace uns {
 		if ( _counter == ( 2 * _data.GetLength() ) ) {
 			return 1;
 		}
-		while ( _data.GetFlag(index = rand() % _data.GetLength()) == 3 || _data.GetFlag(index) == 4 );
-		if ( _data.GetFlag(index) == 0 ) {
-			_data.SetFlag(index, rand() % 2 + 1);
-		} else if ( _data.GetFlag(index) == 1 ) {
-			_data.SetFlag(index, 3);
-		} else if ( _data.GetFlag(index) == 2 ) {
-			_data.SetFlag(index, 4);
+		while ( _data.GetFlag( _index = rand() % _data.GetLength() ) == 3 || _data.GetFlag( _index ) == 4 );
+		if ( _data.GetFlag( _index ) == 0 ) {
+			_data.SetFlag( _index, rand() % 2 + 1 );
+		} else if ( _data.GetFlag( _index ) == 1 ) {
+			_data.SetFlag( _index, 3 );
+		} else if ( _data.GetFlag( _index ) == 2 ) {
+			_data.SetFlag( _index, 4 );
 		}
 		_counter++;
 		return 0;

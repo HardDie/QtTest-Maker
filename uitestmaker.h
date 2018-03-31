@@ -74,6 +74,10 @@ private slots:
 	void SlotSkipWord();
 	void SlotNewFile();
 	void SlotManageDict();
+	void SlotAddNewQue();
+	void SlotDeleteQue();
+	void SlotEditQue();
+	void SlotSave();
 };
 
 #endif // TESTMAKER_H

@@ -14,14 +14,14 @@ namespace uns {
 
 	class ucQuestion { // Класс одной пары вопрос-ответ
 	public:
-		ucQuestion(QJsonObject json_obj);
-		ucQuestion(QString que, QString ans);
+		ucQuestion( QJsonObject json_obj );
+		ucQuestion( QString que, QString ans );
 		QJsonObject ToJsonObject();
 
 		QString GetQuestion() const { return _que; }
 		QString GetAnswer() const { return _ans; }
 		u_int8_t GetFlag() const { return _flag; }
-		void SetFlag(u_int8_t flag) { _flag = flag; }
+		void SetFlag( u_int8_t flag ) { _flag = flag; }
 	private:
 		QString _que;
 		QString _ans;
@@ -30,18 +30,19 @@ namespace uns {
 
 	class ucDictionary { // Класс хранящий словарь
 	public:
-		void Init(QByteArray raw_file);
+		void Init( QByteArray raw_file );
 		void Clear();
-		void AddElement(QString que, QString ans);
+		void AddElement( QString que, QString ans );
 		void CleanFlags();
 		QJsonObject ToJsonObject();
 		QByteArray ToByteArray();
 
 		int GetLength() const { return _dict.size(); }
-		QString GetQuestion(int index) const { return _dict.at(index).GetQuestion(); }
-		QString GetAnswer(int index) const { return _dict.at(index).GetAnswer(); }
-		u_int8_t GetFlag(int index) const { return _dict.at(index).GetFlag(); }
-		void SetFlag(int index, u_int8_t flag) { _dict[index].SetFlag(flag); }
+		QString GetQuestion( int index ) const { return _dict.at( index ).GetQuestion(); }
+		QString GetAnswer( int index ) const { return _dict.at( index ).GetAnswer(); }
+		u_int8_t GetFlag( int index ) const { return _dict.at( index ).GetFlag(); }
+		void SetFlag( int index, u_int8_t flag ) { _dict[index].SetFlag( flag ); }
+		void DeleteElement( int index ) { _dict.removeAt( index ); }
 	private:
 		QList<ucQuestion> _dict;
 	};
@@ -50,7 +51,7 @@ namespace uns {
 	private:
 		ucDictionary            _data;       // Класс хранящий все имеющиеся слова
 		int                     _counter;    // Количество выведеных строк
-		int                     index;       // Номер текущей строки
+		int                     _index;      // Номер текущей строки
 		QFile                   file;        // Подключаемый файл
         bool                    _fileIsOpen; // Флаг открытого файла
         QString                 _filename;   // Будем хранить имя открытого файла, чтобы можно было сохранить изменения
@@ -60,14 +61,19 @@ namespace uns {
 		void                    ClearTest();
 		int                     OpenFile( const char filename[] );
 		bool                    ReadFile();
+		bool                    SaveFile();
 		void                    Init();
 		int                     NewWord();
 		int                     MixNewWord();
-		QString                 GetQuestion() const { return _data.GetQuestion(index); };
-		QString                 GetAnswer() const { return _data.GetAnswer(index); };
+		void                    AddNewQue( QString que, QString ans ) { _data.AddElement( que, ans ); }
+		QString                 GetQuestion() const { return _data.GetQuestion( _index ); };
+		QString                 GetAnswer() const { return _data.GetAnswer( _index ); };
+		QString                 GetQuestion( int index ) const { return _data.GetQuestion( index ); };
+		QString                 GetAnswer( int index ) const { return _data.GetAnswer( index ); };
 		int                     GetCounter() { return _counter; }
 		int                     GetLength() const { return _data.GetLength(); }
-		char                    GetFlag() { return _data.GetFlag(index); }
+		char                    GetFlag() const { return _data.GetFlag( _index ); }
+		void                    DeleteQue( int index ) { _data.DeleteElement( index ); }
 		bool                    FileIsOpen() { return _fileIsOpen; }
 		                        ~ucTestMaker();
 	};
