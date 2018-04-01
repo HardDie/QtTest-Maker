@@ -1,6 +1,7 @@
 #include "uitestmaker.h"
 
 void ucUiTestMaker::InitMainMenu() {
+	QLabel       *  labelVersion;
 	QPushButton  *  buttonQueAns;
 	QPushButton  *  buttonAnsQue;
 	QPushButton  *  buttonMix;
@@ -12,6 +13,7 @@ void ucUiTestMaker::InitMainMenu() {
 	QPushButton  *  buttonManageDict;
 	QLabel       *  labelFreeLine;
 
+	labelVersion       = new QLabel( VERSION );
 	buttonQueAns       = new QPushButton( "Question -> Answer" );
 	buttonAnsQue       = new QPushButton( "Answer -> Question" );
 	buttonMix          = new QPushButton( "Mix" );
@@ -22,9 +24,12 @@ void ucUiTestMaker::InitMainMenu() {
 	buttonNewFile      = new QPushButton( "Open new file" );
 	buttonExit         = new QPushButton( "Exit" );
 	labelFreeLine      = new QLabel( "" );
+
+	labelVersion->setAlignment( Qt::AlignHCenter );
 	
 	QWidget* widgetMainMenu = new QWidget;
 	QVBoxLayout* layoutMainMenu = new QVBoxLayout;
+	layoutMainMenu->addWidget( labelVersion );
 	layoutMainMenu->addWidget( buttonQueAns );
 	layoutMainMenu->addWidget( buttonAnsQue );
 	layoutMainMenu->addWidget( buttonMix );

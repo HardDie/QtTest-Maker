@@ -1,6 +1,8 @@
 #ifndef TESTMAKER_H
 #define TESTMAKER_H
 
+#define VERSION "TestMaker v1.0"
+
 #include <QWidget>
 #include <QPushButton>
 #include <QLineEdit>
