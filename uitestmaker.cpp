@@ -88,6 +88,11 @@ void ucUiTestMaker::SlotQueAns() {
 		SlotMenu();
 		return;
 	}
+	if ( testInterface.GetLength() == 0 ) {
+		QMessageBox::information( this, "Empty", "Dictionary is empty!\nAdd at least one question in \"Manage dictionary\"" );
+		SlotMenu();
+		return;
+	}
 	switch ( currentState ) {
 	case STATE_INIT:
 		stackedWidget->setCurrentIndex( 1 );
@@ -122,6 +127,11 @@ void ucUiTestMaker::SlotAnsQue() {
 		SlotMenu();
 		return;
 	}
+	if ( testInterface.GetLength() == 0 ) {
+		QMessageBox::information( this, "Empty", "Dictionary is empty!\nAdd at least one question in \"Manage dictionary\"" );
+		SlotMenu();
+		return;
+	}
 	switch ( currentState ) {
 	case STATE_INIT:
 		stackedWidget->setCurrentIndex( 1 );
@@ -153,6 +163,11 @@ void ucUiTestMaker::SlotMix() {
 	QString tmpStringForOutput;
 	if ( testInterface.FileIsOpen() == false ) {
 		QMessageBox::critical( this, "Error", "Test not open!" );
+		SlotMenu();
+		return;
+	}
+	if ( testInterface.GetLength() == 0 ) {
+		QMessageBox::information( this, "Empty", "Dictionary is empty!\nAdd at least one question in \"Manage dictionary\"" );
 		SlotMenu();
 		return;
 	}
@@ -211,6 +226,11 @@ void ucUiTestMaker::SlotTypeQueAns() {
 		SlotMenu();
 		return;
 	}
+	if ( testInterface.GetLength() == 0 ) {
+		QMessageBox::information( this, "Empty", "Dictionary is empty!\nAdd at least one question in \"Manage dictionary\"" );
+		SlotMenu();
+		return;
+	}
 	switch ( currentState ) {
 	case STATE_INIT:
 		stackedWidget->setCurrentIndex( 2 );
@@ -253,6 +273,11 @@ void ucUiTestMaker::SlotTypeAnsQue() {
 		SlotMenu();
 		return;
 	}
+	if ( testInterface.GetLength() == 0 ) {
+		QMessageBox::information( this, "Empty", "Dictionary is empty!\nAdd at least one question in \"Manage dictionary\"" );
+		SlotMenu();
+		return;
+	}
 	switch ( currentState ) {
 	case STATE_INIT:
 		stackedWidget->setCurrentIndex( 2 );
@@ -292,6 +317,11 @@ void ucUiTestMaker::SlotTypeMix() {
 	QString tmpStringForOutput;
 	if ( testInterface.FileIsOpen() == false ) {
 		QMessageBox::critical( this, "Error", "Test not open!" );
+		SlotMenu();
+		return;
+	}
+	if ( testInterface.GetLength() == 0 ) {
+		QMessageBox::information( this, "Empty", "Dictionary is empty!\nAdd at least one question in \"Manage dictionary\"" );
 		SlotMenu();
 		return;
 	}
