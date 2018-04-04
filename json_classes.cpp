@@ -7,7 +7,7 @@ namespace uns {
 	* Description: Конструктор для обьекта вопроса, на вход подается
 	* json обеьект
 	*/
-	ucQuestion::ucQuestion(QJsonObject json_obj) {
+	ucQuestion::ucQuestion( QJsonObject json_obj ) {
 		_que = json_obj.value("que").toString();
 		_ans = json_obj.value("ans").toString();
 	}
@@ -17,7 +17,7 @@ namespace uns {
 	* Description: Конструктор для обьекта вопроса, на вход подается две строки
 	* вопрос и ответ
 	*/
-	ucQuestion::ucQuestion(QString que, QString ans) {
+	ucQuestion::ucQuestion( QString que, QString ans ) {
 		_que = que;
 		_ans = ans;
 	}
@@ -39,7 +39,7 @@ namespace uns {
 	* Description: Парсит считанный json файл в обекты вопросов,
 	* на вход подается бинарный считаный файл
 	*/
-	bool ucDictionary::Init(QByteArray raw_file) {
+	bool ucDictionary::Init( QByteArray raw_file ) {
 		QJsonDocument json_doc = QJsonDocument::fromJson(raw_file);
 		if (json_doc.isNull()) {
 			return false;
@@ -54,30 +54,13 @@ namespace uns {
 	}
 
 	/*
-	* Name: Clear
-	* Description: Очищает все обьекты
-	*/
-	void ucDictionary::Clear() {
-		_dict.clear();
-	}
-
-	/*
-	* Name: AddElement
-	* Description: Позволяет в базу добавить обьект,
-	* на вход подается две строки вопрос и ответ
-	*/
-	void ucDictionary::AddElement(QString que, QString ans) {
-		_dict.append(ucQuestion(que, ans));
-	}
-
-	/*
 	* Name: CleanFlags
 	* Description: Проходится по массиву обьектов и выставляет
 	* флаги в значение 0
 	*/
 	void ucDictionary::CleanFlags() {
 		for (int j = 0; j < _dict.size(); j++) {
-			_dict[j].SetFlag(0);
+			_dict[j]._flag = 0;
 		}
 	}
 

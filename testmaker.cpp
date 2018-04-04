@@ -27,11 +27,11 @@ namespace uns {
 	* Description: Проверяет доступен ли файл
 	*/
 	int ucTestMaker::CheckFile( QString filename ) {
-		file.setFileName( filename );
-		if ( !file.open( QIODevice::ReadOnly ) ) {
+		_file.setFileName( filename );
+		if ( !_file.open( QIODevice::ReadOnly ) ) {
 			return -1;
 		}
-		file.close();
+		_file.close();
 		return 0;
 	}
 
@@ -40,10 +40,10 @@ namespace uns {
 	* Description: Считывает все строки из файла, в случае если из файла считалась хотя бы одно строка, возвращается true
 	*/
 	bool ucTestMaker::ReadFile( QString filename ) {
-		file.setFileName( filename );
-		file.open( QIODevice::ReadOnly );
-		QString data = file.readAll();
-		file.close();
+		_file.setFileName( filename );
+		_file.open( QIODevice::ReadOnly );
+		QString data = _file.readAll();
+		_file.close();
 		if ( !_data.Init( data.toUtf8() ) ) {
 			_filename = "";
 			_fileIsOpen = false;
@@ -59,13 +59,13 @@ namespace uns {
 	*/
 	bool ucTestMaker::SaveFile() {
 		if ( _fileIsOpen && _filename != "" ) {
-			file.setFileName( _filename );
-			if ( !file.open( QIODevice::WriteOnly ) ) {
+			_file.setFileName( _filename );
+			if ( !_file.open( QIODevice::WriteOnly ) ) {
 				_filename = "";
 				return false;
 			}
-			file.write( _data.ToByteArray() );
-			file.close();
+			_file.write( _data.ToByteArray() );
+			_file.close();
 		} else {
 			return false;
 		}
