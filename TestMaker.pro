@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp \
     uitestmaker.cpp \
     testmaker.cpp \
-    initwidgets.cpp
+    initwidgets.cpp \
+    json_classes.cpp
 
 HEADERS  += \
     uitestmaker.h \
-    testmaker.h
+    testmaker.h \
+    json_classes.h
 
 CONFIG += mobility
 MOBILITY = 

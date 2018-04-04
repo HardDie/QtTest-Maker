@@ -4,48 +4,10 @@
 #include <time.h>
 #include <QLineEdit> // Для ::fromVariant
 #include <QFile>
-#include <QJsonDocument>
-#include <QJsonValue>
-#include <QJsonObject>
-#include <QJsonArray>
+#include <QList>
+#include "json_classes.h"
 
-const int SIZE = 1024;
 namespace uns {
-
-	class ucQuestion { // Класс одной пары вопрос-ответ
-	public:
-		ucQuestion( QJsonObject json_obj );
-		ucQuestion( QString que, QString ans );
-		QJsonObject ToJsonObject();
-
-		QString GetQuestion() const { return _que; }
-		QString GetAnswer() const { return _ans; }
-		u_int8_t GetFlag() const { return _flag; }
-		void SetFlag( u_int8_t flag ) { _flag = flag; }
-	private:
-		QString _que;
-		QString _ans;
-		u_int8_t _flag;
-	};
-
-	class ucDictionary { // Класс хранящий словарь
-	public:
-		bool Init( QByteArray raw_file );
-		void Clear();
-		void AddElement( QString que, QString ans );
-		void CleanFlags();
-		QJsonObject ToJsonObject();
-		QByteArray ToByteArray();
-
-		int GetLength() const { return _dict.size(); }
-		QString GetQuestion( int index ) const { return _dict.at( index ).GetQuestion(); }
-		QString GetAnswer( int index ) const { return _dict.at( index ).GetAnswer(); }
-		u_int8_t GetFlag( int index ) const { return _dict.at( index ).GetFlag(); }
-		void SetFlag( int index, u_int8_t flag ) { _dict[index].SetFlag( flag ); }
-		void DeleteElement( int index ) { _dict.removeAt( index ); }
-	private:
-		QList<ucQuestion> _dict;
-	};
 
 	class ucTestMaker {
 	private:
@@ -66,15 +28,15 @@ namespace uns {
 		int                     NewWord();
 		int                     MixNewWord();
 		void                    AddNewQue( QString que, QString ans ) { _data.AddElement( que, ans ); }
-		QString                 GetQuestion() const { return _data.GetQuestion( _index ); };
-		QString                 GetAnswer() const { return _data.GetAnswer( _index ); };
-		QString                 GetQuestion( int index ) const { return _data.GetQuestion( index ); };
-		QString                 GetAnswer( int index ) const { return _data.GetAnswer( index ); };
-		int                     GetCounter() { return _counter; }
-		int                     GetLength() const { return _data.GetLength(); }
-		char                    GetFlag() const { return _data.GetFlag( _index ); }
+
+		int                     GetCounter()             const { return _counter; }
+		int                     GetLength()              const { return _data.GetLength(); }
+		char                    GetFlag()                const { return _data.GetFlag( _index ); }
+		bool                    FileIsOpen()             const { return _fileIsOpen; }
+		QString                 GetQuestion( int index = -1 ) const;
+		QString                 GetAnswer( int index = -1 )   const;
+
 		void                    DeleteQue( int index ) { _data.DeleteElement( index ); }
-		bool                    FileIsOpen() { return _fileIsOpen; }
 		void                    ForceSetFile( QString filename ) { _filename = filename; _fileIsOpen = true; };
 		                        ~ucTestMaker();
 	};
