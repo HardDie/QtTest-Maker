@@ -25,4 +25,3 @@ HEADERS  += \
 
 CONFIG += mobility
 MOBILITY = 
-
