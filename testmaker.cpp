@@ -20,6 +20,8 @@ namespace uns {
 		_data.Clear();
 		_counter = 0;
 		_index = -1;
+		_fileIsOpen = false;
+		_filename = "";
 	}
 
 	/*
@@ -114,6 +116,18 @@ namespace uns {
 		}
 		_counter++;
 		return 0;
+	}
+
+	/*
+	* Name: InitEmptyFile
+	* Description: Инициализирует пустой файл после его создания и записывает
+	* минимальные данные
+	*/
+	void ucTestMaker::InitEmptyFile( QString filename ) {
+		_fileIsOpen = true;
+		_filename = filename;
+		SaveFile();
+		ClearTest();
 	}
 
 	ucTestMaker::~ucTestMaker() {

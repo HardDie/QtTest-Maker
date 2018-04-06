@@ -10,6 +10,7 @@ ucUiTestMaker::ucUiTestMaker( QWidget* parent ) : QDialog( parent ) {
 	outTextQueAns    =  new QTextEdit;
 	outTextType      =  new QTextEdit;
 	outTextDict      =  new QListWidget;
+	outFileList      =  new QListWidget;
 	// Инициализация линии ввода ответа
 	inTextType       =  new QLineEdit;
 	inTextDict[0]    =  new QLineEdit;
@@ -21,8 +22,13 @@ ucUiTestMaker::ucUiTestMaker( QWidget* parent ) : QDialog( parent ) {
 	outTextType->setReadOnly( true );
 	outTextType->setFontPointSize( 15 );
 
-	SlotNewFile();
+#if (defined Q_OS_WIN) || (defined Q_OS_LINUX)
+#else
+	pathToDict = "/mnt/sdcard/dictionary/";
+#endif
+
 	InitAllObjects();
+	SlotNewFile();
 	currentState = STATE_INIT;
 }
 
@@ -44,6 +50,7 @@ void ucUiTestMaker::InitAllObjects() {
 	InitNextWord();
 	InitTypeAns();
 	InitSetupDict();
+	InitOpenNewFile();
 
 	QVBoxLayout* layoutMain = new QVBoxLayout;
 	layoutMain->addWidget( stackedWidget );
@@ -413,15 +420,17 @@ void ucUiTestMaker::SlotNext() {
 	}
 }
 
-static bool CreateFile( QString filename ) {
-	QFile file;
-	file.setFileName( filename );
-	if ( !file.open( QIODevice::WriteOnly ) ) {
-		QMessageBox::critical( NULL, "Error", "Can't create file" );
-		exit( -1 );
+static void RedrawFilesList( QString pathToDict,
+                             QListWidget* outFileList ) {
+	QDir dir( pathToDict );
+	dir.setFilter( QDir::Files );
+
+	outFileList->clear();
+	QFileInfoList list = dir.entryInfoList();
+	for (int i = 0; i < list.size(); i++) {
+		QFileInfo fileInfo = list.at( i );
+		outFileList->addItem( fileInfo.fileName() );
 	}
-	file.close();
-	return true;
 }
 
 void ucUiTestMaker::SlotNewFile() {
@@ -443,26 +452,83 @@ void ucUiTestMaker::SlotNewFile() {
 		break;
 	}
 #else
-	QString filename = "/mnt/sdcard/dictionary.json";
-	if ( testInterface.CheckFile( filename ) ) {
+	if ( !QDir( pathToDict ).exists() ) {
 		QMessageBox::StandardButton ans;
-		ans = QMessageBox::question( this, "New save", "Can't find save file, do you want create new?" );
+		ans = QMessageBox::question( this, "New save", "Can't find save folder, do you want create new?\n" + pathToDict );
 		if ( ans == QMessageBox::Yes ) {
-			CreateFile( filename );
-			testInterface.ForceSetFile( filename );
-			testInterface.SaveFile();
+			QDir().mkdir( pathToDict );
 		} else {
 			exit( -1 );
 		}
-	} else {
+	}
+
+	if ( outFileList->currentRow() == -1 ) {
 		testInterface.ClearTest();
-		testInterface.ReadFile( filename );
+		stackedWidget->setCurrentIndex( 4 );
+		RedrawFilesList( pathToDict, outFileList );
+	} else {
+		QString filename = outFileList->currentItem()->text();
+		if ( testInterface.CheckFile( pathToDict + filename ) == -1 ) {
+			QMessageBox::critical( this, "Error", "File is not available!" );
+			return;
+		}
+		if ( testInterface.ReadFile( pathToDict + filename ) == false ) {
+			QMessageBox::critical( this, "Error", "File wrong!" );
+			return;
+		}
+		SlotMenu();
+		outFileList->clear();
 	}
 #endif
 }
 
+void ucUiTestMaker::SlotDeleteFile() {
+	if ( outFileList->currentRow() == -1 ) {
+		return;
+	}
+
+	QString filename = outFileList->currentItem()->text();
+
+	QMessageBox::StandardButton ans;
+	ans = QMessageBox::question( this, "Delete file", "Are you sure what you wand delete \"" + filename +  "\" save file?" );
+	if ( ans == QMessageBox::No ) {
+		return;
+	}
+
+	QFile file( pathToDict + filename );
+	file.remove();
+	RedrawFilesList( pathToDict, outFileList );
+}
+
+void ucUiTestMaker::SlotCreateFile() {
+	bool ok;
+	QString filename = QInputDialog::getText(this, tr("Create new dictionary"), tr("File name:"), QLineEdit::Normal, "", &ok);
+	if ( !ok ) {
+		return;
+	}
+	if ( filename.isEmpty() ) {
+		QMessageBox::information( this, "Wrong name", "File name is empty." );
+		return;
+	}
+
+	filename += ".json";
+	QFile file( pathToDict + filename );
+	if ( file.exists() ) {
+		QMessageBox::information( this, "Wrong name", "File with name \"" + filename + "\" already exist.\nChoose another name or delete exist file." );
+		return;
+	}
+
+	if ( !file.open( QIODevice::WriteOnly ) ) {
+		QMessageBox::critical( this, "Error", "Can't create file" );
+		return;
+	}
+	file.close();
+	testInterface.InitEmptyFile( pathToDict + filename );
+	RedrawFilesList( pathToDict, outFileList );
+}
+
 static void RedrawWordsList( uns::ucTestMaker* testInterface,
-                             QListWidget* outTextDict) {
+                             QListWidget* outTextDict ) {
 	outTextDict->clear();
 	for ( int i = 0; i < testInterface->GetLength(); i++ ) {
 		outTextDict->addItem( testInterface->GetQuestion( i ) + " - " +

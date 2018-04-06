@@ -37,7 +37,7 @@ namespace uns {
 		QString                 GetAnswer( int index = -1 )   const;
 
 		void                    DeleteQue( int index ) { _data.DeleteElement( index ); }
-		void                    ForceSetFile( QString filename ) { _filename = filename; _fileIsOpen = true; };
+		void                    InitEmptyFile( QString filename );
 		                        ~ucTestMaker();
 	};
 

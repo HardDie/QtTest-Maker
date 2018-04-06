@@ -26,7 +26,7 @@ void ucUiTestMaker::InitMainMenu() {
 	labelFreeLine      = new QLabel( "" );
 
 	labelVersion->setAlignment( Qt::AlignHCenter );
-	
+
 	QWidget* widgetMainMenu = new QWidget;
 	QVBoxLayout* layoutMainMenu = new QVBoxLayout;
 	layoutMainMenu->addWidget( labelVersion );
@@ -179,4 +179,38 @@ void ucUiTestMaker::InitSetupDict() {
 	connect( buttonMainMenu,  SIGNAL( clicked( bool ) ), this, SLOT( SlotMenu() ) );
 
 	stackedWidget->addWidget( widgetManageDict );
+}
+
+void ucUiTestMaker::InitOpenNewFile() {
+	QLabel       *  labelTitle;
+	QPushButton  *  buttonOpen;
+	QPushButton  *  buttonCreate;
+	QPushButton  *  buttonDelete;
+	QPushButton  *  buttonExit;
+	QLabel       *  labelFreeLine;
+
+	labelTitle         = new QLabel( "Select a test from existing or create a new one:" );
+	buttonOpen         = new QPushButton( "Open" );
+	buttonCreate       = new QPushButton( "Create" );
+	buttonDelete       = new QPushButton( "Delete" );
+	buttonExit         = new QPushButton( "Exit" );
+	labelFreeLine      = new QLabel( "" );
+
+	QWidget* widgetOpenNewFile = new QWidget;
+	QVBoxLayout* layoutOpenNewFile = new QVBoxLayout;
+	layoutOpenNewFile->addWidget( labelTitle );
+	layoutOpenNewFile->addWidget( outFileList );
+		layoutOpenNewFile->addWidget( labelFreeLine );
+	layoutOpenNewFile->addWidget( buttonOpen );
+	layoutOpenNewFile->addWidget( buttonCreate );
+	layoutOpenNewFile->addWidget( buttonDelete );
+	layoutOpenNewFile->addWidget( buttonExit );
+	widgetOpenNewFile->setLayout( layoutOpenNewFile );
+
+	connect( buttonOpen,      SIGNAL( clicked( bool ) ), this, SLOT( SlotNewFile() ) );
+	connect( buttonDelete,    SIGNAL( clicked( bool ) ), this, SLOT( SlotDeleteFile() ) );
+	connect( buttonCreate,    SIGNAL( clicked( bool ) ), this, SLOT( SlotCreateFile() ) );
+	connect( buttonExit,      SIGNAL( clicked( bool ) ), this, SLOT( close() ) );
+
+	stackedWidget->addWidget( widgetOpenNewFile );
 }

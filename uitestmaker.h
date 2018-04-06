@@ -13,6 +13,8 @@
 #include <QTextEdit>
 #include <QFileDialog>
 #include <QListWidget>
+#include <QInputDialog>
+#include <QDir>
 #include "testmaker.h"
 
 enum test_t{
@@ -44,8 +46,10 @@ private:
 	QTextEdit       *   outTextQueAns;
 	QTextEdit       *   outTextType;
 	QListWidget     *   outTextDict;
+	QListWidget     *   outFileList;
 	QLineEdit       *   inTextType;
 	QLineEdit       *   inTextDict[2];
+	QString             pathToDict;
 
 	// Делаем кнопку глобальной, чтобы можно было сделать ее активной по умолчанию
 	QPushButton     *   buttonCheck;
@@ -61,6 +65,7 @@ private:
 	void InitNextWord();
 	void InitTypeAns();
 	void InitSetupDict();
+	void InitOpenNewFile();
 
 private slots:
 	void SlotMenu();
@@ -75,6 +80,8 @@ private slots:
 	void SlotIncreaseFont();
 	void SlotSkipWord();
 	void SlotNewFile();
+	void SlotDeleteFile();
+	void SlotCreateFile();
 	void SlotManageDict();
 	void SlotAddNewQue();
 	void SlotDeleteQue();
