@@ -22,10 +22,11 @@ ucUiTestMaker::ucUiTestMaker( QWidget* parent ) : QDialog( parent ) {
 	outTextType->setReadOnly( true );
 	outTextType->setFontPointSize( 15 );
 
+	// Путь до директории в которой хранятся все тесты
 	pathToDict = "/mnt/sdcard/.dictionary/";
 
 	InitAllObjects();
-	SlotNewFile();
+	SlotOpenNewFile();
 	currentState = STATE_INIT;
 }
 
@@ -54,37 +55,7 @@ void ucUiTestMaker::InitAllObjects() {
 	setLayout( layoutMain );
 }
 
-static void ChangeFontSize( QTextEdit *textEdit, int diff ) {
-	qreal size = textEdit->fontPointSize();
-	size += diff;
-	if ( size <= 10 ) size = 10;
-	if ( size > 50 ) size = 50;
-	textEdit->setFontPointSize( size );
-	// Сделано, для обновления текста в окне после изменения шрифта
-	QString tmp = textEdit->toPlainText();
-	textEdit->setText( tmp );
-}
-
-void ucUiTestMaker::SlotDecreaseFont() {
-	ChangeFontSize(outTextQueAns, -5);
-	ChangeFontSize(outTextType, -5);
-}
-
-void ucUiTestMaker::SlotIncreaseFont() {
-	ChangeFontSize(outTextQueAns, 5);
-	ChangeFontSize(outTextType, 5);
-}
-
-void ucUiTestMaker::SlotSkipWord() {
-	currentState = STATE_FIRST_STEP;
-	SlotNext();
-}
-
-void ucUiTestMaker::SlotMenu() {
-	stackedWidget->setCurrentIndex( 0 );
-	currentState = STATE_INIT;
-}
-
+/* ##### Тест: просмотр ##### */
 void ucUiTestMaker::SlotQueAns() {
 	QString tmpStringForOutput;
 	if ( testInterface.FileIsOpen() == false ) {
@@ -99,8 +70,8 @@ void ucUiTestMaker::SlotQueAns() {
 	}
 	switch ( currentState ) {
 	case STATE_INIT:
-		stackedWidget->setCurrentIndex( 1 );
-		testInterface.Init();
+		stackedWidget->setCurrentIndex( WIDGET_SHOW_TEST );
+		testInterface.ClearFlags();
 		currentState = STATE_FIRST_STEP;
 		currenteTest = TEST_QA;
 		SlotNext();
@@ -123,7 +94,6 @@ void ucUiTestMaker::SlotQueAns() {
 		break;
 	}
 }
-
 void ucUiTestMaker::SlotAnsQue() {
 	QString tmpStringForOutput;
 	if ( testInterface.FileIsOpen() == false ) {
@@ -138,8 +108,8 @@ void ucUiTestMaker::SlotAnsQue() {
 	}
 	switch ( currentState ) {
 	case STATE_INIT:
-		stackedWidget->setCurrentIndex( 1 );
-		testInterface.Init();
+		stackedWidget->setCurrentIndex( WIDGET_SHOW_TEST );
+		testInterface.ClearFlags();
 		currentState = STATE_FIRST_STEP;
 		currenteTest = TEST_AQ;
 		SlotNext();
@@ -162,7 +132,6 @@ void ucUiTestMaker::SlotAnsQue() {
 		break;
 	}
 }
-
 void ucUiTestMaker::SlotMix() {
 	QString tmpStringForOutput;
 	if ( testInterface.FileIsOpen() == false ) {
@@ -177,8 +146,8 @@ void ucUiTestMaker::SlotMix() {
 	}
 	switch ( currentState ) {
 	case STATE_INIT:
-		stackedWidget->setCurrentIndex( 1 );
-		testInterface.Init();
+		stackedWidget->setCurrentIndex( WIDGET_SHOW_TEST );
+		testInterface.ClearFlags();
 		currentState = STATE_FIRST_STEP;
 		currenteTest = TEST_MIX;
 		SlotNext();
@@ -223,6 +192,7 @@ void ucUiTestMaker::SlotMix() {
 	}
 }
 
+/* ##### Тест: набор ##### */
 void ucUiTestMaker::SlotTypeQueAns() {
 	QString tmpStringForOutput;
 	if ( testInterface.FileIsOpen() == false ) {
@@ -237,8 +207,8 @@ void ucUiTestMaker::SlotTypeQueAns() {
 	}
 	switch ( currentState ) {
 	case STATE_INIT:
-		stackedWidget->setCurrentIndex( 2 );
-		testInterface.Init();
+		stackedWidget->setCurrentIndex( WIDGET_TYPE_TEST );
+		testInterface.ClearFlags();
 		currentState = STATE_FIRST_STEP;
 		currenteTest = TEST_TYPEQUESTION;
 		buttonCheck->setDefault(true);
@@ -269,7 +239,6 @@ void ucUiTestMaker::SlotTypeQueAns() {
 		break;
 	}
 }
-
 void ucUiTestMaker::SlotTypeAnsQue() {
 	QString tmpStringForOutput;
 	if ( testInterface.FileIsOpen() == false ) {
@@ -284,8 +253,8 @@ void ucUiTestMaker::SlotTypeAnsQue() {
 	}
 	switch ( currentState ) {
 	case STATE_INIT:
-		stackedWidget->setCurrentIndex( 2 );
-		testInterface.Init();
+		stackedWidget->setCurrentIndex( WIDGET_TYPE_TEST );
+		testInterface.ClearFlags();
 		currentState = STATE_FIRST_STEP;
 		currenteTest = TEST_TYPEANSWER;
 		buttonCheck->setDefault(true);
@@ -316,7 +285,6 @@ void ucUiTestMaker::SlotTypeAnsQue() {
 		break;
 	}
 }
-
 void ucUiTestMaker::SlotTypeMix() {
 	QString tmpStringForOutput;
 	if ( testInterface.FileIsOpen() == false ) {
@@ -331,8 +299,8 @@ void ucUiTestMaker::SlotTypeMix() {
 	}
 	switch ( currentState ) {
 	case STATE_INIT:
-		stackedWidget->setCurrentIndex( 2 );
-		testInterface.Init();
+		stackedWidget->setCurrentIndex( WIDGET_TYPE_TEST );
+		testInterface.ClearFlags();
 		currentState = STATE_FIRST_STEP;
 		currenteTest = TEST_TYPEMIX;
 		buttonCheck->setDefault(true);
@@ -392,6 +360,17 @@ void ucUiTestMaker::SlotTypeMix() {
 	}
 }
 
+/* ##### Слоты управления ##### */
+static void ChangeFontSize( QTextEdit *textEdit, int diff ) {
+	qreal size = textEdit->fontPointSize();
+	size += diff;
+	if ( size <= 10 ) size = 10;
+	if ( size > 50 ) size = 50;
+	textEdit->setFontPointSize( size );
+	// Сделано, для обновления текста в окне после изменения шрифта
+	QString tmp = textEdit->toPlainText();
+	textEdit->setText( tmp );
+}
 void ucUiTestMaker::SlotNext() {
 	switch( currenteTest ) {
 	case TEST_QA:
@@ -416,7 +395,24 @@ void ucUiTestMaker::SlotNext() {
 		break;
 	}
 }
+void ucUiTestMaker::SlotMenu() {
+	stackedWidget->setCurrentIndex( WIDGET_MAIN_MENU );
+	currentState = STATE_INIT;
+}
+void ucUiTestMaker::SlotDecreaseFont() {
+	ChangeFontSize(outTextQueAns, -5);
+	ChangeFontSize(outTextType, -5);
+}
+void ucUiTestMaker::SlotIncreaseFont() {
+	ChangeFontSize(outTextQueAns, 5);
+	ChangeFontSize(outTextType, 5);
+}
+void ucUiTestMaker::SlotSkipWord() {
+	currentState = STATE_FIRST_STEP;
+	SlotNext();
+}
 
+/* ##### Открытие нового файла ##### */
 static void RedrawFilesList( QString pathToDict,
                              QListWidget* outFileList ) {
 	QDir dir( pathToDict );
@@ -429,9 +425,8 @@ static void RedrawFilesList( QString pathToDict,
 		outFileList->addItem( fileInfo.fileName() );
 	}
 }
-
-void ucUiTestMaker::SlotNewFile() {
-#if defined Q_OS_ANDROID
+void ucUiTestMaker::SlotOpenNewFile() {
+	#if defined ANDROID
 	if ( !QDir( pathToDict ).exists() ) {
 		QMessageBox::StandardButton ans;
 		ans = QMessageBox::question( this, "New save", "Can't find save folder, do you want create new?\n" + pathToDict );
@@ -444,7 +439,7 @@ void ucUiTestMaker::SlotNewFile() {
 
 	if ( outFileList->currentRow() == -1 ) {
 		testInterface.ClearTest();
-		stackedWidget->setCurrentIndex( 4 );
+		stackedWidget->setCurrentIndex( WIDGET_OPEN_FILE );
 		RedrawFilesList( pathToDict, outFileList );
 	} else {
 		QString filename = outFileList->currentItem()->text();
@@ -459,7 +454,7 @@ void ucUiTestMaker::SlotNewFile() {
 		SlotMenu();
 		outFileList->clear();
 	}
-#else
+	#else
 	while ( true ) {
 		QString path = QFileDialog::getOpenFileName(0, QObject::tr("Choose file with words"),
 		                                            QDir::homePath(), QObject::tr("Text file (*.json);;All (*.*)"), 0,
@@ -476,11 +471,11 @@ void ucUiTestMaker::SlotNewFile() {
 		}
 		break;
 	}
-#endif
+	#endif
 }
-
 void ucUiTestMaker::SlotDeleteFile() {
 	if ( outFileList->currentRow() == -1 ) {
+		QMessageBox::information( this, "Choose file", "You should choose file for delete" );
 		return;
 	}
 
@@ -496,7 +491,6 @@ void ucUiTestMaker::SlotDeleteFile() {
 	file.remove();
 	RedrawFilesList( pathToDict, outFileList );
 }
-
 void ucUiTestMaker::SlotCreateFile() {
 	bool ok;
 	QString filename = QInputDialog::getText(this, tr("Create new dictionary"), tr("File name:"), QLineEdit::Normal, "", &ok);
@@ -524,6 +518,7 @@ void ucUiTestMaker::SlotCreateFile() {
 	RedrawFilesList( pathToDict, outFileList );
 }
 
+/* ##### Управление словарем ##### */
 static void RedrawWordsList( uns::ucTestMaker* testInterface,
                              QListWidget* outTextDict ) {
 	outTextDict->clear();
@@ -532,17 +527,15 @@ static void RedrawWordsList( uns::ucTestMaker* testInterface,
 		                      testInterface->GetAnswer( i ) );
 	}
 }
-
 void ucUiTestMaker::SlotManageDict() {
 	QString tmpStringForOutput;
-	stackedWidget->setCurrentIndex( 3 );
+	stackedWidget->setCurrentIndex( WIDGET_DICT_MANAGE );
 	RedrawWordsList( &testInterface, outTextDict );
 }
-
-void ucUiTestMaker::SlotAddNewQue() {
+void ucUiTestMaker::SlotAddNewQuestion() {
 	if ( inTextDict[0]->text() != "" &&
 	    inTextDict[1]->text() != "" ) {
-		testInterface.AddNewQue( inTextDict[0]->text(), inTextDict[1]->text() );
+		testInterface.AddNewQuestion( inTextDict[0]->text(), inTextDict[1]->text() );
 		inTextDict[0]->setText( "" );
 		inTextDict[1]->setText( "" );
 		RedrawWordsList( &testInterface, outTextDict );
@@ -550,28 +543,25 @@ void ucUiTestMaker::SlotAddNewQue() {
 		QMessageBox::warning( this, "Warning", "Input box is empty" );
 	}
 }
-
-void ucUiTestMaker::SlotDeleteQue() {
+void ucUiTestMaker::SlotDeleteQuestion() {
 	if ( outTextDict->currentRow() != -1 ) {
-		testInterface.DeleteQue( outTextDict->currentRow() );
+		testInterface.DeleteQuestion( outTextDict->currentRow() );
 		RedrawWordsList( &testInterface, outTextDict );
 	} else {
 		QMessageBox::warning( this, "Warning", "Select line for delete" );
 	}
 }
-
-void ucUiTestMaker::SlotEditQue() {
+void ucUiTestMaker::SlotEditQuestion() {
 	if ( outTextDict->currentRow() != -1 ) {
 		inTextDict[0]->setText( testInterface.GetQuestion( outTextDict->currentRow() ) );
 		inTextDict[1]->setText( testInterface.GetAnswer( outTextDict->currentRow() ) );
-		testInterface.DeleteQue( outTextDict->currentRow() );
+		testInterface.DeleteQuestion( outTextDict->currentRow() );
 		RedrawWordsList( &testInterface, outTextDict );
 	} else {
 		QMessageBox::warning( this, "Warning", "Select line for edit" );
 	}
 }
-
-void ucUiTestMaker::SlotSave() {
+void ucUiTestMaker::SlotSaveDictionary() {
 	if ( testInterface.SaveFile() ) {
 		QMessageBox::information( this, "Succesfull", "Dictionary was saved" );
 	} else {

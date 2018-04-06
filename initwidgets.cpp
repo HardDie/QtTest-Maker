@@ -51,7 +51,7 @@ void ucUiTestMaker::InitMainMenu() {
 	connect( buttonTypeAnsQue, SIGNAL( clicked( bool ) ), this, SLOT( SlotTypeAnsQue() ) );
 	connect( buttonTypeMix,    SIGNAL( clicked( bool ) ), this, SLOT( SlotTypeMix() ) );
 	connect( buttonManageDict, SIGNAL( clicked( bool ) ), this, SLOT( SlotManageDict() ) );
-	connect( buttonNewFile,    SIGNAL( clicked( bool ) ), this, SLOT( SlotNewFile() ) );
+	connect( buttonNewFile,    SIGNAL( clicked( bool ) ), this, SLOT( SlotOpenNewFile() ) );
 	connect( buttonExit,       SIGNAL( clicked( bool ) ), this, SLOT( close() ) );
 
 	stackedWidget->addWidget( widgetMainMenu );
@@ -172,10 +172,10 @@ void ucUiTestMaker::InitSetupDict() {
 	layoutManageDict->addWidget( buttonMainMenu );
 	widgetManageDict->setLayout( layoutManageDict );
 
-	connect( buttonAddNewQue, SIGNAL( clicked( bool ) ), this, SLOT( SlotAddNewQue() ) );
-	connect( buttonEditQue,   SIGNAL( clicked( bool ) ), this, SLOT( SlotEditQue() ) );
-	connect( buttonDeleteQue, SIGNAL( clicked( bool ) ), this, SLOT( SlotDeleteQue() ) );
-	connect( buttonSave,      SIGNAL( clicked( bool ) ), this, SLOT( SlotSave() ) );
+	connect( buttonAddNewQue, SIGNAL( clicked( bool ) ), this, SLOT( SlotAddNewQuestion() ) );
+	connect( buttonEditQue,   SIGNAL( clicked( bool ) ), this, SLOT( SlotEditQuestion() ) );
+	connect( buttonDeleteQue, SIGNAL( clicked( bool ) ), this, SLOT( SlotDeleteQuestion() ) );
+	connect( buttonSave,      SIGNAL( clicked( bool ) ), this, SLOT( SlotSaveDictionary() ) );
 	connect( buttonMainMenu,  SIGNAL( clicked( bool ) ), this, SLOT( SlotMenu() ) );
 
 	stackedWidget->addWidget( widgetManageDict );
@@ -207,7 +207,7 @@ void ucUiTestMaker::InitOpenNewFile() {
 	layoutOpenNewFile->addWidget( buttonExit );
 	widgetOpenNewFile->setLayout( layoutOpenNewFile );
 
-	connect( buttonOpen,      SIGNAL( clicked( bool ) ), this, SLOT( SlotNewFile() ) );
+	connect( buttonOpen,      SIGNAL( clicked( bool ) ), this, SLOT( SlotOpenNewFile() ) );
 	connect( buttonDelete,    SIGNAL( clicked( bool ) ), this, SLOT( SlotDeleteFile() ) );
 	connect( buttonCreate,    SIGNAL( clicked( bool ) ), this, SLOT( SlotCreateFile() ) );
 	connect( buttonExit,      SIGNAL( clicked( bool ) ), this, SLOT( close() ) );

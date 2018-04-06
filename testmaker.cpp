@@ -1,10 +1,6 @@
 #include "testmaker.h"
 
 namespace uns {
-	/*
-	* Name: ucTestMaker
-	* Description: Конструктор
-	*/
 	ucTestMaker::ucTestMaker() {
 		_counter = 0;
 		_index = -1;
@@ -12,16 +8,8 @@ namespace uns {
 		_filename = "";
 	}
 
-	/*
-	* Name: ClearTest
-	* Description: Очищает тест
-	*/
-	void ucTestMaker::ClearTest() {
+	ucTestMaker::~ucTestMaker() {
 		_data.Clear();
-		_counter = 0;
-		_index = -1;
-		_fileIsOpen = false;
-		_filename = "";
 	}
 
 	/*
@@ -39,7 +27,8 @@ namespace uns {
 
 	/*
 	* Name: ReadFile
-	* Description: Считывает все строки из файла, в случае если из файла считалась хотя бы одно строка, возвращается true
+	* Description: Считывает все строки из файла, в случае если из файла
+	* считалась хотя бы одно строка, возвращается true
 	*/
 	bool ucTestMaker::ReadFile( QString filename ) {
 		_file.setFileName( filename );
@@ -56,8 +45,21 @@ namespace uns {
 	}
 
 	/*
+	* Name: InitEmptyFile
+	* Description: Инициализирует пустой файл после его создания и записывает
+	* минимальные данные
+	*/
+	void ucTestMaker::InitEmptyFile( QString filename ) {
+		_fileIsOpen = true;
+		_filename = filename;
+		SaveFile();
+		ClearTest();
+	}
+
+	/*
 	* Name: SaveFile
-	* Description: Все тесты сохраняются в файл, в случае удачной записи вернется true
+	* Description: Все тесты сохраняются в файл, в случае удачной записи вернется
+	* true
 	*/
 	bool ucTestMaker::SaveFile() {
 		if ( _fileIsOpen && _filename != "" ) {
@@ -75,10 +77,22 @@ namespace uns {
 	}
 
 	/*
-	* Name: Init
+	* Name: ClearTest
+	* Description: Очищает тест
+	*/
+	void ucTestMaker::ClearTest() {
+		_data.Clear();
+		_counter = 0;
+		_index = -1;
+		_fileIsOpen = false;
+		_filename = "";
+	}
+
+	/*
+	* Name: ClearFlags
 	* Description: Сбрасывает все флаги слов
 	*/
-	void ucTestMaker::Init() {
+	void ucTestMaker::ClearFlags() {
 		srand( ( unsigned int ) time( NULL ) );
 		_data.CleanFlags();
 		_counter = 0;
@@ -106,7 +120,8 @@ namespace uns {
 		if ( _counter == ( 2 * _data.GetLength() ) ) {
 			return 1;
 		}
-		while ( _data.GetFlag( _index = rand() % _data.GetLength() ) == 3 || _data.GetFlag( _index ) == 4 );
+		while ( _data.GetFlag( _index = rand() % _data.GetLength() ) == 3 ||
+		        _data.GetFlag( _index ) == 4 );
 		if ( _data.GetFlag( _index ) == 0 ) {
 			_data.SetFlag( _index, rand() % 2 + 1 );
 		} else if ( _data.GetFlag( _index ) == 1 ) {
@@ -119,21 +134,10 @@ namespace uns {
 	}
 
 	/*
-	* Name: InitEmptyFile
-	* Description: Инициализирует пустой файл после его создания и записывает
-	* минимальные данные
+	* Name: GetQuestion
+	* Description: Если на вход подан индекс, то вернется вопрос под этим номером
+	* иначе вернется вопрос под выбранным внутри индексом
 	*/
-	void ucTestMaker::InitEmptyFile( QString filename ) {
-		_fileIsOpen = true;
-		_filename = filename;
-		SaveFile();
-		ClearTest();
-	}
-
-	ucTestMaker::~ucTestMaker() {
-		_data.Clear();
-	}
-
 	QString ucTestMaker::GetQuestion( int index ) const {
 		if ( index >= 0 ) {
 			return _data.GetQuestion( index );
@@ -142,6 +146,11 @@ namespace uns {
 		}
 	}
 
+	/*
+	* Name: GetAnswer
+	* Description: Если на вход подан индекс, то вернется ответ под этим номером
+	* иначе вернется ответ под выбранным внутри индексом
+	*/
 	QString ucTestMaker::GetAnswer( int index ) const {
 		if ( index >= 0 ) {
 			return _data.GetAnswer( index );

@@ -17,7 +17,7 @@
 #include <QDir>
 #include "testmaker.h"
 
-enum test_t{
+enum test_t {
 	TEST_QA,
 	TEST_AQ,
 	TEST_MIX,
@@ -26,11 +26,19 @@ enum test_t{
 	TEST_TYPEMIX
 };
 
-enum state_t{
+enum state_t {
 	STATE_INIT,
 	STATE_FIRST_STEP,
 	STATE_SECOND_STEP,
 	STATE_CHECK_ANSWER
+};
+
+enum widget_t {
+	WIDGET_MAIN_MENU = 0,
+	WIDGET_SHOW_TEST,
+	WIDGET_TYPE_TEST,
+	WIDGET_DICT_MANAGE,
+	WIDGET_OPEN_FILE
 };
 
 class ucUiTestMaker : public QDialog {
@@ -68,25 +76,29 @@ private:
 	void InitOpenNewFile();
 
 private slots:
-	void SlotMenu();
 	void SlotQueAns();
 	void SlotAnsQue();
 	void SlotMix();
+
 	void SlotTypeQueAns();
 	void SlotTypeAnsQue();
 	void SlotTypeMix();
+
 	void SlotNext();
+	void SlotMenu();
 	void SlotDecreaseFont();
 	void SlotIncreaseFont();
 	void SlotSkipWord();
-	void SlotNewFile();
+
+	void SlotOpenNewFile();
 	void SlotDeleteFile();
 	void SlotCreateFile();
+
 	void SlotManageDict();
-	void SlotAddNewQue();
-	void SlotDeleteQue();
-	void SlotEditQue();
-	void SlotSave();
+	void SlotAddNewQuestion();
+	void SlotDeleteQuestion();
+	void SlotEditQuestion();
+	void SlotSaveDictionary();
 };
 
 #endif // TESTMAKER_H

@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
 
 	ucUiTestMaker* w = new ucUiTestMaker();
 
-#if defined Q_OS_ANDROID
+#if defined ANDROID
 	w->showFullScreen();
 #else
 	w->show();
