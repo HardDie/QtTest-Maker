@@ -22,10 +22,7 @@ ucUiTestMaker::ucUiTestMaker( QWidget* parent ) : QDialog( parent ) {
 	outTextType->setReadOnly( true );
 	outTextType->setFontPointSize( 15 );
 
-#if (defined Q_OS_WIN) || (defined Q_OS_LINUX)
-#else
 	pathToDict = "/mnt/sdcard/dictionary/";
-#endif
 
 	InitAllObjects();
 	SlotNewFile();
@@ -434,24 +431,7 @@ static void RedrawFilesList( QString pathToDict,
 }
 
 void ucUiTestMaker::SlotNewFile() {
-#if (defined Q_OS_WIN) || (defined Q_OS_LINUX)
-	while ( true ) {
-		QString path = QFileDialog::getOpenFileName(0, QObject::tr("Choose file with words"),
-		                                            QDir::homePath(), QObject::tr("Text file (*.json);;All (*.*)"), 0,
-		                                            QFileDialog::DontUseNativeDialog | QFileDialog::DontUseSheet |
-		                                            QFileDialog::DontUseCustomDirectoryIcons | QFileDialog::ReadOnly );
-		if ( testInterface.CheckFile( path.toStdString().c_str() ) == -1 ) {
-			QMessageBox::critical( this, "Error", "File is not available!" );
-			break;
-		}
-		testInterface.ClearTest();
-		if ( testInterface.ReadFile( path.toStdString().c_str() ) == false ) {
-			QMessageBox::critical( this, "Error", "File wrong!" );
-			break;
-		}
-		break;
-	}
-#else
+#if defined Q_OS_ANDROID
 	if ( !QDir( pathToDict ).exists() ) {
 		QMessageBox::StandardButton ans;
 		ans = QMessageBox::question( this, "New save", "Can't find save folder, do you want create new?\n" + pathToDict );
@@ -479,6 +459,23 @@ void ucUiTestMaker::SlotNewFile() {
 		SlotMenu();
 		outFileList->clear();
 	}
+#else
+	while ( true ) {
+		QString path = QFileDialog::getOpenFileName(0, QObject::tr("Choose file with words"),
+		                                            QDir::homePath(), QObject::tr("Text file (*.json);;All (*.*)"), 0,
+		                                            QFileDialog::DontUseNativeDialog | QFileDialog::DontUseSheet |
+		                                            QFileDialog::DontUseCustomDirectoryIcons | QFileDialog::ReadOnly );
+		if ( testInterface.CheckFile( path.toStdString().c_str() ) == -1 ) {
+			QMessageBox::critical( this, "Error", "File is not available!" );
+			break;
+		}
+		testInterface.ClearTest();
+		if ( testInterface.ReadFile( path.toStdString().c_str() ) == false ) {
+			QMessageBox::critical( this, "Error", "File wrong!" );
+			break;
+		}
+		break;
+	}
 #endif
 }
 
@@ -490,7 +487,7 @@ void ucUiTestMaker::SlotDeleteFile() {
 	QString filename = outFileList->currentItem()->text();
 
 	QMessageBox::StandardButton ans;
-	ans = QMessageBox::question( this, "Delete file", "Are you sure what you wand delete \"" + filename +  "\" save file?" );
+	ans = QMessageBox::question( this, "Delete file", "Are you sure what you want delete \"" + filename +  "\" file?" );
 	if ( ans == QMessageBox::No ) {
 		return;
 	}

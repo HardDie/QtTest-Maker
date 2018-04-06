@@ -15,6 +15,7 @@ DESTDIR=bin #Target file directory
 OBJECTS_DIR=generated_files #Intermediate object files directory
 MOC_DIR=generated_files #Intermediate moc files directory
 
+#DEFINES+="Q_OS_ANDROID"
 SOURCES += main.cpp \
     uitestmaker.cpp \
     testmaker.cpp \
