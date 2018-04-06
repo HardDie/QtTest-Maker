@@ -22,7 +22,7 @@ ucUiTestMaker::ucUiTestMaker( QWidget* parent ) : QDialog( parent ) {
 	outTextType->setReadOnly( true );
 	outTextType->setFontPointSize( 15 );
 
-	pathToDict = "/mnt/sdcard/dictionary/";
+	pathToDict = "/mnt/sdcard/.dictionary/";
 
 	InitAllObjects();
 	SlotNewFile();
