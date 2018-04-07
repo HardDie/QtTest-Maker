@@ -170,6 +170,7 @@ void ucUiTestMaker::InitSetupDict() {
 	layoutManageDict->addLayout( layoutDeleteEdit );
 	layoutManageDict->addWidget( buttonSave );
 	layoutManageDict->addWidget( buttonMainMenu );
+		layoutManageDict->addWidget( labelFreeLine );
 	widgetManageDict->setLayout( layoutManageDict );
 
 	connect( buttonAddNewQue, SIGNAL( clicked( bool ) ), this, SLOT( SlotAddNewQuestion() ) );
@@ -205,6 +206,7 @@ void ucUiTestMaker::InitOpenNewFile() {
 	layoutOpenNewFile->addWidget( buttonCreate );
 	layoutOpenNewFile->addWidget( buttonDelete );
 	layoutOpenNewFile->addWidget( buttonExit );
+		layoutOpenNewFile->addWidget( labelFreeLine );
 	widgetOpenNewFile->setLayout( layoutOpenNewFile );
 
 	connect( buttonOpen,      SIGNAL( clicked( bool ) ), this, SLOT( SlotOpenNewFile() ) );
