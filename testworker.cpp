@@ -14,11 +14,16 @@ TestWorker::TestWorker() {
 }
 
 bool TestWorker::ReadFromFile(const QString &filename) {
+    bool ret;
     QString textFromFile;
     QFile testFile;
 
     testFile.setFileName(filename);
-    testFile.open(QIODevice::ReadOnly);
+    ret = testFile.open(QIODevice::ReadOnly);
+    if (ret == false) {
+        qDebug() << "ERROR: Can't open file, don't exist!";
+        return false;
+    }
     textFromFile = testFile.readAll();
     testFile.close();
 
@@ -125,6 +130,10 @@ bool TestWorker::GetQAString(QString &resultString) {
         qDebug() << "ERROR: QA Wrong index!";
         return false;
     }
+    if (_listData.length() == 0) {
+        qDebug() << "ERROR: QA data is empty!";
+        return false;
+    }
     switch (_phase) {
     case PHASE_NEXTWORD:
         if (ValidateIndex() == false) {
@@ -151,6 +160,10 @@ bool TestWorker::GetAQString(QString &resultString) {
         qDebug() << "ERROR: AQ Wrong index!";
         return false;
     }
+    if (_listData.length() == 0) {
+        qDebug() << "ERROR: AQ data is empty!";
+        return false;
+    }
     switch (_phase) {
     case PHASE_NEXTWORD:
         if (ValidateIndex() == false) {
@@ -173,6 +186,11 @@ bool TestWorker::GetAQString(QString &resultString) {
 }
 
 bool TestWorker::GetMixString(QString &resultString) {
+    if (_listData.length() == 0) {
+        qDebug() << "ERROR: Mix data is empty!";
+        return false;
+    }
+
     switch (_mix_phase) {
     case MIX_PHASE_FIRST:
         if (ValidateIndex() == false) {
