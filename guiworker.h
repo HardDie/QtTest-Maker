@@ -11,8 +11,9 @@ public:
 	explicit GUIWorker( QObject *parent = nullptr );
 
 signals:
-	void setTestString( QString text, QString index );
-	void returnToMainMenu();
+	void qmlSetTestString( QString text, QString index );
+	void qmlSetTypeTestString( QString text, QString index );
+	void qmlReturnToMainMenu();
 
 public slots:
 	void setTestModeQA();
@@ -23,10 +24,18 @@ public slots:
 	void setTestModeTypeAQ();
 	void setTestModeTypeMix();
 
-	void nextTestStep();
+	void buttonTestNext();
+	void buttonTestTypeCheck( QString userAnswer );
+	void buttonTestTypeSkip();
 
 private:
+	QString getQuestionWithMode( void );
+	QString getAnswerWithMode( void );
+
 	TestWorker _testWorker;
+	phase_t    _phase;
+	testmode_t _testmode;
+	bool       _randmode;
 };
 
 #endif  // GUIWORKER_H

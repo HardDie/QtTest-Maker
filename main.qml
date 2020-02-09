@@ -6,8 +6,8 @@ import QtQuick.Controls.Material 2.0
 ApplicationWindow {
     id: testGuiApp
     visible: true
-    width: 640
-    height: 480
+    width: 1024
+    height: 768
     title: qsTr("TestMaker")
 
     StackView {
@@ -33,7 +33,7 @@ ApplicationWindow {
 
     Connections {
         target: guiWorker
-        onReturnToMainMenu: {
+        onQmlReturnToMainMenu: {
             stack_view.pop()
         }
     }

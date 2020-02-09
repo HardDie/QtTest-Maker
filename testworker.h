@@ -8,34 +8,28 @@
 
 struct TestElement {
 	struct Question _question;
-	flagstate       _flag;
+	flagstate_t     _flag;
 };
 
 class TestWorker {
 public:
 	TestWorker();
 	bool ReadFromFile( const QString &filename );
-	void SetTestMode( testmode_t testmode );
 	void FlushFlags( void );
 
-	bool    GetString( QString &resultString );
-	QString GetIndexString( void );
+	QString GetIndexString( bool random = false );
+	QString GetQuestion( bool random = false );
+	QString GetAnswer( bool random = false );
+	bool    Next( bool random = false );
 
 private:
 	QList< struct TestElement > _listData;
 	int                         _currentIndex;
-	phase_t                     _phase;
-	testmode_t                  _testmode;
 	mix_phase_t                 _mix_phase;
 
-	bool GetQAString( QString &resultString );
-	bool GetAQString( QString &resultString );
-	bool GetMixString( QString &resultString );
-
-	void FlushData( void );
-	void Shuffle( void );
-	bool Next( void );
-	bool ValidateIndex( void );
+	flagstate_t GetRandFlag();
+	void        FlushData( void );
+	void        Shuffle( void );
 };
 
 #endif  // TESTWORKER_H

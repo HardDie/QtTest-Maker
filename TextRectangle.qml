@@ -22,5 +22,8 @@ Rectangle {
         maximumLength: 200
         readOnly: readOnly_val
         text: text_val
+        onTextChanged: {
+            text_val = text
+        }
     }
 }

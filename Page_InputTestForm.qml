@@ -14,16 +14,29 @@ Item {
         spacing: 2
 
         TextRectangle {
+            id: type_test_output
             height: 400
         }
         TextRectangle {
+            id: type_test_input
             height: 100
             readOnly_val: false
         }
 
-        MyButton { mylabel: "Next"
-            onClicked: { guiWorker.nextTestStep() } }
+        MyButton { mylabel: "Check"
+            onClicked: { guiWorker.buttonTestTypeCheck(type_test_input.text_val) } }
+        MyButton { mylabel: "Skip"
+            onClicked: { guiWorker.buttonTestTypeSkip() } }
         MyButton { mylabel: "Main Menu"
             onClicked: { stack_view.pop() } }
+    }
+
+    Connections {
+        target: guiWorker
+        onQmlSetTypeTestString: {
+            type_test_output.text_val = text
+            type_test_index.mylabel = index
+            type_test_input.text_val = ""
+        }
     }
 }

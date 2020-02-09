@@ -20,14 +20,14 @@ Item {
         }
 
         MyButton { mylabel: "Next"
-            onClicked: { guiWorker.nextTestStep() } }
+            onClicked: { guiWorker.buttonTestNext() } }
         MyButton { mylabel: "Main Menu"
             onClicked: { stack_view.pop() } }
     }
 
     Connections {
         target: guiWorker
-        onSetTestString: {
+        onQmlSetTestString: {
             test_output.text_val = text
             test_index.mylabel = index
         }

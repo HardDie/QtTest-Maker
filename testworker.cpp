@@ -6,11 +6,14 @@
 #include "jsonparser.h"
 #include "global.h"
 
+/**
+ * Constructor
+ */
+
 TestWorker::TestWorker() {
 	_listData.clear();
-	_phase = PHASE_FIRST;
 	_mix_phase = MIX_PHASE_FIRST;
-	_testmode = TESTMODE_NOTSET;
+	_currentIndex = 0;
 }
 
 bool TestWorker::ReadFromFile( const QString &filename ) {
@@ -44,184 +47,119 @@ bool TestWorker::ReadFromFile( const QString &filename ) {
 	foreach ( struct Question question, list ) {
 		struct TestElement testElement;
 		testElement._question = question;
-		testElement._flag = FLAGSTATE_NONE;
+		testElement._flag = FLAGSTATE_NOTSET;
 		_listData.append( testElement );
 	}
 	return true;
 }
 
-void TestWorker::SetTestMode( testmode_t testmode ) {
-	switch ( testmode ) {
-	case TESTMODE_QA: qDebug() << "Set QA mode"; break;
-	case TESTMODE_AQ: qDebug() << "Set AQ mode"; break;
-	case TESTMODE_MIX: qDebug() << "Set Mix mode"; break;
-	case TESTMODE_TYPE_QA: qDebug() << "Set Type QA mode"; break;
-	case TESTMODE_TYPE_AQ: qDebug() << "Set Type AQ mode"; break;
-	case TESTMODE_TYPE_MIX: qDebug() << "Set Type Mix mode"; break;
-	case TESTMODE_NOTSET: qDebug() << "ERROR: Set not valid mode"; break;
-	}
-	_testmode = testmode;
-}
-
 void TestWorker::FlushFlags() {
 	foreach ( struct TestElement element, _listData ) {
-		element._flag = FLAGSTATE_NONE;
+		element._flag = FLAGSTATE_NOTSET;
 	}
 	_currentIndex = 0;
-	_phase = PHASE_FIRST;
 	_mix_phase = MIX_PHASE_FIRST;
 	Shuffle();
 }
 
-bool TestWorker::GetString( QString &resultString ) {
-	switch ( _testmode ) {
-	case TESTMODE_QA: return GetQAString( resultString );
-	case TESTMODE_AQ: return GetAQString( resultString );
-	case TESTMODE_MIX: return GetMixString( resultString );
-	case TESTMODE_TYPE_QA: break;
-	case TESTMODE_TYPE_AQ: break;
-	case TESTMODE_TYPE_MIX: break;
-	case TESTMODE_NOTSET: qDebug() << "ERROR: Not valid test mode"; break;
+QString TestWorker::GetIndexString( bool random ) {
+	if ( random ) {
+		switch ( _mix_phase ) {
+		case MIX_PHASE_FIRST:
+			return QString::number( _currentIndex + 1 ) +
+			       "/" + QString::number( _listData.length() * 2 );
+		case MIX_PHASE_SECOND:
+			return QString::number( _currentIndex + 1 +
+			                        _listData.length() ) +
+			       "/" + QString::number( _listData.length() * 2 );
+		default: assert( NULL );
+		}
+	} else {
+		return QString::number( _currentIndex + 1 ) + "/" +
+		       QString::number( _listData.length() );
 	}
-	return false;
+	assert( NULL );
 }
 
-QString TestWorker::GetIndexString() {
-	if ( ValidateIndex() ) {
-		if ( _testmode == TESTMODE_MIX ||
-		     _testmode == TESTMODE_TYPE_MIX ) {
-			if ( _mix_phase == MIX_PHASE_FIRST ) {
-				return QString::number( _currentIndex + 1 ) +
-				       "/" +
-				       QString::number( _listData.length() *
-				                        2 );
-			} else if ( _mix_phase == MIX_PHASE_SECOND ) {
-				return QString::number( _listData.length() +
-				                        _currentIndex + 1 ) +
-				       "/" +
-				       QString::number( _listData.length() *
-				                        2 );
+QString TestWorker::GetQuestion( bool random ) {
+	if ( random ) {
+		switch ( GetRandFlag() ) {
+		case FLAGSTATE_AQ: return GetAnswer();
+		case FLAGSTATE_QA: return GetQuestion();
+		default: qDebug() << "ERROR: Mix wrong flagstate!"; return "";
+		}
+	} else {
+		return _listData[ _currentIndex ]._question._question;
+	}
+}
+
+QString TestWorker::GetAnswer( bool random ) {
+	if ( random ) {
+		switch ( GetRandFlag() ) {
+		case FLAGSTATE_AQ: return GetQuestion();
+		case FLAGSTATE_QA: return GetAnswer();
+		default: qDebug() << "ERROR: Mix wrong flagstate!"; return "";
+		}
+	} else {
+		return _listData[ _currentIndex ]._question._answer;
+	}
+}
+
+bool TestWorker::Next( bool random ) {
+	_currentIndex++;
+
+	if ( _currentIndex < 0 ) {
+		return false;
+	}
+
+	if ( random ) {
+		switch ( _mix_phase ) {
+		case MIX_PHASE_FIRST:
+			if ( _currentIndex >= _listData.length() ) {
+				_currentIndex = 0;
+				_mix_phase = MIX_PHASE_SECOND;
+				Shuffle();
 			}
-		} else {
-			return QString::number( _currentIndex + 1 ) + "/" +
-			       QString::number( _listData.length() );
+			break;
+		case MIX_PHASE_SECOND:
+			if ( _currentIndex >= _listData.length() ) {
+				return false;
+			}
+			break;
+		default: assert( NULL );
 		}
-	}
-	return QString();
-}
-
-// Private
-
-bool TestWorker::GetQAString( QString &resultString ) {
-	if ( _currentIndex < 0 ) {
-		qDebug() << "ERROR: QA Wrong index!";
-		return false;
-	}
-	if ( _listData.length() == 0 ) {
-		qDebug() << "ERROR: QA data is empty!";
-		return false;
-	}
-	switch ( _phase ) {
-	case PHASE_NEXTWORD:
-		if ( ValidateIndex() == false ) {
-			qDebug() << "ERROR: QA List is over!";
+	} else {
+		if ( _currentIndex >= _listData.length() ) {
 			return false;
 		}
-		[[clang::fallthrough]];
-	case PHASE_FIRST:
-		_phase = PHASE_SECOND;
-		resultString = _listData[ _currentIndex ]._question._question;
-		break;
-	case PHASE_SECOND:
-		_phase = PHASE_NEXTWORD;
-		resultString = _listData[ _currentIndex ]._question._question +
-		               " - " +
-		               _listData[ _currentIndex ]._question._answer;
-		_currentIndex++;
-		break;
 	}
+
 	return true;
 }
 
-bool TestWorker::GetAQString( QString &resultString ) {
-	if ( _currentIndex < 0 ) {
-		qDebug() << "ERROR: AQ Wrong index!";
-		return false;
-	}
-	if ( _listData.length() == 0 ) {
-		qDebug() << "ERROR: AQ data is empty!";
-		return false;
-	}
-	switch ( _phase ) {
-	case PHASE_NEXTWORD:
-		if ( ValidateIndex() == false ) {
-			qDebug() << "ERROR: AQ List is over!";
-			return false;
-		}
-		[[clang::fallthrough]];
-	case PHASE_FIRST:
-		_phase = PHASE_SECOND;
-		resultString = _listData[ _currentIndex ]._question._answer;
-		break;
-	case PHASE_SECOND:
-		_phase = PHASE_NEXTWORD;
-		resultString = _listData[ _currentIndex ]._question._answer +
-		               " - " +
-		               _listData[ _currentIndex ]._question._question;
-		_currentIndex++;
-		break;
-	}
-	return true;
-}
+/**
+ * Private
+ */
 
-bool TestWorker::GetMixString( QString &resultString ) {
-	if ( _listData.length() == 0 ) {
-		qDebug() << "ERROR: Mix data is empty!";
-		return false;
-	}
-
+flagstate_t TestWorker::GetRandFlag() {
 	switch ( _mix_phase ) {
 	case MIX_PHASE_FIRST:
-		if ( ValidateIndex() == false ) {
-			_mix_phase = MIX_PHASE_SECOND;
-			_currentIndex = 0;
-			Shuffle();
-			// Если просто выйти в этот момент, то в строке будет
-			// пусто т.к. мы только сменили режим Чтобы этого не
-			// произошло, мы снова вызываем эту же функцию только
-			// уже с новым режимом
-			return GetMixString( resultString );
-		}
-
-		if ( _listData[ _currentIndex ]._flag == FLAGSTATE_NONE ) {
+		if ( _listData[ _currentIndex ]._flag != FLAGSTATE_AQ &&
+		     _listData[ _currentIndex ]._flag != FLAGSTATE_QA ) {
 			_listData[ _currentIndex ]._flag =
 			    rand() % 2 ? FLAGSTATE_AQ : FLAGSTATE_QA;
 		}
 
-		switch ( _listData[ _currentIndex ]._flag ) {
-		case FLAGSTATE_AQ: return GetAQString( resultString ); ;
-		case FLAGSTATE_QA: return GetQAString( resultString );
-		case FLAGSTATE_NONE:
-			qDebug() << "ERROR: Mix wrong flagstate!";
-			return false;
-		}
-		break;
+		return _listData[ _currentIndex ]._flag;
 	case MIX_PHASE_SECOND:
-		if ( ValidateIndex() == false ) {
-			return false;
-		}
-
+		// Invert values
 		switch ( _listData[ _currentIndex ]._flag ) {
-		case FLAGSTATE_AQ: return GetQAString( resultString );
-		case FLAGSTATE_QA: return GetAQString( resultString );
-		case FLAGSTATE_NONE:
-			qDebug() << "ERROR: Mix wrong flagstate!";
-			return false;
+		case FLAGSTATE_AQ: return FLAGSTATE_QA;
+		case FLAGSTATE_QA: return FLAGSTATE_AQ;
+		default: return FLAGSTATE_NOTSET;
 		}
-		break;
+	default: return FLAGSTATE_NOTSET;
 	}
-
-	return false;
 }
 
 void TestWorker::FlushData() { _listData.clear(); }
@@ -231,22 +169,3 @@ void TestWorker::Shuffle() {
 	std::srand( unsigned( std::time( &time ) ) );
 	std::random_shuffle( _listData.begin(), _listData.end() );
 }
-
-bool TestWorker::Next() {
-	_currentIndex++;
-
-	if ( _currentIndex < 0 || _currentIndex >= _listData.length() ) {
-		return false;
-	}
-
-	return true;
-}
-
-bool TestWorker::ValidateIndex() {
-	if ( _currentIndex < 0 || _currentIndex >= _listData.length() ) {
-		return false;
-	}
-
-	return true;
-}
-// JsonParser::FormatJsonFileFromQuestionList(_listData);
