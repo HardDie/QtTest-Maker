@@ -5,29 +5,28 @@
 
 #include "testworker.h"
 
-class GUIWorker : public QObject
-{
-    Q_OBJECT
+class GUIWorker : public QObject {
+	Q_OBJECT
 public:
-    explicit GUIWorker(QObject *parent = nullptr);
+	explicit GUIWorker( QObject *parent = nullptr );
 
 signals:
-    void setTestString(QString text, QString index);
-    void returnToMainMenu();
+	void setTestString( QString text, QString index );
+	void returnToMainMenu();
 
 public slots:
-    void setTestModeQA();
-    void setTestModeAQ();
-    void setTestModeMix();
+	void setTestModeQA();
+	void setTestModeAQ();
+	void setTestModeMix();
 
-    void setTestModeTypeQA();
-    void setTestModeTypeAQ();
-    void setTestModeTypeMix();
+	void setTestModeTypeQA();
+	void setTestModeTypeAQ();
+	void setTestModeTypeMix();
 
-    void nextTestStep();
+	void nextTestStep();
 
 private:
-    TestWorker _testWorker;
+	TestWorker _testWorker;
 };
 
-#endif // GUIWORKER_H
+#endif  // GUIWORKER_H

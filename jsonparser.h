@@ -11,12 +11,13 @@
  * 1) Из json файла распарсить данные и получить список данных
  * 2) Из списка данных сформировать готовый для записи json файл
  */
-class JsonParser
-{
+class JsonParser {
 public:
-    JsonParser();
-    static QList<struct Question> ParseJsonToQuestionsList(QByteArray rawFile);
-    static QByteArray FormatJsonFileFromQuestionList(const QList<struct Question> &list);
+	JsonParser();
+	static QList< struct Question >
+	ParseJsonToQuestionsList( QByteArray rawFile );
+	static QByteArray
+	FormatJsonFileFromQuestionList( const QList< struct Question > &list );
 };
 
-#endif // JSONPARSER_H
+#endif  // JSONPARSER_H

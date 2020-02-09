@@ -1,2 +1,6 @@
 *.o
 SomeGuiTest
+moc_guiworker.cpp
+moc_predefs.h
+qrc_qml.cpp
+tags
