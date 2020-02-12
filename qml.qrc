@@ -2,7 +2,6 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>Page_TestForm.qml</file>
-        <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>Page_InputTestForm.qml</file>
         <file>Page_MainMenu.qml</file>

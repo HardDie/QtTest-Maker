@@ -5,3 +5,6 @@ moc_predefs.h
 qrc_qml.cpp
 tags
 Makefile
+
+bin/
+generated_files/
