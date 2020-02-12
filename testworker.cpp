@@ -82,6 +82,13 @@ QString TestWorker::GetIndexString( bool random ) {
 }
 
 QString TestWorker::GetQuestion( bool random ) {
+	if ( _currentIndex < 0 ) {
+		return "";
+	}
+	if ( _currentIndex >= _listData.length() ) {
+		return "";
+	}
+
 	if ( random ) {
 		switch ( GetRandFlag() ) {
 		case FLAGSTATE_AQ: return GetAnswer();
@@ -94,6 +101,13 @@ QString TestWorker::GetQuestion( bool random ) {
 }
 
 QString TestWorker::GetAnswer( bool random ) {
+	if ( _currentIndex < 0 ) {
+		return "";
+	}
+	if ( _currentIndex >= _listData.length() ) {
+		return "";
+	}
+
 	if ( random ) {
 		switch ( GetRandFlag() ) {
 		case FLAGSTATE_AQ: return GetQuestion();
