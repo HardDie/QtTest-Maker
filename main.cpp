@@ -17,7 +17,7 @@ int main( int argc, char *argv[] ) {
 	context->setContextProperty( "guiWorker", &guiWorker );
 	context->setContextProperty( "debugPage", &pDebug );
 
-	engine.load( QUrl( QStringLiteral( "qrc:/main.qml" ) ) );
+	engine.load( QUrl( QStringLiteral( "qrc:/Qml_Main.qml" ) ) );
 	if ( engine.rootObjects().isEmpty() )
 		return -1;
 

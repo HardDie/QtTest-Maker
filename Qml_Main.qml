@@ -18,22 +18,22 @@ ApplicationWindow {
 
 	Component {
 		id: main_menu
-		Page_MainMenu {}
+		Qml_Page_MainMenu {}
 	}
 
 	Component {
 		id: test_menu
-		Page_TestForm {}
+		Qml_Page_TestForm {}
 	}
 
 	Component {
 		id: type_test_menu
-		Page_InputTestForm {}
+		Qml_Page_InputTestForm {}
 	}
 
 	Component {
 		id: debug_menu
-		Page_Debug {}
+		Qml_Page_Debug {}
 	}
 
 	Connections {

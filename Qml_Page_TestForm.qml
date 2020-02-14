@@ -3,7 +3,7 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 
 Item {
-	Label_IndexText {
+	Qml_Label_IndexText {
 		id: test_index
 	}
 
@@ -14,18 +14,18 @@ Item {
 		anchors.centerIn: parent
 		spacing: 2
 
-		TextRectangle {
+		Qml_TextRectangle {
 			id: test_output
 			height: 800
 		}
 
-		MyButton {
+		Qml_MyButton {
 			mylabel: "Next"
 			onClicked: {
 				guiWorker.buttonTestNext()
 			}
 		}
-		MyButton {
+		Qml_MyButton {
 			mylabel: "Main Menu"
 			onClicked: {
 				stack_view.pop()

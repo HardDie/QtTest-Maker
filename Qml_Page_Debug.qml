@@ -42,13 +42,13 @@ Item {
 			}
 		}
 
-		MyButton {
+		Qml_MyButton {
 			mylabel: "Main Menu"
 			onClicked: {
 				stack_view.pop()
 			}
 		}
-		MyButton {
+		Qml_MyButton {
 			mylabel: "Exit"
 			onClicked: {
 				testGuiApp.close()

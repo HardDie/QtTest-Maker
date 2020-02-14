@@ -10,26 +10,26 @@ Item {
 		anchors.centerIn: parent
 		spacing: 2
 
-		Label_AppName {
+		Qml_Label_AppName {
 			mylabel: "TestMaker v1.2"
 		}
 
 		// Test modes
-		MyButton {
+		Qml_MyButton {
 			mylabel: "Question -> Answer"
 			onClicked: {
 				stack_view.push(test_menu)
 				guiWorker.setTestModeQA()
 			}
 		}
-		MyButton {
+		Qml_MyButton {
 			mylabel: "Answer -> Question"
 			onClicked: {
 				stack_view.push(test_menu)
 				guiWorker.setTestModeAQ()
 			}
 		}
-		MyButton {
+		Qml_MyButton {
 			mylabel: "Mix"
 			onClicked: {
 				stack_view.push(test_menu)
@@ -38,21 +38,21 @@ Item {
 		}
 
 		// Type tests modes
-		MyButton {
+		Qml_MyButton {
 			mylabel: "Type Question -> Answer"
 			onClicked: {
 				stack_view.push(type_test_menu)
 				guiWorker.setTestModeTypeQA()
 			}
 		}
-		MyButton {
+		Qml_MyButton {
 			mylabel: "Type Answer -> Question"
 			onClicked: {
 				stack_view.push(type_test_menu)
 				guiWorker.setTestModeTypeAQ()
 			}
 		}
-		MyButton {
+		Qml_MyButton {
 			mylabel: "Type Mix"
 			onClicked: {
 				stack_view.push(type_test_menu)
@@ -61,24 +61,24 @@ Item {
 		}
 
 		// Manage buttons
-		MyButton {
+		Qml_MyButton {
 			mylabel: "Debug info"
 			onClicked: {
 				stack_view.push(debug_menu)
 				debugPage.debugUpdate()
 			}
 		}
-		MyButton {
+		Qml_MyButton {
 			mylabel: "Manage dictionary"
 			onClicked: {
 			}
 		}
-		MyButton {
+		Qml_MyButton {
 			mylabel: "Open new file"
 			onClicked: {
 			}
 		}
-		MyButton {
+		Qml_MyButton {
 			mylabel: "Exit"
 			onClicked: {
 				testGuiApp.close()
