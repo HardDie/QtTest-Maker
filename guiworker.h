@@ -29,6 +29,8 @@ public slots:
 	void buttonTestTypeCheck( QString userAnswer );
 	void buttonTestTypeSkip();
 
+	void openFile( QString url );
+
 private:
 	QString getQuestionWithMode( void );
 	QString getAnswerWithMode( void );

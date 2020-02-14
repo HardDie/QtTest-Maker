@@ -76,6 +76,7 @@ Item {
 		Qml_MyButton {
 			mylabel: "Open new file"
 			onClicked: {
+				fileDialog.open()
 			}
 		}
 		Qml_MyButton {
@@ -84,15 +85,22 @@ Item {
 				testGuiApp.close()
 			}
 		}
+	}
 
-		MessageDialog {
-			id: info
-			icon: StandardIcon.Info
-			text: "Some info"
-			detailedText: "Long some info"
-			standardButtons: StandardButton.Ok
+	MessageDialog {
+		id: info
+		standardButtons: StandardButton.Ok
+	}
+
+	FileDialog {
+		id: fileDialog
+		title: "File Dialog"
+		folder: shortcuts.home
+		onAccepted: {
+			guiWorker.openFile(fileUrl.toString())
 		}
 	}
+
 
 	Connections {
 		target: guiWorker

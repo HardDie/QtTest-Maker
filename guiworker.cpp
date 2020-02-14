@@ -1,3 +1,5 @@
+#include <QUrl>
+
 #include "guiworker.h"
 
 /**
@@ -187,6 +189,18 @@ begin:
 
 	sIndex = _testWorker.GetIndexString( _randmode );
 	emit qmlSetTypeTestString( sResult, sIndex );
+}
+
+void GUIWorker::openFile( QString url ) {
+	if ( QUrl(url).isLocalFile() ) {
+		_testWorker.ReadFromFile( QUrl(url).toLocalFile() );
+	} else {
+		_testWorker.ReadFromFile( QUrl(url).url() );
+	}
+
+	if ( _testWorker.isDictionaryExist() == false ) {
+		emit qmlShowMessage( "ERROR", "File is broken or wrong format!" );
+	}
 }
 
 /**
