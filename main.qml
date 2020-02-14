@@ -31,6 +31,11 @@ ApplicationWindow {
 		Page_InputTestForm {}
 	}
 
+	Component {
+		id: debug_menu
+		Page_Debug {}
+	}
+
 	Connections {
 		target: guiWorker
 		onQmlReturnToMainMenu: {

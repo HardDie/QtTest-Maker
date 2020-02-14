@@ -61,6 +61,13 @@ Item {
 
 		// Manage buttons
 		MyButton {
+			mylabel: "Debug info"
+			onClicked: {
+				stack_view.push(debug_menu)
+				debugPage.debugUpdate()
+			}
+		}
+		MyButton {
 			mylabel: "Manage dictionary"
 			onClicked: {
 			}

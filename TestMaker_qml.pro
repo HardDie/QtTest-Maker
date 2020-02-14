@@ -20,7 +20,8 @@ SOURCES += \
         main.cpp \
     guiworker.cpp \
     testworker.cpp \
-    jsonparser.cpp
+    jsonparser.cpp \
+    debug_page.cpp
 
 RESOURCES += qml.qrc
 
@@ -39,4 +40,5 @@ HEADERS += \
     guiworker.h \
     testworker.h \
     jsonparser.h \
-    global.h
+    global.h \
+    debug_page.h
