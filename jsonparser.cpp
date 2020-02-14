@@ -1,10 +1,11 @@
-#include <QDebug>
 #include <QJsonDocument>
 #include <QJsonValue>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QVariant>
 
 #include "jsonparser.h"
+#include "debug_page.h"
 
 JsonParser::JsonParser() {}
 
@@ -13,13 +14,13 @@ JsonParser::ParseJsonToQuestionsList( QByteArray rawFile ) {
 	QList< Question > list;
 
 	if ( rawFile.length() == 0 ) {
-		qDebug() << "ERROR: File is empty!";
+		pDebug.Print( "ParseJsonToQuestionList(): File is empty!" );
 		return QList< Question >();
 	}
 
 	QJsonDocument jsonDocument = QJsonDocument::fromJson( rawFile );
 	if ( jsonDocument.isNull() ) {
-		qDebug() << "ERROR: Can't parse file!";
+		pDebug.Print( "ParseJsonToQuestionList(): Can't parse file!" );
 		return QList< Question >();
 	}
 
@@ -39,7 +40,7 @@ JsonParser::ParseJsonToQuestionsList( QByteArray rawFile ) {
 QByteArray JsonParser::FormatJsonFileFromQuestionList(
     const QList< struct Question > &list ) {
 	if ( list.length() == 0 ) {
-		qDebug() << "ERROR: Empty list!";
+		pDebug.Print( "FormatJsonFileFromQuestionList(): Empty list!" );
 		return QByteArray();
 	}
 

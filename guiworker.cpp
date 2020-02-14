@@ -1,5 +1,3 @@
-#include <QDebug>
-
 #include "guiworker.h"
 
 /**

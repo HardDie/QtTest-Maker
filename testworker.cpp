@@ -1,10 +1,10 @@
 #include <QFile>
 #include <algorithm>
-#include <QDebug>
 
 #include "testworker.h"
 #include "jsonparser.h"
 #include "global.h"
+#include "debug_page.h"
 
 /**
  * Constructor
@@ -24,14 +24,14 @@ bool TestWorker::ReadFromFile( const QString &filename ) {
 	testFile.setFileName( filename );
 	ret = testFile.open( QIODevice::ReadOnly );
 	if ( ret == false ) {
-		qDebug() << "ERROR: Can't open file, don't exist!";
+		pDebug.Print( "ReadFromFile(): Can't open file, don't exist!" );
 		return false;
 	}
 	textFromFile = testFile.readAll();
 	testFile.close();
 
 	if ( textFromFile.length() == 0 ) {
-		qDebug() << "ERROR: Can't read data, file is Empty!";
+		pDebug.Print( "ReadFromFile(): Can't read data, file is Empty!" );
 		return false;
 	}
 
@@ -39,7 +39,7 @@ bool TestWorker::ReadFromFile( const QString &filename ) {
 	list = JsonParser::ParseJsonToQuestionsList( textFromFile.toUtf8() );
 
 	if ( list.length() == 0 ) {
-		qDebug() << "ERROR: Can't parse file!";
+		pDebug.Print( "ReadFromFile(): Can't parse file!" );
 		return false;
 	}
 
@@ -72,20 +72,24 @@ QString TestWorker::GetIndexString( bool random ) {
 			return QString::number( _currentIndex + 1 +
 			                        _listData.length() ) +
 			       "/" + QString::number( _listData.length() * 2 );
-		default: assert( NULL );
+		default:
+			pDebug.Print(
+			    "GetIndexString(): Wrong _mix_phase value!" );
+			return "";
 		}
 	} else {
 		return QString::number( _currentIndex + 1 ) + "/" +
 		       QString::number( _listData.length() );
 	}
-	assert( NULL );
 }
 
 QString TestWorker::GetQuestion( bool random ) {
 	if ( _currentIndex < 0 ) {
+		pDebug.Print( "GetQuestion(): _currentIndex < 0!" );
 		return "";
 	}
 	if ( _currentIndex >= _listData.length() ) {
+		pDebug.Print( "GetQuestion(): _currentIndex > length!" );
 		return "";
 	}
 
@@ -93,7 +97,10 @@ QString TestWorker::GetQuestion( bool random ) {
 		switch ( GetRandFlag() ) {
 		case FLAGSTATE_AQ: return GetAnswer();
 		case FLAGSTATE_QA: return GetQuestion();
-		default: qDebug() << "ERROR: Mix wrong flagstate!"; return "";
+		default:
+			pDebug.Print(
+			    "GetQuestion(): Wrong GetRandFlag() value!" );
+			return "";
 		}
 	} else {
 		return _listData[ _currentIndex ]._question._question;
@@ -102,9 +109,11 @@ QString TestWorker::GetQuestion( bool random ) {
 
 QString TestWorker::GetAnswer( bool random ) {
 	if ( _currentIndex < 0 ) {
+		pDebug.Print( "GetAnswer(): _currentIndex < 0!" );
 		return "";
 	}
 	if ( _currentIndex >= _listData.length() ) {
+		pDebug.Print( "GetAnswer(): _currentIndex > length!" );
 		return "";
 	}
 
@@ -112,7 +121,10 @@ QString TestWorker::GetAnswer( bool random ) {
 		switch ( GetRandFlag() ) {
 		case FLAGSTATE_AQ: return GetQuestion();
 		case FLAGSTATE_QA: return GetAnswer();
-		default: qDebug() << "ERROR: Mix wrong flagstate!"; return "";
+		default:
+			pDebug.Print(
+			    "GetAnswer(): Wrong GetRandFlag() value!" );
+			return "";
 		}
 	} else {
 		return _listData[ _currentIndex ]._question._answer;
@@ -123,6 +135,7 @@ bool TestWorker::Next( bool random ) {
 	_currentIndex++;
 
 	if ( _currentIndex < 0 ) {
+		pDebug.Print( "Next(): _currentIndex < 0!" );
 		return false;
 	}
 
@@ -140,7 +153,9 @@ bool TestWorker::Next( bool random ) {
 				return false;
 			}
 			break;
-		default: assert( NULL );
+		default:
+			pDebug.Print( "Next(): Wrong _mix_phase value!" );
+			return false;
 		}
 	} else {
 		if ( _currentIndex >= _listData.length() ) {
@@ -170,9 +185,13 @@ flagstate_t TestWorker::GetRandFlag() {
 		switch ( _listData[ _currentIndex ]._flag ) {
 		case FLAGSTATE_AQ: return FLAGSTATE_QA;
 		case FLAGSTATE_QA: return FLAGSTATE_AQ;
-		default: return FLAGSTATE_NOTSET;
+		default:
+			pDebug.Print( "GetRandFlag(): Wrong _flag value!" );
+			return FLAGSTATE_NOTSET;
 		}
-	default: return FLAGSTATE_NOTSET;
+	default:
+		pDebug.Print( "GetRandFlag(): Wrong _mix_phase value!" );
+		return FLAGSTATE_NOTSET;
 	}
 }
 
