@@ -10,7 +10,6 @@ Button {
 		text: qsTr(mylabel)
 		color: "black"
 		anchors.centerIn: parent
-		renderType: Text.NativeRendering
-		font.pixelSize: Qt.application.font.pixelSize * 1.6
+		font.pixelSize: Qt.application.font.pixelSize
 	}
 }

@@ -11,6 +11,5 @@ Rectangle {
 	Text {
 		text: qsTr(mylabel)
 		font.pointSize: 17
-		renderType: Text.NativeRendering
 	}
 }

@@ -18,6 +18,5 @@ Rectangle {
 		horizontalAlignment: Text.AlignHCenter
 		font.pointSize: 18
 		anchors.centerIn: parent
-		renderType: Text.NativeRendering
 	}
 }
