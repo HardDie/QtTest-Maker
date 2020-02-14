@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import QtQuick.Dialogs 1.3
 
 Item {
 	ColumnLayout {
@@ -82,6 +83,23 @@ Item {
 			onClicked: {
 				testGuiApp.close()
 			}
+		}
+
+		MessageDialog {
+			id: info
+			icon: StandardIcon.Info
+			text: "Some info"
+			detailedText: "Long some info"
+			standardButtons: StandardButton.Ok
+		}
+	}
+
+	Connections {
+		target: guiWorker
+		onQmlShowMessage: {
+			info.text = text
+			info.detailedText = detailedText
+			info.open()
 		}
 	}
 }

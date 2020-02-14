@@ -21,6 +21,7 @@ public:
 	QString GetQuestion( bool random = false );
 	QString GetAnswer( bool random = false );
 	bool    Next( bool random = false );
+	bool    isDictionaryExist() const;
 
 private:
 	QList< struct TestElement > _listData;

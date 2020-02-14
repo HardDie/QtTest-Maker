@@ -166,6 +166,10 @@ bool TestWorker::Next( bool random ) {
 	return true;
 }
 
+bool TestWorker::isDictionaryExist() const {
+	return _listData.length() > 0;
+}
+
 /**
  * Private
  */

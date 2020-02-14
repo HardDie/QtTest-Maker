@@ -14,6 +14,7 @@ signals:
 	void qmlSetTestString( QString text, QString index );
 	void qmlSetTypeTestString( QString text, QString index );
 	void qmlReturnToMainMenu();
+	void qmlShowMessage( QString text, QString detailedText );
 
 public slots:
 	void setTestModeQA();

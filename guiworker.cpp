@@ -16,6 +16,12 @@ GUIWorker::GUIWorker( QObject *parent ) : QObject( parent ) {
  */
 
 void GUIWorker::setTestModeQA() {
+	if ( _testWorker.isDictionaryExist() == false ) {
+		emit qmlReturnToMainMenu();
+		emit qmlShowMessage( "Can't start test", "Dictionary is empty of file is not opened!" );
+		return;
+	}
+
 	_testWorker.FlushFlags();
 	_testmode = TESTMODE_QA;
 	_phase = PHASE_FIRST;
@@ -24,6 +30,12 @@ void GUIWorker::setTestModeQA() {
 	buttonTestNext();
 }
 void GUIWorker::setTestModeAQ() {
+	if ( _testWorker.isDictionaryExist() == false ) {
+		emit qmlReturnToMainMenu();
+		emit qmlShowMessage( "Can't start test", "Dictionary is empty of file is not opened!" );
+		return;
+	}
+
 	_testWorker.FlushFlags();
 	_testmode = TESTMODE_AQ;
 	_phase = PHASE_FIRST;
@@ -32,6 +44,12 @@ void GUIWorker::setTestModeAQ() {
 	buttonTestNext();
 }
 void GUIWorker::setTestModeMix() {
+	if ( _testWorker.isDictionaryExist() == false ) {
+		emit qmlReturnToMainMenu();
+		emit qmlShowMessage( "Can't start test", "Dictionary is empty of file is not opened!" );
+		return;
+	}
+
 	_testWorker.FlushFlags();
 	_testmode = TESTMODE_QA;
 	_phase = PHASE_FIRST;
@@ -41,6 +59,12 @@ void GUIWorker::setTestModeMix() {
 }
 
 void GUIWorker::setTestModeTypeQA() {
+	if ( _testWorker.isDictionaryExist() == false ) {
+		emit qmlReturnToMainMenu();
+		emit qmlShowMessage( "Can't start test", "Dictionary is empty of file is not opened!" );
+		return;
+	}
+
 	_testWorker.FlushFlags();
 	_testmode = TESTMODE_QA;
 	_phase = PHASE_FIRST;
@@ -49,6 +73,12 @@ void GUIWorker::setTestModeTypeQA() {
 	buttonTestTypeCheck("");
 }
 void GUIWorker::setTestModeTypeAQ() {
+	if ( _testWorker.isDictionaryExist() == false ) {
+		emit qmlReturnToMainMenu();
+		emit qmlShowMessage( "Can't start test", "Dictionary is empty of file is not opened!" );
+		return;
+	}
+
 	_testWorker.FlushFlags();
 	_testmode = TESTMODE_AQ;
 	_phase = PHASE_FIRST;
@@ -57,6 +87,12 @@ void GUIWorker::setTestModeTypeAQ() {
 	buttonTestTypeCheck("");
 }
 void GUIWorker::setTestModeTypeMix() {
+	if ( _testWorker.isDictionaryExist() == false ) {
+		emit qmlReturnToMainMenu();
+		emit qmlShowMessage( "Can't start test", "Dictionary is empty of file is not opened!" );
+		return;
+	}
+
 	_testWorker.FlushFlags();
 	_testmode = TESTMODE_QA;
 	_phase = PHASE_FIRST;
