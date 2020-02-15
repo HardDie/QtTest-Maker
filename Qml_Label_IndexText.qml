@@ -4,10 +4,14 @@ import QtQuick.Layouts 1.3
 
 Rectangle {
 	property string mylabel: "Unknown"
-	x: (parent.width * 0.6) + (parent.width * 0.4 / 2) - 20
-	y: parent.height - (parent.height * 0.8) - (parent.height * 0.2 / 2) - 30
+
+	Layout.fillHeight: true
+	Layout.fillWidth: true
+	height: 37
 	color: "transparent"
+
 	Text {
+		anchors.centerIn: parent
 		text: qsTr(mylabel)
 		font.pointSize: 17
 	}

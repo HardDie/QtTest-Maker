@@ -5,8 +5,8 @@ import QtQuick.Dialogs 1.3
 
 Item {
 	ColumnLayout {
-		width: parent.width * 0.6
-		height: parent.height * 0.8
+		width: parent.width * 0.7
+		height: parent.height * 0.9
 		anchors.centerIn: parent
 		spacing: 2
 

@@ -3,16 +3,17 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 
 Item {
-	Qml_Label_IndexText {
-		id: test_index
-	}
-
 	ColumnLayout {
 		id: test_column
-		width: parent.width * 0.6
-		height: parent.height * 0.8
+		width: parent.width * 0.7
+		height: parent.height * 0.9
 		anchors.centerIn: parent
 		spacing: 2
+
+		Qml_Label_IndexText {
+			id: test_index
+			mylabel: "test"
+		}
 
 		Qml_TextRectangle {
 			id: test_output
