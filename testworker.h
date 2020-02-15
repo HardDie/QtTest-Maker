@@ -24,6 +24,8 @@ public:
 	int     GetLength( void ) const;
 	QString GetQuestionByIndex( int index ) const;
 	QString GetAnswerByIndex( int index ) const;
+	bool    DeleteItemByIndex( int index );
+	bool    AddItem( QString question, QString answer );
 
 private:
 	QList< struct TestElement > _listData;

@@ -87,9 +87,12 @@ Item {
 		Qml_MyButton {
 			mylabel: "Add"
 			onClicked: {
-				listView.model.append({question: inputQuestion.mytext, answer: inputAnswer.mytext})
-				inputQuestion.mytext = ""
-				inputAnswer.mytext = ""
+				if (inputQuestion.mytext != "" && inputAnswer.mytext != "") {
+					guiWorker.dictionaryAddItem(inputQuestion.mytext, inputAnswer.mytext)
+					listView.model.append({question: inputQuestion.mytext, answer: inputAnswer.mytext})
+					inputQuestion.mytext = ""
+					inputAnswer.mytext = ""
+				}
 			}
 		}
 		RowLayout {
@@ -98,6 +101,7 @@ Item {
 				onClicked: {
 					inputQuestion.mytext = listView.model.get(listView.currentIndex).question
 					inputAnswer.mytext = listView.model.get(listView.currentIndex).answer
+					guiWorker.dictionaryDeleteItem(listView.currentIndex)
 					listView.model.remove(listView.currentIndex, 1)
 					listView.currentIndex = -1
 				}
@@ -106,6 +110,7 @@ Item {
 				mylabel: "Delete"
 				onClicked: {
 					listView.model.remove(listView.currentIndex, 1)
+					guiWorker.dictionaryDeleteItem(listView.currentIndex)
 				}
 			}
 		}

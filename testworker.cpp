@@ -195,6 +195,29 @@ QString TestWorker::GetAnswerByIndex( int index ) const {
 	return _listData[ index ]._question._answer;
 }
 
+bool TestWorker::DeleteItemByIndex( int index ) {
+	if ( index < 0 ) {
+		pDebug.Print( "DeleteItemByIndex(): index < 0!" );
+		return false;
+	}
+	if ( index >= _listData.length() ) {
+		pDebug.Print( "DeleteItemByIndex(): index > length!" );
+		return false;
+	}
+
+	_listData.removeAt( index );
+	return true;
+}
+
+bool TestWorker::AddItem( QString question, QString answer ) {
+	struct TestElement testElement;
+	testElement._question._question = question;
+	testElement._question._answer = answer;
+	testElement._flag = FLAGSTATE_NOTSET;
+	_listData.append( testElement );
+	return true;
+}
+
 /**
  * Private
  */

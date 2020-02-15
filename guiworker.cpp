@@ -216,13 +216,21 @@ void GUIWorker::openFile( QString url ) {
 	}
 }
 
-void GUIWorker::fillDicionaryList() const {
+void GUIWorker::dictionaryFillList() const {
 	int length = _testWorker.GetLength();
 	for ( int i = 0; i < length; i++ ) {
 		auto question = _testWorker.GetQuestionByIndex( i );
 		auto answer = _testWorker.GetAnswerByIndex( i );
 		emit qmlAddItemToList( question, answer );
 	}
+}
+
+void GUIWorker::dictionaryDeleteItem( int index ) {
+	_testWorker.DeleteItemByIndex( index );
+}
+
+void GUIWorker::dictionaryAddItem( QString question, QString answer ) {
+	_testWorker.AddItem( question, answer );
 }
 
 /**

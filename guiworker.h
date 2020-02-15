@@ -31,7 +31,9 @@ public slots:
 	void buttonTestTypeSkip();
 
 	void openFile( QString url );
-	void fillDicionaryList() const;
+	void dictionaryFillList() const;
+	void dictionaryDeleteItem( int index );
+	void dictionaryAddItem( QString question, QString answer );
 
 private:
 	QString getQuestionWithMode( void );

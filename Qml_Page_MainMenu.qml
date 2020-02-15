@@ -72,7 +72,7 @@ Item {
 			mylabel: "Manage dictionary"
 			onClicked: {
 				stack_view.push(dict_manage_menu)
-				guiWorker.fillDicionaryList()
+				guiWorker.dictionaryFillList()
 			}
 		}
 		Qml_MyButton {
