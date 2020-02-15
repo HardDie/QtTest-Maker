@@ -18,7 +18,7 @@ GUIWorker::GUIWorker( QObject *parent ) : QObject( parent ) {
  */
 
 void GUIWorker::setTestModeQA() {
-	if ( _testWorker.isDictionaryExist() == false ) {
+	if ( _testWorker.GetLength() == 0 ) {
 		emit qmlReturnToMainMenu();
 		emit qmlShowMessage(
 		    "Can't start test",
@@ -34,7 +34,7 @@ void GUIWorker::setTestModeQA() {
 	buttonTestNext();
 }
 void GUIWorker::setTestModeAQ() {
-	if ( _testWorker.isDictionaryExist() == false ) {
+	if ( _testWorker.GetLength() == 0 ) {
 		emit qmlReturnToMainMenu();
 		emit qmlShowMessage(
 		    "Can't start test",
@@ -50,7 +50,7 @@ void GUIWorker::setTestModeAQ() {
 	buttonTestNext();
 }
 void GUIWorker::setTestModeMix() {
-	if ( _testWorker.isDictionaryExist() == false ) {
+	if ( _testWorker.GetLength() == 0 ) {
 		emit qmlReturnToMainMenu();
 		emit qmlShowMessage(
 		    "Can't start test",
@@ -67,7 +67,7 @@ void GUIWorker::setTestModeMix() {
 }
 
 void GUIWorker::setTestModeTypeQA() {
-	if ( _testWorker.isDictionaryExist() == false ) {
+	if ( _testWorker.GetLength() == 0 ) {
 		emit qmlReturnToMainMenu();
 		emit qmlShowMessage(
 		    "Can't start test",
@@ -83,7 +83,7 @@ void GUIWorker::setTestModeTypeQA() {
 	buttonTestTypeCheck( "" );
 }
 void GUIWorker::setTestModeTypeAQ() {
-	if ( _testWorker.isDictionaryExist() == false ) {
+	if ( _testWorker.GetLength() == 0 ) {
 		emit qmlReturnToMainMenu();
 		emit qmlShowMessage(
 		    "Can't start test",
@@ -99,7 +99,7 @@ void GUIWorker::setTestModeTypeAQ() {
 	buttonTestTypeCheck( "" );
 }
 void GUIWorker::setTestModeTypeMix() {
-	if ( _testWorker.isDictionaryExist() == false ) {
+	if ( _testWorker.GetLength() == 0 ) {
 		emit qmlReturnToMainMenu();
 		emit qmlShowMessage(
 		    "Can't start test",
@@ -210,7 +210,7 @@ void GUIWorker::openFile( QString url ) {
 		_testWorker.ReadFromFile( QUrl( url ).url() );
 	}
 
-	if ( _testWorker.isDictionaryExist() == false ) {
+	if ( _testWorker.GetLength() == 0 ) {
 		emit qmlShowMessage( "ERROR",
 		                     "File is broken or wrong format!" );
 	}

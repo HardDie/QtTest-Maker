@@ -21,7 +21,6 @@ public:
 	QString GetQuestion( bool random = false );
 	QString GetAnswer( bool random = false );
 	bool    Next( bool random = false );
-	bool    isDictionaryExist() const;
 	int     GetLength( void ) const;
 	QString GetQuestionByIndex( int index ) const;
 	QString GetAnswerByIndex( int index ) const;

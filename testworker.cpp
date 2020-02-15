@@ -167,8 +167,6 @@ bool TestWorker::Next( bool random ) {
 	return true;
 }
 
-bool TestWorker::isDictionaryExist() const { return _listData.length() > 0; }
-
 int TestWorker::GetLength( void ) const { return _listData.length(); }
 
 QString TestWorker::GetQuestionByIndex( int index ) const {

@@ -2,13 +2,8 @@
 
 DebugPage pDebug;
 
-DebugPage::DebugPage( QObject *parent ) : QObject( parent ) {
-}
+DebugPage::DebugPage( QObject *parent ) : QObject( parent ) {}
 
-void DebugPage::debugUpdate() {
-	emit qmlPrintDebug(loc_buf);
-}
+void DebugPage::debugUpdate() { emit qmlPrintDebug( loc_buf ); }
 
-void DebugPage::Print( QString _text ) {
-	loc_buf += _text + "\n";
-}
+void DebugPage::Print( QString _text ) { loc_buf += _text + "\n"; }
