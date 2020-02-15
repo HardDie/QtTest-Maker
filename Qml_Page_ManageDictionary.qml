@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import QtQuick.Dialogs 1.3
 
 Item {
 	ColumnLayout {
@@ -114,9 +115,18 @@ Item {
 				}
 			}
 		}
-		Qml_MyButton {
-			mylabel: "Save to file"
-			onClicked: {
+		RowLayout {
+			Qml_MyButton {
+				mylabel: "Save"
+				onClicked: {
+					guiWorker.saveFile()
+				}
+			}
+			Qml_MyButton {
+				mylabel: "Save as..."
+				onClicked: {
+					saveAsFileDialog.open()
+				}
 			}
 		}
 		Qml_MyButton {
@@ -124,6 +134,15 @@ Item {
 			onClicked: {
 				stack_view.pop()
 			}
+		}
+	}
+
+	FileDialog {
+		id: saveAsFileDialog
+		title: "Save as..."
+		folder: shortcuts.home
+		onAccepted: {
+			guiWorker.saveFileAs(fileUrl.toString())
 		}
 	}
 

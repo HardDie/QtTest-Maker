@@ -15,6 +15,7 @@ class TestWorker {
 public:
 	TestWorker();
 	bool ReadFromFile( const QString &filename );
+	bool SaveToFile( const QString &_filename = "" );
 	void FlushFlags( void );
 
 	QString GetIndexString( bool random = false );

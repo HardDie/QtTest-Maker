@@ -7,7 +7,6 @@
  */
 
 GUIWorker::GUIWorker( QObject *parent ) : QObject( parent ) {
-	_testWorker.ReadFromFile( "/home/harddie/new.json" );
 	_phase = PHASE_NOTSET;
 	_testmode = TESTMODE_NOTSET;
 	_randmode = false;
@@ -213,6 +212,29 @@ void GUIWorker::openFile( QString url ) {
 	if ( _testWorker.GetLength() == 0 ) {
 		emit qmlShowMessage( "ERROR",
 		                     "File is broken or wrong format!" );
+	}
+}
+
+void GUIWorker::saveFile() {
+	bool ret;
+	ret = _testWorker.SaveToFile();
+	if ( ret == false ) {
+		emit qmlShowMessage( "ERROR",
+		                     "Can't save the file! The file may not be "
+		                     "open, try Save as..." );
+	}
+}
+
+void GUIWorker::saveFileAs( QString url ) {
+	bool ret;
+	if ( QUrl( url ).isLocalFile() ) {
+		ret = _testWorker.SaveToFile( QUrl( url ).toLocalFile() );
+	} else {
+		ret = _testWorker.SaveToFile( QUrl( url ).url() );
+	}
+	if ( ret == false ) {
+		emit qmlShowMessage( "ERROR",
+		                     "Can't save the file! Permission denied!" );
 	}
 }
 

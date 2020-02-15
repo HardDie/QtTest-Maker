@@ -33,6 +33,8 @@ public slots:
 	void buttonTestTypeSkip();
 
 	void openFile( QString url );
+	void saveFile();
+	void saveFileAs( QString url );
 	void dictionaryFillList() const;
 	void dictionaryDeleteItem( int index );
 	void dictionaryAddItem( QString question, QString answer );

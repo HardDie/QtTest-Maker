@@ -58,6 +58,39 @@ bool TestWorker::ReadFromFile( const QString &filename ) {
 	return true;
 }
 
+bool TestWorker::SaveToFile( const QString &_filename ) {
+	bool                     ret;
+	QString                  filename;
+	QList< struct Question > list;
+	QFile                    testFile;
+
+	if ( _filename.length() > 0 ) {
+		filename = _filename;
+	} else if ( _openFileName.length() > 0 ) {
+		filename = _openFileName;
+	} else {
+		return false;
+	}
+
+	testFile.setFileName( filename );
+	ret = testFile.open( QIODevice::WriteOnly );
+	if ( ret == false ) {
+		pDebug.Print( "SaveToFile(): Can't open file, don't exist!" );
+		return false;
+	}
+
+	foreach ( struct TestElement testElement, _listData ) {
+		list.append( testElement._question );
+	}
+
+	testFile.write( JsonParser::FormatJsonFileFromQuestionList( list ) );
+	testFile.close();
+	_isDictionaryChanged = false;
+	_openFileName = filename;
+
+	return true;
+}
+
 void TestWorker::FlushFlags() {
 	foreach ( struct TestElement element, _listData ) {
 		element._flag = FLAGSTATE_NOTSET;
@@ -224,9 +257,7 @@ bool TestWorker::AddItem( QString question, QString answer ) {
 	return true;
 }
 
-bool TestWorker::IsDictionaryChanged() const {
-	return _isDictionaryChanged;
-}
+bool TestWorker::IsDictionaryChanged() const { return _isDictionaryChanged; }
 
 /**
  * Private
