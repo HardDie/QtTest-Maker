@@ -8,8 +8,7 @@ Rectangle {
 	height: 100
 	Layout.fillHeight: true
 	Layout.fillWidth: true
-	// Workaround, change background color as in material design
-	color: "#FAFAFA"
+	color: "transparent"
 	border.color: "#C9CACA"
 	border.width: 3
 	radius: 10

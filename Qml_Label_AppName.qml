@@ -7,8 +7,7 @@ Rectangle {
 	Layout.fillHeight: true
 	Layout.fillWidth: true
 	height: 37
-	// Workaround, change background color as in material design
-	color: "#FAFAFA"
+	color: "transparent"
 	Text {
 		width: parent.width
 		height: 40
