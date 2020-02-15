@@ -14,6 +14,7 @@ TestWorker::TestWorker() {
 	_listData.clear();
 	_mix_phase = MIX_PHASE_FIRST;
 	_currentIndex = 0;
+	_openFileName = "";
 }
 
 bool TestWorker::ReadFromFile( const QString &filename ) {
@@ -51,6 +52,8 @@ bool TestWorker::ReadFromFile( const QString &filename ) {
 		testElement._flag = FLAGSTATE_NOTSET;
 		_listData.append( testElement );
 	}
+	_openFileName = filename;
+	pDebug.Print( "Open: " + filename );
 	return true;
 }
 
@@ -247,7 +250,10 @@ flagstate_t TestWorker::GetRandFlag() {
 	}
 }
 
-void TestWorker::FlushData() { _listData.clear(); }
+void TestWorker::FlushData() {
+	_listData.clear();
+	_openFileName = "";
+}
 
 void TestWorker::Shuffle() {
 	time_t time{0};

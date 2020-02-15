@@ -31,6 +31,7 @@ private:
 	QList< struct TestElement > _listData;
 	int                         _currentIndex;
 	mix_phase_t                 _mix_phase;
+	QString                     _openFileName;
 
 	flagstate_t GetRandFlag();
 	void        FlushData( void );
