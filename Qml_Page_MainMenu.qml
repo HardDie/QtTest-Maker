@@ -61,16 +61,17 @@ Item {
 		}
 
 		// Manage buttons
-		Qml_MyButton {
-			mylabel: "Debug info"
-			onClicked: {
-				stack_view.push(debug_menu)
-				debugPage.debugUpdate()
-			}
-		}
+//		Qml_MyButton {
+//			mylabel: "Debug info"
+//			onClicked: {
+//				stack_view.push(debug_menu)
+//				debugPage.debugUpdate()
+//			}
+//		}
 		Qml_MyButton {
 			mylabel: "Manage dictionary"
 			onClicked: {
+				stack_view.push(dict_manage_menu)
 			}
 		}
 		Qml_MyButton {

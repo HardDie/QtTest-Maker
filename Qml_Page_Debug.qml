@@ -12,33 +12,8 @@ Item {
 			width: parent.width
 			height: parent.height * 0.8
 
-			Flickable {
-				id: flick
-				width: parent.width
-				height: parent.height
-				contentWidth: debug_edit.paintedWidth
-				contentHeight: debug_edit.paintedHeight
-				clip: true
-
-				function ensureVisible(r)
-				{
-					if (contentX >= r.x)
-						contentX = r.x;
-					else if (contentX + width <= r.x + r.width)
-						contentX = r.x + r.width - width;
-					if (contentY >= r.y)
-						contentY = r.y;
-					else if (contentY + height <= r.y + r.height)
-						contentY = r.y + r.height - height;
-				}
-
-				TextEdit {
-					id: debug_edit
-					width: flick.width
-					focus: true
-					wrapMode: TextEdit.Wrap
-					onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
-				}
+			Qml_InputField {
+				id: debug_edit
 			}
 		}
 
@@ -60,7 +35,7 @@ Item {
 	Connections {
 		target: debugPage
 		onQmlPrintDebug: {
-			debug_edit.text = text
+			debug_edit.mytext = text
 		}
 	}
 }

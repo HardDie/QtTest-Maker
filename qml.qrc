@@ -6,9 +6,11 @@
         <file>Qml_Page_TestForm.qml</file>
         <file>Qml_Page_InputTestForm.qml</file>
         <file>Qml_Page_Debug.qml</file>
+        <file>Qml_Page_ManageDictionary.qml</file>
 
         <file>Qml_TextRectangle.qml</file>
         <file>Qml_MyButton.qml</file>
+        <file>Qml_InputField.qml</file>
 
         <file>Qml_Label_AppName.qml</file>
         <file>Qml_Label_IndexText.qml</file>

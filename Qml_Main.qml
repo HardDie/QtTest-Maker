@@ -36,6 +36,11 @@ ApplicationWindow {
 		Qml_Page_Debug {}
 	}
 
+	Component {
+		id: dict_manage_menu
+		Qml_Page_ManageDictionary {}
+	}
+
 	Connections {
 		target: guiWorker
 		onQmlReturnToMainMenu: {
