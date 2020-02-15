@@ -20,7 +20,9 @@ GUIWorker::GUIWorker( QObject *parent ) : QObject( parent ) {
 void GUIWorker::setTestModeQA() {
 	if ( _testWorker.isDictionaryExist() == false ) {
 		emit qmlReturnToMainMenu();
-		emit qmlShowMessage( "Can't start test", "Dictionary is empty of file is not opened!" );
+		emit qmlShowMessage(
+		    "Can't start test",
+		    "Dictionary is empty of file is not opened!" );
 		return;
 	}
 
@@ -34,7 +36,9 @@ void GUIWorker::setTestModeQA() {
 void GUIWorker::setTestModeAQ() {
 	if ( _testWorker.isDictionaryExist() == false ) {
 		emit qmlReturnToMainMenu();
-		emit qmlShowMessage( "Can't start test", "Dictionary is empty of file is not opened!" );
+		emit qmlShowMessage(
+		    "Can't start test",
+		    "Dictionary is empty of file is not opened!" );
 		return;
 	}
 
@@ -48,7 +52,9 @@ void GUIWorker::setTestModeAQ() {
 void GUIWorker::setTestModeMix() {
 	if ( _testWorker.isDictionaryExist() == false ) {
 		emit qmlReturnToMainMenu();
-		emit qmlShowMessage( "Can't start test", "Dictionary is empty of file is not opened!" );
+		emit qmlShowMessage(
+		    "Can't start test",
+		    "Dictionary is empty of file is not opened!" );
 		return;
 	}
 
@@ -63,7 +69,9 @@ void GUIWorker::setTestModeMix() {
 void GUIWorker::setTestModeTypeQA() {
 	if ( _testWorker.isDictionaryExist() == false ) {
 		emit qmlReturnToMainMenu();
-		emit qmlShowMessage( "Can't start test", "Dictionary is empty of file is not opened!" );
+		emit qmlShowMessage(
+		    "Can't start test",
+		    "Dictionary is empty of file is not opened!" );
 		return;
 	}
 
@@ -72,12 +80,14 @@ void GUIWorker::setTestModeTypeQA() {
 	_phase = PHASE_FIRST;
 	_randmode = false;
 
-	buttonTestTypeCheck("");
+	buttonTestTypeCheck( "" );
 }
 void GUIWorker::setTestModeTypeAQ() {
 	if ( _testWorker.isDictionaryExist() == false ) {
 		emit qmlReturnToMainMenu();
-		emit qmlShowMessage( "Can't start test", "Dictionary is empty of file is not opened!" );
+		emit qmlShowMessage(
+		    "Can't start test",
+		    "Dictionary is empty of file is not opened!" );
 		return;
 	}
 
@@ -86,12 +96,14 @@ void GUIWorker::setTestModeTypeAQ() {
 	_phase = PHASE_FIRST;
 	_randmode = false;
 
-	buttonTestTypeCheck("");
+	buttonTestTypeCheck( "" );
 }
 void GUIWorker::setTestModeTypeMix() {
 	if ( _testWorker.isDictionaryExist() == false ) {
 		emit qmlReturnToMainMenu();
-		emit qmlShowMessage( "Can't start test", "Dictionary is empty of file is not opened!" );
+		emit qmlShowMessage(
+		    "Can't start test",
+		    "Dictionary is empty of file is not opened!" );
 		return;
 	}
 
@@ -100,7 +112,7 @@ void GUIWorker::setTestModeTypeMix() {
 	_phase = PHASE_FIRST;
 	_randmode = true;
 
-	buttonTestTypeCheck("");
+	buttonTestTypeCheck( "" );
 }
 
 /**
@@ -192,14 +204,24 @@ begin:
 }
 
 void GUIWorker::openFile( QString url ) {
-	if ( QUrl(url).isLocalFile() ) {
-		_testWorker.ReadFromFile( QUrl(url).toLocalFile() );
+	if ( QUrl( url ).isLocalFile() ) {
+		_testWorker.ReadFromFile( QUrl( url ).toLocalFile() );
 	} else {
-		_testWorker.ReadFromFile( QUrl(url).url() );
+		_testWorker.ReadFromFile( QUrl( url ).url() );
 	}
 
 	if ( _testWorker.isDictionaryExist() == false ) {
-		emit qmlShowMessage( "ERROR", "File is broken or wrong format!" );
+		emit qmlShowMessage( "ERROR",
+		                     "File is broken or wrong format!" );
+	}
+}
+
+void GUIWorker::fillDicionaryList() const {
+	int length = _testWorker.GetLength();
+	for ( int i = 0; i < length; i++ ) {
+		auto question = _testWorker.GetQuestionByIndex( i );
+		auto answer = _testWorker.GetAnswerByIndex( i );
+		emit qmlAddItemToList( question, answer );
 	}
 }
 
@@ -209,20 +231,16 @@ void GUIWorker::openFile( QString url ) {
 
 QString GUIWorker::getQuestionWithMode( void ) {
 	switch ( _testmode ) {
-	case TESTMODE_QA:
-		return _testWorker.GetQuestion( _randmode );
-	case TESTMODE_AQ:
-		return _testWorker.GetAnswer( _randmode );
+	case TESTMODE_QA: return _testWorker.GetQuestion( _randmode );
+	case TESTMODE_AQ: return _testWorker.GetAnswer( _randmode );
 	default: assert( NULL );
 	}
 }
 
 QString GUIWorker::getAnswerWithMode( void ) {
 	switch ( _testmode ) {
-	case TESTMODE_QA:
-		return _testWorker.GetAnswer( _randmode );
-	case TESTMODE_AQ:
-		return _testWorker.GetQuestion( _randmode );
+	case TESTMODE_QA: return _testWorker.GetAnswer( _randmode );
+	case TESTMODE_AQ: return _testWorker.GetQuestion( _randmode );
 	default: assert( NULL );
 	}
 }

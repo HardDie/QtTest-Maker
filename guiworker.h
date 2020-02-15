@@ -15,6 +15,7 @@ signals:
 	void qmlSetTypeTestString( QString text, QString index );
 	void qmlReturnToMainMenu();
 	void qmlShowMessage( QString text, QString detailedText );
+	void qmlAddItemToList( QString _question, QString _answer ) const;
 
 public slots:
 	void setTestModeQA();
@@ -30,6 +31,7 @@ public slots:
 	void buttonTestTypeSkip();
 
 	void openFile( QString url );
+	void fillDicionaryList() const;
 
 private:
 	QString getQuestionWithMode( void );

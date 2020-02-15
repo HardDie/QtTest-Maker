@@ -40,18 +40,6 @@ Item {
 				}
 
 				model: ListModel {
-					ListElement {
-						question: "Hello"
-						answer: "Привет"
-					}
-					ListElement {
-						question: "Bye"
-						answer: "Пока"
-					}
-					ListElement {
-						question: "Good Game"
-						answer: "Хорошая игра"
-					}
 				}
 
 				delegate: Item {
@@ -61,8 +49,8 @@ Item {
 						width: parent.width
 						text: model.question + " - " + model.answer
 					}
-
 				}
+
 			}
 		}
 
@@ -131,6 +119,13 @@ Item {
 			onClicked: {
 				stack_view.pop()
 			}
+		}
+	}
+
+	Connections {
+		target: guiWorker
+		onQmlAddItemToList: {
+			listView.model.append({question: _question, answer: _answer})
 		}
 	}
 }

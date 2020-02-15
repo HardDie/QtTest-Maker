@@ -31,7 +31,8 @@ bool TestWorker::ReadFromFile( const QString &filename ) {
 	testFile.close();
 
 	if ( textFromFile.length() == 0 ) {
-		pDebug.Print( "ReadFromFile(): Can't read data, file is Empty!" );
+		pDebug.Print(
+		    "ReadFromFile(): Can't read data, file is Empty!" );
 		return false;
 	}
 
@@ -66,8 +67,8 @@ QString TestWorker::GetIndexString( bool random ) {
 	if ( random ) {
 		switch ( _mix_phase ) {
 		case MIX_PHASE_FIRST:
-			return QString::number( _currentIndex + 1 ) +
-			       "/" + QString::number( _listData.length() * 2 );
+			return QString::number( _currentIndex + 1 ) + "/" +
+			       QString::number( _listData.length() * 2 );
 		case MIX_PHASE_SECOND:
 			return QString::number( _currentIndex + 1 +
 			                        _listData.length() ) +
@@ -166,8 +167,34 @@ bool TestWorker::Next( bool random ) {
 	return true;
 }
 
-bool TestWorker::isDictionaryExist() const {
-	return _listData.length() > 0;
+bool TestWorker::isDictionaryExist() const { return _listData.length() > 0; }
+
+int TestWorker::GetLength( void ) const { return _listData.length(); }
+
+QString TestWorker::GetQuestionByIndex( int index ) const {
+	if ( index < 0 ) {
+		pDebug.Print( "GetQuestionByIndex(): index < 0!" );
+		return "";
+	}
+	if ( index >= _listData.length() ) {
+		pDebug.Print( "GetQuestionByIndex(): index > length!" );
+		return "";
+	}
+
+	return _listData[ index ]._question._question;
+}
+
+QString TestWorker::GetAnswerByIndex( int index ) const {
+	if ( index < 0 ) {
+		pDebug.Print( "GetAnswerByIndex(): index < 0!" );
+		return "";
+	}
+	if ( index >= _listData.length() ) {
+		pDebug.Print( "GetAnswerByIndex(): index > length!" );
+		return "";
+	}
+
+	return _listData[ index ]._question._answer;
 }
 
 /**
