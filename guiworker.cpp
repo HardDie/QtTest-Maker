@@ -233,6 +233,17 @@ void GUIWorker::dictionaryAddItem( QString question, QString answer ) {
 	_testWorker.AddItem( question, answer );
 }
 
+void GUIWorker::exitFromApp() const {
+	if ( _testWorker.IsDictionaryChanged() == true ) {
+		emit qmlShowExitMessage(
+		    "Unsaved changes!",
+		    "You changed the dictionary and did not save the changes."
+		    "Do you really want to leave?" );
+		return;
+	}
+	emit qmlExitFromApp();
+}
+
 /**
  * Private
  */

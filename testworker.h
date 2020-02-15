@@ -26,12 +26,14 @@ public:
 	QString GetAnswerByIndex( int index ) const;
 	bool    DeleteItemByIndex( int index );
 	bool    AddItem( QString question, QString answer );
+	bool    IsDictionaryChanged() const;
 
 private:
 	QList< struct TestElement > _listData;
 	int                         _currentIndex;
 	mix_phase_t                 _mix_phase;
 	QString                     _openFileName;
+	bool                        _isDictionaryChanged;
 
 	flagstate_t GetRandFlag();
 	void        FlushData( void );

@@ -15,6 +15,7 @@ TestWorker::TestWorker() {
 	_mix_phase = MIX_PHASE_FIRST;
 	_currentIndex = 0;
 	_openFileName = "";
+	_isDictionaryChanged = false;
 }
 
 bool TestWorker::ReadFromFile( const QString &filename ) {
@@ -209,6 +210,7 @@ bool TestWorker::DeleteItemByIndex( int index ) {
 	}
 
 	_listData.removeAt( index );
+	_isDictionaryChanged = true;
 	return true;
 }
 
@@ -218,7 +220,12 @@ bool TestWorker::AddItem( QString question, QString answer ) {
 	testElement._question._answer = answer;
 	testElement._flag = FLAGSTATE_NOTSET;
 	_listData.append( testElement );
+	_isDictionaryChanged = true;
 	return true;
+}
+
+bool TestWorker::IsDictionaryChanged() const {
+	return _isDictionaryChanged;
 }
 
 /**
@@ -253,6 +260,7 @@ flagstate_t TestWorker::GetRandFlag() {
 void TestWorker::FlushData() {
 	_listData.clear();
 	_openFileName = "";
+	_isDictionaryChanged = false;
 }
 
 void TestWorker::Shuffle() {

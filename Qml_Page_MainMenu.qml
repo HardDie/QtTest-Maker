@@ -84,7 +84,7 @@ Item {
 		Qml_MyButton {
 			mylabel: "Exit"
 			onClicked: {
-				testGuiApp.close()
+				guiWorker.exitFromApp()
 			}
 		}
 	}
@@ -92,6 +92,13 @@ Item {
 	MessageDialog {
 		id: info
 		standardButtons: StandardButton.Ok
+	}
+	MessageDialog {
+		id: exit_dialog
+		standardButtons: StandardButton.No | StandardButton.Yes
+		onYes: {
+			testGuiApp.close()
+		}
 	}
 
 	FileDialog {
@@ -110,6 +117,14 @@ Item {
 			info.text = text
 			info.detailedText = detailedText
 			info.open()
+		}
+		onQmlShowExitMessage: {
+			exit_dialog.text = text
+			exit_dialog.detailedText = detailedText
+			exit_dialog.open()
+		}
+		onQmlExitFromApp: {
+			testGuiApp.close()
 		}
 	}
 }

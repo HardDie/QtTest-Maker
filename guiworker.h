@@ -14,8 +14,10 @@ signals:
 	void qmlSetTestString( QString text, QString index );
 	void qmlSetTypeTestString( QString text, QString index );
 	void qmlReturnToMainMenu();
-	void qmlShowMessage( QString text, QString detailedText );
+	void qmlShowMessage( QString text, QString detailedText ) const;
+	void qmlShowExitMessage( QString text, QString detailedText ) const;
 	void qmlAddItemToList( QString _question, QString _answer ) const;
+	void qmlExitFromApp() const;
 
 public slots:
 	void setTestModeQA();
@@ -34,6 +36,8 @@ public slots:
 	void dictionaryFillList() const;
 	void dictionaryDeleteItem( int index );
 	void dictionaryAddItem( QString question, QString answer );
+
+	void exitFromApp() const;
 
 private:
 	QString getQuestionWithMode( void );

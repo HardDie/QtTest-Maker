@@ -23,13 +23,6 @@ Item {
 				stack_view.pop()
 			}
 		}
-		Qml_MyButton {
-			mylabel: "Exit"
-			onClicked: {
-				testGuiApp.close()
-			}
-		}
-
 	}
 
 	Connections {
