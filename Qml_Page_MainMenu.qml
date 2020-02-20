@@ -11,7 +11,7 @@ Item {
 		spacing: 2
 
 		Qml_Label_AppName {
-			mylabel: "TestMaker v1.2"
+			mylabel: "TestMaker v1.3"
 		}
 
 		// Test modes
