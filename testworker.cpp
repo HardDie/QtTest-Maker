@@ -1,5 +1,6 @@
 #include <QFile>
 #include <algorithm>
+#include <random>
 
 #include "testworker.h"
 #include "jsonparser.h"
@@ -295,7 +296,6 @@ void TestWorker::FlushData() {
 }
 
 void TestWorker::Shuffle() {
-	time_t time{0};
-	std::srand( unsigned( std::time( &time ) ) );
-	std::random_shuffle( _listData.begin(), _listData.end() );
+	std::random_device rd;
+	std::shuffle(_listData.begin(), _listData.end(), rd);
 }
