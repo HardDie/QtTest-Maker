@@ -91,6 +91,7 @@ Item {
 				if (inputQuestion.mytext != "" && inputAnswer.mytext != "") {
 					guiWorker.dictionaryAddItem(inputQuestion.mytext, inputAnswer.mytext)
 					listView.model.append({question: inputQuestion.mytext, answer: inputAnswer.mytext})
+					listView.positionViewAtEnd()
 					inputQuestion.mytext = ""
 					inputAnswer.mytext = ""
 				}
