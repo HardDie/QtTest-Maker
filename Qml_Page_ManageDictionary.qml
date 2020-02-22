@@ -27,13 +27,6 @@ Item {
 				height: parent.height - 20
 				currentIndex: -1
 
-				MouseArea {
-					anchors.fill: parent
-					onClicked: {
-						listView.currentIndex = listView.indexAt(mouseX, mouseY)
-					}
-				}
-
 				highlight: Rectangle {
 					border.width: 2
 					border.color: "#C9CACA"
@@ -49,6 +42,13 @@ Item {
 					Text {
 						width: parent.width
 						text: model.question + " - " + model.answer
+					}
+
+					MouseArea {
+						anchors.fill: parent
+						onClicked: {
+							listView.currentIndex = index
+						}
 					}
 				}
 
