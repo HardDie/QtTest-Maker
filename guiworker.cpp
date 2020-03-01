@@ -1,6 +1,7 @@
 #include <QUrl>
 
 #include "guiworker.h"
+#include "debug_page.h"
 
 /**
  * Constructor
@@ -143,7 +144,9 @@ void GUIWorker::buttonTestNext() {
 
 		sResult = sQuestion + " - " + sAnswer;
 		break;
-	default: assert( NULL );
+	default:
+		pDebug.Print( "buttonTestNext(): Wrong phase type!" );
+		return;
 	}
 
 	sIndex = _testWorker.GetIndexString( _randmode );
@@ -195,7 +198,9 @@ begin:
 			sResult = sQuestion + " - " + sAnswer;
 		}
 		break;
-	default: assert( NULL );
+	default:
+		pDebug.Print( "buttonTestTypeCheck(): Wrong phase type!" );
+		return;
 	}
 
 	sIndex = _testWorker.GetIndexString( _randmode );
@@ -274,7 +279,9 @@ QString GUIWorker::getQuestionWithMode( void ) {
 	switch ( _testmode ) {
 	case TESTMODE_QA: return _testWorker.GetQuestion( _randmode );
 	case TESTMODE_AQ: return _testWorker.GetAnswer( _randmode );
-	default: assert( NULL );
+	default:
+		pDebug.Print( "getQuestionWithMode(): Wrong test mode!" );
+		return "";
 	}
 }
 
@@ -282,6 +289,8 @@ QString GUIWorker::getAnswerWithMode( void ) {
 	switch ( _testmode ) {
 	case TESTMODE_QA: return _testWorker.GetAnswer( _randmode );
 	case TESTMODE_AQ: return _testWorker.GetQuestion( _randmode );
-	default: assert( NULL );
+	default:
+		pDebug.Print( "getAnswerWithMode(): Wrong test mode!" );
+		return "";
 	}
 }
