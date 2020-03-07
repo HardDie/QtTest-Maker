@@ -1,8 +1,8 @@
 * How build apk file
 ** Clone docker image
    docker pull therecipe/qt:android
-** Mount folder with project to director inside container
-   -v /path/to/project:/home/user/qt
+** Run docker
+   docker run --rm -v /path/to/project:/home/user/qt therecipe/qt:android
 ** Prepare container to compile
 *** mkdir /opt/android
 *** ln -s /home/user/android-ndk-* /opt/android/android-ndk-r19c
