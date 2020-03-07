@@ -1,0 +1,17 @@
+* How build apk file
+** Clone docker image
+   docker pull therecipe/qt:android
+** Mount folder with project to director inside container
+   -v /path/to/project:/home/user/qt
+** Prepare container to compile
+*** mkdir /opt/android
+*** ln -s /home/user/android-ndk-* /opt/android/android-ndk-r19c
+*** ln -s /home/user/android-sdk-linux/ /opt/android/sdk
+*** ln -s /opt/Qt/*/android_armv7/bin/qmake /bin/
+*** ln -s /opt/Qt/*/android_armv7/bin/androiddeployqt /bin/
+** Compile project
+   cd /home/user/qt && qmake && make
+** Install library
+   make install INSTALL_ROOT=${PWD}
+** Compile apk file
+   androiddeployqt --no-gdbserver --output ${PWD} --input *.so-deployment-settings.json --deployment bundled --gradle
